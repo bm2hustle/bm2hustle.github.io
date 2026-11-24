@@ -7,6 +7,8 @@ Statische Lernseite der Klasse BMGV26b, live unter https://bm2hustle.github.io (
 - `hub-data.js` – alle Daten; wird mit `node tools/build-hub-data.js <data.js> <spiele.js> [YYYY-MM-DD]` aus Robins Lern-Dashboard erzeugt
 - `tools/theory-map.json` – welche Theorie (Dashboard-`readings`) zu welcher Prüfung gehört
 - `tools/extra.json` – Zusätzliches (z. B. Medienprojekt-Gruppen)
+- `tools/extra-exams.json` – neue/korrigierte Termine aus OneDrive oder Meldungen (gleiche `id` ersetzt, `"remove": true` löscht)
+- `tools/last-check.txt` – Zeitpunkt der letzten automatischen Prüfung
 - `soz.html` – Soziologie-Comic
 
 ## Was direkt live darf

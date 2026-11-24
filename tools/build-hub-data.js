@@ -11,6 +11,10 @@ const S={DEU:['Deutsch','#ffb8b0','#c0392b'],ENG:['Englisch','#bcd8ff','#2563eb'
 const subjects=Object.fromEntries(Object.entries(S).map(([k,[n,c,i]])=>[k,{name:n,c,ink:i}]));
 const base=s=>String(s).split('/').pop().replace(/^…/,'').trim();
 const exams=D.exams.filter(e=>e.date>=TODAY).map(e=>({id:e.id,subj:e.subj,date:e.date,time:e.time||null,type:e.type==='Termin'?'Hausaufgabe':e.type,title:e.title.replace(/ ✅.*$/,''),topics:e.topics||[],material:(e.material||[]).map(base).filter(m=>!/Lesestoff im Dashboard|Dashboard/.test(m)),unsure:!!e.unsure}));
+// Zusätzliche/korrigierte Termine (z. B. aus OneDrive oder Meldungen): tools/extra-exams.json, gleiche Felder, gleiche id = ersetzt
+const XP=path.join(__dirname,'extra-exams.json');
+if(fs.existsSync(XP)){for(const x of JSON.parse(fs.readFileSync(XP,'utf8'))){if(x.date<TODAY)continue;const i=exams.findIndex(e=>e.id===x.id);const v=Object.assign({time:null,topics:[],material:[],unsure:false},i>=0?exams[i]:{},x);if(x.remove){if(i>=0)exams.splice(i,1);continue}if(i>=0)exams[i]=v;else exams.push(v)}}
+exams.sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
 // Theorie: welche Lesestoffe zu welcher Prüfung gehören, steht in tools/theory-map.json
 const TMAP=JSON.parse(fs.readFileSync(path.join(__dirname,'theory-map.json'),'utf8'));
 const theory={};
