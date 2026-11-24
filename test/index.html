@@ -163,6 +163,17 @@ body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:so
 .pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .pills button{font-family:var(--hand);font-size:1.1rem;border:2px solid var(--line);background:var(--paper);color:#1d1b18;border-radius:99px;padding:6px 16px;cursor:pointer}
 .pills button[aria-expanded="true"]{background:var(--cap)}
+@media (max-width:520px){
+  header{gap:6px;padding-bottom:6px}.logo{font-size:1.9rem}
+  .nav a{font-size:.98rem;padding:3px 9px}.fsbtn{font-size:.9rem;padding:2px 8px}
+  .subjbar a{min-width:0;padding:3px 8px}.subjbar a b{font-size:.92rem}.subjbar a span{font-size:.74rem}
+  #nextBox h3{font-size:1.25rem!important}.cd b{font-size:1.6rem}.cd div{padding:3px 2px}
+  .note{padding:16px 12px 12px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tabs button{flex:none;font-size:1rem;padding:3px 10px}
+  .info dd ul li:nth-child(n+4){display:none}.info.more dd ul li{display:list-item}
+}
+.moreBtn{display:none;font-family:var(--hand);font-size:.95rem;border:0;background:none;color:inherit;text-decoration:underline;cursor:pointer;padding:0}
+@media (max-width:520px){.moreBtn{display:inline}}
 .foot{font-size:.9rem;opacity:.75;text-align:center}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -355,7 +366,7 @@ function rFach(id){
     <dl class="info">
       <dt>📅 Wann?</dt><dd><b>${WDL[parse(e.date).getDay()]}, ${parse(e.date).getDate()}. ${MON[parse(e.date).getMonth()]}</b>${e.time?" · "+esc(e.time)+" Uhr":""} · <b>${when(e.date)}</b></dd>
       <dt>📝 Was?</dt><dd>${esc(isTest(e)?"Prüfung ("+e.type+")":e.type)}</dd>
-      <dt>📚 Worüber?</dt><dd>${e.unsure?"<i>Stoff noch nicht sicher</i> · ":""}<ul>${e.topics.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></dd>
+      <dt>📚 Worüber?</dt><dd>${e.unsure?"<i>Stoff noch nicht sicher</i> · ":""}<ul>${e.topics.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>${e.topics.length>3?`<button class="moreBtn" onclick="this.closest('.info').classList.toggle('more');this.textContent=this.closest('.info').classList.contains('more')?'weniger anzeigen':'+ ${e.topics.length-3} weitere anzeigen'">+ ${e.topics.length-3} weitere anzeigen</button>`:""}</dd>
       ${e.material.length?`<dt>📎 Unterlagen</dt><dd>${e.material.map(esc).join(" · ")}</dd>`:""}
     </dl>
     <div class="tabs hideinfocus" role="group" aria-label="Bereich">${tabs.map(t=>`<button data-tab="${t[0]}" aria-pressed="${t[0]===curTab}">${t[1]}</button>`).join("")}</div>
@@ -515,6 +526,7 @@ $("meldF").onsubmit=ev=>{ev.preventDefault();
 const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
 function focusOn(){document.body.classList.add("focus");$("fsBtn").textContent="✕ Vollbild beenden";const d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;if(!f){document.body.classList.remove("focus");$("fsBtn").textContent="⛶ Vollbild";$("fsBtn").title="Vollbild geht in diesem Browser nicht (z. B. iPhone). Tipp: Seite zum Home-Bildschirm hinzufügen.";return}if(f&&!fsEl()){try{const r=f.call(d);if(r&&r.catch)r.catch(()=>{})}catch(e){}}}
 function focusOff(){document.body.classList.remove("focus");$("fsBtn").textContent="⛶ Vollbild";if(fsEl()){try{(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(e){}}}
+{const d0=document.documentElement;if(!(d0.requestFullscreen||d0.webkitRequestFullscreen))$("fsBtn").hidden=true}
 $("fsBtn").onclick=()=>document.body.classList.contains("focus")?focusOff():focusOn();
 ["fullscreenchange","webkitfullscreenchange"].forEach(t=>document.addEventListener(t,()=>{if(!fsEl()&&document.body.classList.contains("focus"))focusOff()}));
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.body.classList.contains("focus"))focusOff()});
