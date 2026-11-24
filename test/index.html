@@ -159,6 +159,10 @@ body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:so
 .pday b{font-family:var(--comic);font-weight:400;letter-spacing:.5px;min-width:90px}
 .pday ul{margin:0;padding-left:18px}
 .wd{display:flex;gap:4px;flex-wrap:wrap}.wd label{display:flex;gap:3px;align-items:center;border:2px solid var(--line);border-radius:8px;padding:2px 8px;background:#fff;color:#1d1b18}
+.calm{max-width:720px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.pills button{font-family:var(--hand);font-size:1.1rem;border:2px solid var(--line);background:var(--paper);color:#1d1b18;border-radius:99px;padding:6px 16px;cursor:pointer}
+.pills button[aria-expanded="true"]{background:var(--cap)}
 .foot{font-size:.9rem;opacity:.75;text-align:center}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -177,17 +181,20 @@ body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:so
   <nav class="subjbar hideinfocus" id="subjbar" aria-label="Fächer"></nav>
 
   <section class="view" id="v-start" hidden>
-    <div class="hero">
-      <div style="display:flex;flex-direction:column;gap:18px;min-width:0"><div id="nextBox"></div>
-      <div class="note flat" style="--c:#fffdf6"><h3 id="heuteT">🏫 Heute</h3><div id="heute" class="sched"></div></div>
-      <div class="note flat" style="--c:#e8f3ff" id="fdtBox"><h3>⚡ Frage des Tages</h3><div id="fdt"></div></div>
-      <div class="note flat" style="--c:#f3f0e8"><h3>📤 Abgaben &amp; 🏠 Hausaufgaben</h3><div id="tasks" class="tasks"></div></div>
-</div>
-      <div style="display:flex;flex-direction:column;gap:18px;min-width:0"><div class="note flat" style="--c:#fffdf6"><h3 style="font-size:1.6rem">📝 Prüfungen</h3><div id="soon" class="list"></div></div>
-      <div class="note flat getit" style="--c:#f3f0e8"><h3>📲 Immer dabei</h3>
+    <div class="calm">
+      <div id="nextBox"></div>
+      <div class="note flat" style="--c:#fffdf6"><h3>📌 Diese Woche</h3><div id="week" class="list"></div><p style="margin:0"><a href="#kalender" style="color:inherit">→ Alle Termine im Kalender</a></p></div>
+      <div class="pills" role="group" aria-label="Mehr">
+        <button data-pill="heute" aria-expanded="false">🏫 Heute</button>
+        <button data-pill="frage" aria-expanded="false">⚡ Frage des Tages</button>
+        <button data-pill="app" aria-expanded="false">📲 Kalender &amp; App</button>
+      </div>
+      <div class="note flat pillbox" id="pb-heute" hidden style="--c:#fffdf6"><h3 id="heuteT">🏫 Heute</h3><div id="heute" class="sched"></div></div>
+      <div class="note flat pillbox" id="pb-frage" hidden style="--c:#e8f3ff"><div id="fdtBox"><h3>⚡ Frage des Tages</h3><div id="fdt"></div></div></div>
+      <div class="note flat pillbox getit" id="pb-app" hidden style="--c:#f3f0e8"><h3>📲 Immer dabei</h3>
         <p>Prüfungen automatisch im Handy-Kalender (mit Erinnerung am Vortag):</p>
         <div class="gpick"><a class="btn go" href="webcal://bm2hustle.github.io/calendar.ics">📅 Kalender abonnieren (iPhone / Mac / Outlook)</a><a class="btn" href="https://calendar.google.com/calendar/r?cid=webcal%3A%2F%2Fbm2hustle.github.io%2Fcalendar.ics" target="_blank" rel="noopener">📅 Google Kalender</a></div>
-        <div id="appBox"></div></div></div>
+        <div id="appBox"></div></div>
     </div>
 
   </section>
@@ -196,6 +203,10 @@ body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:so
     <div class="calnav"><button class="btn" id="cPrev" aria-label="Vorheriger Monat">◀</button><h2 id="cTitle" style="margin:0"></h2><button class="btn" id="cNext" aria-label="Nächster Monat">▶</button></div>
     <div class="calwrap"><div class="cal" id="cal"></div></div>
     <div class="legend" id="legend"></div>
+    <div class="hero" style="margin-top:8px">
+      <div class="note flat" style="--c:#fffdf6"><h3 style="font-size:1.5rem">📝 Prüfungen</h3><div id="soon" class="list"></div></div>
+      <div class="note flat" style="--c:#f3f0e8"><h3>📤 Abgaben &amp; 🏠 Hausaufgaben</h3><div id="tasks" class="tasks"></div></div>
+    </div>
     <div class="gpick"><a class="btn go" href="webcal://bm2hustle.github.io/calendar.ics">📅 Alle Termine im Handy-Kalender abonnieren</a><a class="btn" href="https://calendar.google.com/calendar/r?cid=webcal%3A%2F%2Fbm2hustle.github.io%2Fcalendar.ics" target="_blank" rel="noopener">Google Kalender</a></div>
   </section>
 
@@ -268,6 +279,13 @@ function daysTo(s){return Math.round((parse(s)-parse(TODAY))/864e5)}
 const when=s=>{const d=daysTo(s);return d===0?"heute":d===1?"morgen":"in "+d+" Tagen"};
 
 /* ---------- Start ---------- */
+function rWeek(){const now=parse(TODAY),sun=new Date(now);sun.setDate(now.getDate()+(7-now.getDay())%7);
+  let l=ex.filter(e=>parse(e.date)<=sun);let more="";
+  if(!l.length){const lim=new Date(now);lim.setDate(now.getDate()+7);l=ex.filter(e=>parse(e.date)<=lim);more="Diese Woche ist nichts mehr. Nächste 7 Tage:"}
+  $("week").innerHTML=(more?`<p class="empty" style="margin:0">${more}</p>`:"")+(l.length?l.map(rowHTML).join(""):`<p class="empty">Nichts in den nächsten 7 Tagen. 🎉</p>`)}
+document.querySelectorAll("[data-pill]").forEach(b=>b.onclick=()=>{const open=b.getAttribute("aria-expanded")!=="true";
+  document.querySelectorAll("[data-pill]").forEach(x=>{x.setAttribute("aria-expanded","false");$("pb-"+x.dataset.pill).hidden=true});
+  if(open){b.setAttribute("aria-expanded","true");$("pb-"+b.dataset.pill).hidden=false}});
 function rStart(){
   const n=ex.filter(isTest).find(e=>examDT(e)>new Date());
   $("nextBox").innerHTML=n?`<div class="note" style="${sv(n)}"><span class="tag s">${esc(S(n.subj).name)}</span><h3 style="font-size:1.7rem">⏳ Nächste Prüfung: ${esc(n.title)}</h3>
@@ -612,7 +630,7 @@ function route(){let h=(location.hash||"#start").slice(1);let v=h.startsWith("fa
   document.querySelectorAll(".nav a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.v===v||(v==="fach"&&a.dataset.v==="faecher")));
   document.querySelectorAll(".nav a[aria-current]").forEach(a=>a.setAttribute("aria-current","page"));
   if(v!=="fach")rSubjbar(null);
-  if(v==="start"){rStart();rHeute();rFdt();rApp()}else if(v==="kalender")rCal();else if(v==="faecher")rFaecher();else if(v==="suche")rSuche();else if(v==="fach")rFach(h.slice(5));
+  if(v==="start"){rStart();rWeek();rHeute();rFdt();rApp()}else if(v==="kalender"){rCal();rStart()}else if(v==="faecher")rFaecher();else if(v==="suche")rSuche();else if(v==="fach")rFach(h.slice(5));
   if(v!=="fach")window.scrollTo(0,0)}
 window.addEventListener("hashchange",route);route();
 $("foot").textContent="Stand: "+fmt(H.updated)+" · Fehlt etwas? 📣 Melden · Dein Fortschritt und Lernplan bleiben nur in deinem Browser.";
