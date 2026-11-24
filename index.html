@@ -118,10 +118,7 @@ form.meld input,form.meld select,form.meld textarea{font-family:var(--hand);font
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media (max-width:480px){.two{grid-template-columns:1fr}}
 /* Fokus */
 .fsbtn{font-family:var(--comic);letter-spacing:1px;font-size:1.05rem;border:3px dashed var(--muted);background:transparent;color:inherit;border-radius:6px;padding:3px 12px;cursor:pointer}
-body.focus header .nav,body.focus header .logo,body.focus .logo,body.focus .hideinfocus{display:none!important}
-body.focus header{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:calc(8px + env(safe-area-inset-right,0px));z-index:30}
 body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:solid}
-body.focus .wrap{padding-top:40px;max-width:720px}
 .hit{display:flex;flex-direction:column;gap:4px;background:var(--paper);color:#1d1b18;border:2px solid rgba(0,0,0,.25);border-left:8px solid var(--ink2);border-radius:8px;padding:8px 12px}
 .hit .top{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .hit p{margin:0;line-height:1.3}
@@ -467,7 +464,7 @@ $("meldF").onsubmit=ev=>{ev.preventDefault();
 
 /* ---------- Fokus ---------- */
 const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
-function focusOn(){document.body.classList.add("focus");$("fsBtn").textContent="✕ Vollbild beenden";const d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;if(f&&!fsEl()){try{const r=f.call(d);if(r&&r.catch)r.catch(()=>{})}catch(e){}}window.scrollTo(0,0)}
+function focusOn(){document.body.classList.add("focus");$("fsBtn").textContent="✕ Vollbild beenden";const d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;if(!f){document.body.classList.remove("focus");$("fsBtn").textContent="⛶ Vollbild";$("fsBtn").title="Vollbild geht in diesem Browser nicht (z. B. iPhone). Tipp: Seite zum Home-Bildschirm hinzufügen.";return}if(f&&!fsEl()){try{const r=f.call(d);if(r&&r.catch)r.catch(()=>{})}catch(e){}}}
 function focusOff(){document.body.classList.remove("focus");$("fsBtn").textContent="⛶ Vollbild";if(fsEl()){try{(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(e){}}}
 $("fsBtn").onclick=()=>document.body.classList.contains("focus")?focusOff():focusOn();
 ["fullscreenchange","webkitfullscreenchange"].forEach(t=>document.addEventListener(t,()=>{if(!fsEl()&&document.body.classList.contains("focus"))focusOff()}));

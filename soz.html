@@ -133,12 +133,7 @@ textarea.ans{width:100%;min-height:150px;font-family:var(--hand);font-size:1.08r
 .ovbox .note{transform:none!important}
 /* Fokus-Modus */
 .fsbtn{font-family:var(--comic);letter-spacing:1px;font-size:1.15rem;border:3px dashed var(--muted);background:transparent;color:inherit;border-radius:6px;padding:4px 14px;cursor:pointer}
-body.focus h1,body.focus .sub,body.focus .chips,body.focus .mode>button:not(#fsBtn),body.focus .hint,body.focus #train .ttabs{display:none!important}
-body.focus .mode{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:calc(8px + env(safe-area-inset-right,0px));z-index:30}
 body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:solid;font-size:1rem;padding:3px 10px}
-body.focus .wrap{padding-top:34px}
-body.focus .card{max-width:560px;min-height:62vh}
-body.focus .card .note{font-size:1.08em}
 @media (prefers-reduced-motion:reduce){.note{transition:none}}
 @media (max-width:440px){.board{grid-template-columns:1fr;gap:18px}}
 </style>
@@ -484,8 +479,8 @@ function showTheory(t,name){const list=t.terms;let i=list.indexOf(name);const O=
 /* ---------- Fokus-Modus (wie im Dashboard): nur die Karte + Vollbild ---------- */
 const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
 function focusOn(){document.body.classList.add("focus");$("fsBtn").textContent="✕ Vollbild beenden";
-  const d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;if(f&&!fsEl()){try{const r=f.call(d);if(r&&r.catch)r.catch(()=>{})}catch(e){}}
-  if(mode==="board")setMode("learn");window.scrollTo(0,0)}
+  const d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;if(!f){document.body.classList.remove("focus");$("fsBtn").textContent="⛶ Vollbild";$("fsBtn").title="Vollbild geht in diesem Browser nicht (z. B. iPhone). Tipp: Seite zum Home-Bildschirm hinzufügen.";return}if(f&&!fsEl()){try{const r=f.call(d);if(r&&r.catch)r.catch(()=>{})}catch(e){}}
+  }
 function focusOff(){document.body.classList.remove("focus");$("fsBtn").textContent="⛶ Vollbild";
   if(fsEl()){try{(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(e){}}}
 $("fsBtn").onclick=()=>document.body.classList.contains("focus")?focusOff():focusOn();
