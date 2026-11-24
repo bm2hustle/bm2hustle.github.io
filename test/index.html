@@ -405,7 +405,7 @@ function rFach(id){
     const games=[["mc","🎯 Multiple Choice",g.quiz],["fx","🔁 Meine Fehler",(LS.get("err-"+id,[])).length?g.quiz:null],["match","🧩 Zuordnen",g.pairs],["cards","🃏 Karteikarten",g.decks],["cloze","✏️ Lückentext",g.cloze],["order","🔢 Reihenfolge",g.order]].filter(x=>x[2]&&x[2].length);
     const prs=pairsOf(id),arc=[["blitz","⚡ Blitz 60 s",g.quiz],["survival","🔥 Überleben",g.quiz],["meteor","☄️ Meteoriten",g.quiz],["speedmatch","⏱️ Zuordnen auf Zeit",prs.length>=6?prs:null],["wf","✅❌ Wahr oder falsch",prs.length>=4?prs:null]].filter(x=>x[2]&&x[2].length);
     P.innerHTML=games.length?`<div class="gpick">${games.map(x=>`<button data-g="${x[0]}">${x[1]}${x[0]==="fx"?" ("+LS.get("err-"+id,[]).length+")":""}</button>`).join("")}</div>
-      ${arc.length?`<h3 class="wk" style="color:inherit">🏆 Spiele mit Rangliste</h3><div class="gpick">${arc.map(x=>`<button data-g="${x[0]}">${x[1]}${LS.get("best-"+x[0]+"-"+id,null)!=null?` <small>(Best: ${fmtScore(x[0],LS.get("best-"+x[0]+"-"+id))})</small>`:""}</button>`).join("")}</div>`:""}<div id="game"></div>`:`<p class="empty">Noch keine Übungen für diese Prüfung. Kommen bald.</p>`;
+      <p class="empty" style="margin:4px 0 0">🏆 Nach jedem Spiel siehst du die Klassen-Rangliste. Ausnahmen: Karteikarten und Meine Fehler.</p>${arc.length?`<h3 class="wk" style="color:inherit">⚡ Arcade-Spiele</h3><div class="gpick">${arc.map(x=>`<button data-g="${x[0]}">${x[1]}${LS.get("best-"+x[0]+"-"+id,null)!=null?` <small>(Best: ${fmtScore(x[0],LS.get("best-"+x[0]+"-"+id))})</small>`:""}</button>`).join("")}</div>`:""}<div id="game"></div>`:`<p class="empty">Noch keine Übungen für diese Prüfung. Kommen bald.</p>`;
     P.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>startGame(b.dataset.g,id));
     if(games.length)startGame(games[0][0],id);
   }else{
@@ -474,21 +474,22 @@ function errAdd(id,q){const a=LS.get("err-"+id,[]);if(!a.includes(q))a.push(q);L
 function errDel(id,q){LS.set("err-"+id,LS.get("err-"+id,[]).filter(x=>x!==q))}
 function startGame(k,id){const g=H.games[id],G=$("game");
   if(k==="mc"||k==="fx"){let list=g.quiz;if(k==="fx"){const er=LS.get("err-"+id,[]);list=g.quiz.filter(q=>er.includes(q[0]))}mc(G,id,shuffle(list).slice(0,k==="fx"?99:12),k==="fx")}
-  else if(k==="match")match(G,shuffle(g.pairs));
+  else if(k==="match")match(G,shuffle(g.pairs),id);
   else if(k==="cards")cards(G,shuffle(g.decks));
-  else if(k==="cloze")cloze(G,shuffle(g.cloze));
-  else if(k==="order")order(G,shuffle(g.order));
+  else if(k==="cloze")cloze(G,shuffle(g.cloze),id);
+  else if(k==="order")order(G,shuffle(g.order),id);
   else if(k==="blitz")blitz(G,id);else if(k==="survival")survival(G,id);else if(k==="meteor")meteor(G,id);
   else if(k==="speedmatch")speedmatch(G,id);else if(k==="wf")wahrfalsch(G,id);
 }
 
 /* ---------- Spiele mit Bestwert + Rangliste ---------- */
-const GAMEINFO={blitz:["⚡ Blitz","Punkte",1],survival:["🔥 Überleben","richtig in Folge",1],meteor:["☄️ Meteoriten","Punkte",1],speedmatch:["⏱️ Zuordnen auf Zeit","Sekunden",-1],wf:["✅❌ Wahr oder falsch","Punkte",1]};
-function fmtScore(k,v){return k==="speedmatch"?(+v).toFixed(1)+" s":String(v)}
+const GAMEINFO={blitz:["⚡ Blitz","Punkte",1],survival:["🔥 Überleben","richtig in Folge",1],meteor:["☄️ Meteoriten","Punkte",1],speedmatch:["⏱️ Zuordnen auf Zeit","Sekunden",-1],wf:["✅❌ Wahr oder falsch","Punkte",1],mc:["🎯 Multiple Choice","richtig",1],match:["🧩 Zuordnen","Sekunden",-1],cloze:["✏️ Lückentext","Sekunden",-1],order:["🔢 Reihenfolge","Sekunden",-1]};
+const tsec=(t0,err)=>Math.min(999,Math.round(((Date.now()-t0)/1000+2*err)*10)/10);
+function fmtScore(k,v){return GAMEINFO[k][2]<0?(+v).toFixed(1)+" s":String(v)}
 function pairsOf(id){const g=H.games[id]||{};const a=(g.pairs||[]).map(p=>[p[0],p[1]]).concat((g.decks||[]).map(c=>[c[0],c[1]]));const seen=new Set();return a.filter(p=>p&&p[0]&&p[1]&&String(p[1]).length<140&&!seen.has(p[0])&&seen.add(p[0]))}
 function bestSave(k,id,v){const key="best-"+k+"-"+id,o=LS.get(key,null),better=o==null||(GAMEINFO[k][2]>0?v>o:v<o);if(better)LS.set(key,v);return{better,best:better?v:o}}
 function gameOver(G,k,id,score,extra){const{better,best}=bestSave(k,id,score),gi=GAMEINFO[k];
-  G.innerHTML=`<div class="gamebox"><h3 style="font-family:var(--comic);font-weight:400;font-size:1.9rem;margin:0">${gi[0]}: ${fmtScore(k,score)} ${k==="speedmatch"?"":gi[1]}</h3>
+  G.innerHTML=`<div class="gamebox"><h3 style="font-family:var(--comic);font-weight:400;font-size:1.9rem;margin:0">${gi[0]}: ${fmtScore(k,score)} ${gi[2]<0?"":gi[1]}</h3>
     <p style="margin:0">${better?"🎉 Neuer persönlicher Rekord!":"Dein Rekord: "+fmtScore(k,best)}</p>${extra||""}
     <div id="lbBox"></div><div class="gpick"><button class="btn go" id="again">↺ Nochmal</button></div></div>`;
   $("again").onclick=()=>startGame(k,id);LB.render($("lbBox"),k,id,score)}
@@ -536,20 +537,20 @@ const LB={url:"https://psmvwyxgatlrqcsoschx.supabase.co",key:"sb_publishable_9v7
       const f=$("lbF");if(f)f.onsubmit=async ev=>{ev.preventDefault();const n=$("lbN").value.trim().slice(0,16);if(!n)return;LS.set("nick",n);try{await LB.add(k,id,n,score);draw(true)}catch(e){box.insertAdjacentHTML("beforeend",`<p class="why">Eintragen hat nicht geklappt.</p>`)}}};
     draw(false)}};
 function mc(G,id,list,fix){let i=0,ok=0;
-  const r=()=>{if(i>=list.length){G.innerHTML=`<div class="gamebox"><h3>${ok} / ${list.length} richtig ${ok===list.length?"🎉":""}</h3><div class="gpick"><button id="again">↺ Nochmal</button></div></div>`;$("again").onclick=()=>startGame(fix?"fx":"mc",id);return}
+  const r=()=>{if(i>=list.length){if(!fix){gameOver(G,"mc",id,ok,`<p style="margin:0">${ok} / ${list.length} richtig. Falsche Fragen landen in «🔁 Meine Fehler».</p>`);return}G.innerHTML=`<div class="gamebox"><h3>${ok} / ${list.length} richtig ${ok===list.length?"🎉":""}</h3><div class="gpick"><button id="again">↺ Nochmal</button></div></div>`;$("again").onclick=()=>startGame("fx",id);return}
     const q=list[i],opts=shuffle([q[1],...q[2]]);
     G.innerHTML=`<div class="gamebox"><div class="stat"><span>${i+1} / ${list.length}</span><span>✅ ${ok}</span></div><p class="gq">${esc(q[0])}</p><div class="opts">${opts.map(o=>`<button>${esc(o)}</button>`).join("")}</div><div id="w"></div><div class="gpick"><button id="nx" hidden>Weiter ▶</button></div></div>`;
     G.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>{const right=b.textContent===q[1];G.querySelectorAll(".opts button").forEach(x=>{x.disabled=true;if(x.textContent===q[1])x.classList.add("ok")});
       if(right){ok++;if(fix)errDel(id,q[0])}else{b.classList.add("bad");errAdd(id,q[0])}
       $("w").innerHTML=q[3]?`<p class="why">${right?"✅":"❌"} ${esc(q[3])}</p>`:"";$("nx").hidden=false;$("nx").focus()});
     $("nx").onclick=()=>{i++;r()}};r()}
-function match(G,pairs){let set=0;
-  const r=()=>{const p=pairs.slice(set*5,set*5+5);if(!p.length){G.innerHTML=`<div class="gamebox"><h3>Alle zugeordnet 🎉</h3><div class="gpick"><button id="again">↺ Nochmal</button></div></div>`;$("again").onclick=()=>match(G,shuffle(pairs));return}
+function match(G,pairs,id){let set=0,err=0;const t0=Date.now();
+  const r=()=>{const p=pairs.slice(set*5,set*5+5);if(!p.length){if(id){gameOver(G,"match",id,tsec(t0,err),`<p class="why" style="margin:0">Alle zugeordnet. ${err} Fehler (je +2 s).</p>`);return}G.innerHTML=`<div class="gamebox"><h3>Alle zugeordnet 🎉</h3><div class="gpick"><button id="again">↺ Nochmal</button></div></div>`;$("again").onclick=()=>match(G,shuffle(pairs));return}
     let sel=null,done=0;const L=shuffle(p.map((x,i)=>[x[0],i])),R=shuffle(p.map((x,i)=>[x[1],i]));
     G.innerHTML=`<div class="gamebox"><p class="gq">Tippe links einen Begriff, dann rechts die passende Erklärung. (Runde ${set+1}/${Math.ceil(pairs.length/5)})</p><div class="mgame"><div class="mcol">${L.map(x=>`<button class="mt" data-s="L" data-i="${x[1]}">${esc(x[0])}</button>`).join("")}</div><div class="mcol">${R.map(x=>`<button class="mt" data-s="R" data-i="${x[1]}">${esc(x[0])}</button>`).join("")}</div></div></div>`;
     G.querySelectorAll(".mt").forEach(b=>b.onclick=()=>{if(!sel||sel.dataset.s===b.dataset.s){if(sel)sel.classList.remove("sel");sel=b;b.classList.add("sel");return}
       if(sel.dataset.i===b.dataset.i){sel.classList.remove("sel");sel.classList.add("ok");b.classList.add("ok");sel=null;if(++done===p.length){set++;setTimeout(r,500)}}
-      else{b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}})};r()}
+      else{err++;b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}})};r()}
 function cards(G,deck){let i=0,back=false,no=[];
   const r=()=>{if(i>=deck.length){G.innerHTML=`<div class="gamebox"><h3>Durch! ${deck.length-no.length}/${deck.length} gewusst</h3><div class="gpick">${no.length?`<button id="wr">🔁 Nur die ${no.length} nochmal</button>`:""}<button id="again">↺ Alle nochmal</button></div></div>`;
       if($("wr"))$("wr").onclick=()=>cards(G,shuffle(no));$("again").onclick=()=>cards(G,shuffle(deck));return}
@@ -557,19 +558,19 @@ function cards(G,deck){let i=0,back=false,no=[];
       <div class="gpick"><button id="nn">🔁 Nochmal</button><button id="yy">✅ Weiss ich</button></div></div>`;
     $("fc").onclick=()=>{back=!back;r()};$("fc").onkeydown=ev=>{if(ev.key===" "||ev.key==="Enter"){ev.preventDefault();back=!back;r()}};
     $("nn").onclick=()=>{no.push(c);i++;back=false;r()};$("yy").onclick=()=>{i++;back=false;r()}};r()}
-function cloze(G,list){let i=0;
-  const r=()=>{if(i>=list.length){G.innerHTML=`<div class="gamebox"><h3>Alle Lücken gefüllt 🎉</h3><div class="gpick"><button id="again">↺ Nochmal</button></div></div>`;$("again").onclick=()=>cloze(G,shuffle(list));return}
+function cloze(G,list,id){let i=0,err=0;const t0=Date.now();
+  const r=()=>{if(i>=list.length){if(id){gameOver(G,"cloze",id,tsec(t0,err),`<p class="why" style="margin:0">Alle Lücken gefüllt. ${err} Fehler (je +2 s).</p>`);return}G.innerHTML=`<div class="gamebox"><h3>Alle Lücken gefüllt 🎉</h3><div class="gpick"><button id="again">↺ Nochmal</button></div></div>`;$("again").onclick=()=>cloze(G,shuffle(list));return}
     const[t,extra]=list[i];const ans=[...t.matchAll(/\{([^}]+)\}/g)].map(m=>m[1]);let k=0;
     const draw=()=>{let n=0;const txt=esc(t).replace(/\{([^}]+)\}/g,(m,a)=>{const j=n++;return j<k?`<span class="gap ok">${a}</span>`:`<span class="gap${j===k?" now":""}">&nbsp;</span>`});
       G.innerHTML=`<div class="gamebox"><div class="stat"><span>${i+1} / ${list.length}</span></div><p class="gq" style="line-height:2">${txt}</p><div class="chips">${chips.map((c,ci)=>`<button data-c="${ci}" class="${used[ci]?"used":""}">${esc(c)}</button>`).join("")}</div>${k>=ans.length?`<div class="gpick"><button id="nx">Weiter ▶</button></div>`:""}</div>`;
-      G.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{const c=chips[+b.dataset.c];if(c===ans[k]){used[+b.dataset.c]=true;k++;draw()}else{b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}});
+      G.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{const c=chips[+b.dataset.c];if(c===ans[k]){used[+b.dataset.c]=true;k++;draw()}else{err++;b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}});
       if($("nx"))$("nx").onclick=()=>{i++;r()}};
     const chips=shuffle([...ans,...(extra||[])]),used=chips.map(()=>false);draw()};r()}
-function order(G,list){let i=0;
-  const r=()=>{if(i>=list.length){G.innerHTML=`<div class="gamebox"><h3>Alles in der richtigen Reihenfolge 🎉</h3><div class="gpick"><button id="again">↺ Nochmal</button></div></div>`;$("again").onclick=()=>order(G,shuffle(list));return}
+function order(G,list,id){let i=0,err=0;const t0=Date.now();
+  const r=()=>{if(i>=list.length){if(id){gameOver(G,"order",id,tsec(t0,err),`<p class="why" style="margin:0">Alles richtig geordnet. ${err} Fehler (je +2 s).</p>`);return}G.innerHTML=`<div class="gamebox"><h3>Alles in der richtigen Reihenfolge 🎉</h3><div class="gpick"><button id="again">↺ Nochmal</button></div></div>`;$("again").onclick=()=>order(G,shuffle(list));return}
     const o=list[i],items=o.items;let k=0;const mix=shuffle(items.map((x,j)=>[x,j]));
     const draw=()=>{G.innerHTML=`<div class="gamebox"><p class="gq">${esc(o.title)}: tippe in der richtigen Reihenfolge.</p><div class="opts">${mix.map(([x,j])=>`<button data-j="${j}" class="${j<k?"ok":""}" ${j<k?"disabled":""}>${j<k?(j+1)+". ":""}${esc(x)}</button>`).join("")}</div>${k>=items.length?`<div class="gpick"><button id="nx">Weiter ▶</button></div>`:""}</div>`;
-      G.querySelectorAll("[data-j]").forEach(b=>b.onclick=()=>{if(+b.dataset.j===k){k++;draw()}else{b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}});
+      G.querySelectorAll("[data-j]").forEach(b=>b.onclick=()=>{if(+b.dataset.j===k){k++;draw()}else{err++;b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}});
       if($("nx"))$("nx").onclick=()=>{i++;r()}};draw()};r()}
 function probe(id){const G=$("game"),q=shuffle(H.games[id].quiz).slice(0,15),ans=[];let i=0;const t0=Date.now();
   const r=()=>{if(i>=q.length){const ok=ans.filter((a,j)=>a===q[j][1]).length,note=Math.round((1+5*ok/q.length)*4)/4,min=Math.round((Date.now()-t0)/60000);
