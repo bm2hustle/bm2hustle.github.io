@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Soziologie-Comic Kap. 2 + 3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Bangers&display=swap">
+<style>
+/* Layout: Pinnwand; jedes Post-it = ein Comic-Panel mit Nico (Erzählbox, Figuren, Sprechblasen) + Begriff + Eselsbrücke */
+:root{
+  --bg:#fbfbf8; --grid:#dfe7f1; --ink:#1d1b18; --muted:#5f584e; --line:#1d1b18;
+  --y:#fff2a1; --o:#ffd8a8; --p:#ffc9d6; --g:#c9f0c4; --b:#c7e3fb; --v:#e2d3fb;
+  --cap:#ffe066; --panel:#ffffff;
+  --chip:#fff; --chipOn:#1d1b18; --chipOnFg:#fff;
+  --hand:"Patrick Hand","Comic Sans MS","Segoe Print",cursive;
+  --comic:"Bangers","Impact","Arial Black",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1f1d1a;--grid:#2d2b27; --muted:#c3baa9; --chip:#3a3631; --chipOn:#fff2a1; --chipOnFg:#1d1b18; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1f1d1a;--grid:#2d2b27; --muted:#c3baa9; --chip:#3a3631; --chipOn:#fff2a1; --chipOnFg:#1d1b18; color-scheme:dark}
+body{background:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px;font-family:var(--hand);font-size:18px;color:var(--muted);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:2.4rem;margin:0;text-wrap:balance}
+.sub{margin:0;font-size:1.05rem;max-width:65ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font-family:var(--hand);font-size:1.05rem;border:2px solid var(--muted);background:var(--chip);color:inherit;border-radius:999px;padding:4px 14px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--chipOn);color:var(--chipOnFg);border-color:var(--chipOn)}
+.chips button:focus-visible{outline:3px solid #e0782b;outline-offset:2px}
+h2{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:1.7rem;margin:10px 0 0}
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:24px;padding:6px}
+.note{position:relative;color:var(--ink);padding:22px 12px 12px;min-width:0;
+  box-shadow:0 1px 1px rgba(0,0,0,.12),0 8px 14px -6px rgba(0,0,0,.35);
+  transform:rotate(var(--r,0deg));transition:transform .15s;display:flex;flex-direction:column;gap:8px}
+.note:hover{transform:rotate(0deg) scale(1.02)}
+.note::before{content:"";position:absolute;top:-9px;left:50%;width:70px;height:20px;margin-left:-35px;
+  background:rgba(255,255,255,.55);box-shadow:0 1px 2px rgba(0,0,0,.15);transform:rotate(-3deg)}
+.y{background:var(--y)}.o{background:var(--o)}.p{background:var(--p)}.g{background:var(--g)}.b{background:var(--b)}.v{background:var(--v)}
+.t{font-family:var(--comic);font-weight:400;letter-spacing:.8px;font-size:1.35rem;line-height:1.05;margin:0;text-align:center}
+/* Comic-Panel */
+.panel{background:var(--panel);border:3px solid var(--line);border-radius:4px;padding:6px;display:flex;flex-direction:column;gap:6px;
+  background-image:radial-gradient(rgba(0,0,0,.07) 1px,transparent 1.2px);background-size:7px 7px}
+.cap{align-self:flex-start;background:var(--cap);border:2px solid var(--line);padding:1px 7px;font-size:.92rem;line-height:1.15;max-width:100%}
+.stage{display:flex;justify-content:space-around;align-items:flex-end;gap:6px;min-height:120px}
+.char{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;flex:1 1 0}
+.say{position:relative;background:#fff;border:2px solid var(--line);border-radius:14px;padding:3px 8px;font-size:.95rem;line-height:1.12;text-align:center;max-width:100%}
+.say::after{content:"";position:absolute;left:50%;bottom:-9px;margin-left:-6px;border:6px solid transparent;border-top:8px solid var(--line)}
+.say.think{border-style:dashed;border-radius:20px}
+.say.think::after{border:none;width:7px;height:7px;border-radius:50%;background:#fff;border:2px solid var(--line);bottom:-12px;margin-left:-4px}
+.fig{font-size:2.5rem;line-height:1}
+.d{margin:0;font-size:1rem;line-height:1.2}
+.e{margin:0;font-size:.98rem;line-height:1.2;border-top:2px dashed rgba(0,0,0,.28);padding-top:6px}
+.e::before{content:"💡 "}
+.sec[hidden]{display:none!important}
+.mode{display:flex;gap:8px;flex-wrap:wrap}
+.mode button{font-family:var(--comic);letter-spacing:1px;font-size:1.15rem;border:3px solid var(--line);background:var(--chip);color:inherit;border-radius:6px;padding:4px 14px;cursor:pointer}
+:root:not([data-theme="light"]) .mode button{border-color:var(--muted)}
+.mode button[aria-pressed="true"]{background:var(--cap);color:var(--ink);border-color:var(--line)}
+#study{display:flex;flex-direction:column;align-items:center;gap:14px}
+#study[hidden]{display:none!important}
+.stat{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:1.1rem}
+.bar{width:100%;max-width:520px;height:10px;border-radius:99px;background:var(--chip);border:2px solid var(--muted);overflow:hidden}
+.bar i{display:block;height:100%;background:#58b368;width:0;transition:width .2s}
+.card{width:100%;max-width:440px;min-height:340px;cursor:pointer;outline:none;display:flex}
+.card .note{flex:1;transform:none!important;justify-content:center}
+.card:focus-visible .note{outline:3px solid #e0782b;outline-offset:4px}
+.card .big{font-family:var(--comic);letter-spacing:1px;font-size:2.2rem;text-align:center;line-height:1.1;margin:0;text-wrap:balance}
+.hint{font-size:.95rem;text-align:center;opacity:.65;margin:0}
+.flip{animation:fl .22s ease}
+@keyframes fl{from{transform:scaleX(.2)}to{transform:scaleX(1)}}
+.ctrl{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.ctrl button{font-family:var(--hand);font-size:1.15rem;border:2px solid var(--muted);background:var(--chip);color:inherit;border-radius:10px;padding:8px 16px;cursor:pointer;min-width:52px}
+.ctrl button.no{background:#ffb3b3;color:#1d1b18;border-color:#c44}
+.ctrl button.yes{background:#b8ebb3;color:#1d1b18;border-color:#3a8a3f}
+.ctrl button:focus-visible{outline:3px solid #e0782b;outline-offset:2px}
+.done{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.done h3{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:2rem;margin:0}
+@media (prefers-reduced-motion:reduce){.flip{animation:none}.bar i{transition:none}}
+.ask{display:flex;gap:6px;width:100%}
+.ask input{flex:1;min-width:0;font-family:var(--hand);font-size:1.15rem;padding:7px 10px;border:2px solid var(--line);border-radius:8px;background:#fff;color:#1d1b18}
+.ask input:focus-visible{outline:3px solid #e0782b;outline-offset:1px}
+.ask button{font-family:var(--hand);font-size:1.1rem;padding:6px 12px;border:2px solid var(--line);border-radius:8px;background:var(--cap);color:#1d1b18;cursor:pointer}
+.verdict{margin:0;padding:6px 10px;border-radius:8px;border:2px solid;font-size:1.05rem;line-height:1.2}
+.verdict.ok{background:#b8ebb3;border-color:#3a8a3f}
+.verdict.bad{background:#ffb3b3;border-color:#c44}
+/* Prüfungstraining */
+#train{display:flex;flex-direction:column;align-items:center;gap:14px}
+#train[hidden]{display:none!important}
+.ttabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ttabs button{font-family:var(--hand);font-size:1.1rem;border:2px solid var(--muted);background:var(--chip);color:inherit;border-radius:10px;padding:6px 14px;cursor:pointer}
+.ttabs button[aria-pressed="true"]{background:var(--chipOn);color:var(--chipOnFg);border-color:var(--chipOn)}
+#tBody{width:100%;max-width:620px;display:flex;flex-direction:column;gap:14px}
+.tq{font-family:var(--comic);letter-spacing:.6px;font-size:1.3rem;margin:0;line-height:1.15;text-align:center}
+.opts2{display:grid;gap:8px}
+.opts2 button{font-family:var(--hand);font-size:1.12rem;text-align:left;background:#fff;color:#1d1b18;border:2px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer}
+.opts2 button.ok{background:#b8ebb3;border-color:#3a8a3f}.opts2 button.bad{background:#ffb3b3;border-color:#c44}
+.opts2 button:disabled{cursor:default}
+.why{margin:0;font-size:1.02rem;line-height:1.25;background:rgba(255,255,255,.6);border:2px dashed rgba(0,0,0,.3);border-radius:8px;padding:8px 10px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.strip .panel{min-width:0}
+.strip .num{font-family:var(--comic);font-size:1rem;background:var(--line);color:#fff;border-radius:4px;padding:0 6px;align-self:flex-start}
+.tchips{display:flex;flex-wrap:wrap;gap:6px}
+.tchips button{font-family:var(--hand);font-size:1.02rem;border:2px solid var(--line);background:#fff;color:#1d1b18;border-radius:999px;padding:4px 12px;cursor:pointer}
+.tchips button[aria-pressed="true"]{background:var(--cap)}
+.tchips button.ok{background:#b8ebb3;border-color:#3a8a3f}.tchips button.bad{background:#ffb3b3;border-color:#c44}.tchips button.miss{border-style:dashed;border-color:#3a8a3f}
+.sol{width:100%;border-collapse:collapse;font-size:1rem;background:rgba(255,255,255,.65)}
+.sol th,.sol td{border:1.5px solid rgba(0,0,0,.35);padding:5px 7px;text-align:left;vertical-align:top}
+.solwrap{overflow-x:auto}
+textarea.ans{width:100%;min-height:150px;font-family:var(--hand);font-size:1.08rem;padding:8px 10px;border:2px solid var(--line);border-radius:8px;background:#fff;color:#1d1b18;box-sizing:border-box}
+.tnav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.tnav button{font-family:var(--hand);font-size:1.12rem;border:2px solid var(--muted);background:var(--chip);color:inherit;border-radius:10px;padding:7px 16px;cursor:pointer}
+.tnav button.go{background:var(--cap);color:#1d1b18;border-color:var(--line)}
+/* Lernziele */
+#goals{display:flex;flex-direction:column;gap:16px;align-items:center}
+#goals[hidden]{display:none!important}
+.gwrap{width:100%;max-width:820px;display:flex;flex-direction:column;gap:16px}
+.gl{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.gl li{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:rgba(255,255,255,.6);border:2px solid rgba(0,0,0,.25);border-radius:8px;padding:6px 10px}
+.gl li span{flex:1 1 220px;min-width:0;font-size:1.05rem;line-height:1.2}
+.gl li b.n{font-family:var(--comic);font-size:1.3rem;min-width:1.2em}
+.lnk{font-family:var(--hand);font-size:1.02rem;border:2px solid var(--line);background:var(--cap);color:#1d1b18;border-radius:8px;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.lnk.th{background:#fff}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.topic h3{font-family:var(--comic);font-weight:400;letter-spacing:.6px;font-size:1.25rem;margin:0;line-height:1.1}
+.topic .kap{font-size:.9rem;opacity:.7}
+.terms{display:flex;flex-wrap:wrap;gap:5px}
+.terms button{font-family:var(--hand);font-size:.98rem;border:1.5px solid rgba(0,0,0,.45);background:rgba(255,255,255,.7);color:#1d1b18;border-radius:999px;padding:2px 9px;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+.tacts{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.step{font-size:.9rem;opacity:.75;margin:0}
+#topicBar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;background:var(--cap);color:#1d1b18;border:2px solid var(--line);border-radius:10px;padding:5px 12px;font-size:1.05rem}
+#topicBar[hidden]{display:none!important}
+.ovl{position:fixed;inset:0;z-index:50;background:rgba(20,18,15,.6);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px))}
+.ovl[hidden]{display:none!important}
+.ovbox{width:100%;max-width:440px;display:flex;flex-direction:column;gap:12px}
+.ovbox .note{transform:none!important}
+/* Fokus-Modus */
+.fsbtn{font-family:var(--comic);letter-spacing:1px;font-size:1.15rem;border:3px dashed var(--muted);background:transparent;color:inherit;border-radius:6px;padding:4px 14px;cursor:pointer}
+body.focus h1,body.focus .sub,body.focus .chips,body.focus .mode>button:not(#fsBtn),body.focus .hint,body.focus #train .ttabs{display:none!important}
+body.focus .mode{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:calc(8px + env(safe-area-inset-right,0px));z-index:30}
+body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:solid;font-size:1rem;padding:3px 10px}
+body.focus .wrap{padding-top:34px}
+body.focus .card{max-width:560px;min-height:62vh}
+body.focus .card .note{font-size:1.08em}
+@media (prefers-reduced-motion:reduce){.note{transition:none}}
+@media (max-width:440px){.board{grid-template-columns:1fr;gap:18px}}
+</style>
+
+<div class="wrap">
+  <p style="margin:0"><a href="index.html#fach-soz1" style="color:inherit;font-size:1.1rem">◀ zurück zu BM2 Hustle</a></p>
+  <h1>Soziologie-Comic · Kap. 2 + 3</h1>
+  <p class="sub">Prüfung Do 26.11. bei Frau Marti. Nico, Lars und die anderen erleben alle Begriffe. Jedes Post-it = ein Comic-Bild, darunter kurz erklärt und eine 💡 Eselsbrücke.</p>
+  <div class="mode" role="group" aria-label="Ansicht">
+    <button id="m-goals" data-m="goals" aria-pressed="false">📋 Lernziele</button>
+    <button id="m-learn" data-m="learn" aria-pressed="true">🃏 Lernkarten</button>
+    <button id="m-train" data-m="train" aria-pressed="false">🎯 Prüfungstraining</button>
+    <button id="m-board" data-m="board" aria-pressed="false">📌 Pinnwand</button>
+    <button id="fsBtn" class="fsbtn" title="Vollbild: nur noch die Karte">⛶ Vollbild</button>
+  </div>
+  <div class="chips" role="group" aria-label="Kapitel filtern">
+    <button id="f-all" data-f="all" aria-pressed="true">Alle</button>
+    <button id="f-2" data-f="k2" aria-pressed="false">Kap. 2 Soziales Handeln</button>
+    <button id="f-3" data-f="k3" aria-pressed="false">Kap. 3 Kontrolle &amp; Abweichung</button>
+  </div>
+  <section id="goals" hidden></section>
+  <div class="ovl" id="ovl" hidden><div class="ovbox" id="ovbox" role="dialog" aria-modal="true" aria-label="Theorie"></div></div>
+  <section id="study" aria-live="polite">
+    <div id="topicBar" hidden></div>
+    <div class="stat"><span id="cnt">1 / 55</span><span>✅ <b id="nYes">0</b></span><span>🔁 <b id="nNo">0</b></span></div>
+    <div class="bar"><i id="barI"></i></div>
+    <div class="card" id="card" tabindex="0" role="button" aria-label="Karte umdrehen"></div>
+    <div class="ctrl" id="ansBtns">
+      <button class="no" id="bNo">🔁 Nochmal</button>
+      <button class="yes" id="bYes">✅ Weiss ich</button>
+    </div>
+    <div class="ctrl">
+      <button id="bPrev" aria-label="Zurück">◀</button>
+      <button id="bFlip">Umdrehen</button>
+      <button id="bNext" aria-label="Weiter">▶</button>
+    </div>
+    <div class="ctrl">
+      <button id="bShuf">🔀 Mischen</button>
+      <button id="bSide">Vorne: Bild</button>
+      <button id="bReset">↺ Neu starten</button>
+    </div>
+    <p class="hint">Tippen = umdrehen · Tastatur: Leertaste, ← →, 1 = Nochmal, 2 = Weiss ich</p>
+  </section>
+  <section id="train" hidden>
+    <div class="ttabs" role="group" aria-label="Lernziel">
+      <button data-t="unt" aria-pressed="true">⚖️ Unterscheiden</button>
+      <button data-t="fall" aria-pressed="false">🔎 Fallbeispiele</button>
+      <button data-t="stell" aria-pressed="false">🗣️ Stellung nehmen</button>
+    </div>
+    <p class="hint" id="tHint"></p>
+    <div id="tBody"></div>
+  </section>
+  <section class="sec" data-k="k2"><h2>Kapitel 2 · Soziales Handeln</h2><div class="board" id="b2"></div></section>
+  <section class="sec" data-k="k3"><h2>Kapitel 3 · Soziale Kontrolle und Abweichung</h2><div class="board" id="b3"></div></section>
+</div>
+
+<script>
+/* [Farbe, Begriff, Erzählbox, [[Figur, Sprechblase ("~" vorne = Gedanke)]], Erklärung, Eselsbrücke] */
+const K2=[
+["y","Soziale Interaktion","Training. Nico passt zu Lars.",[["🧑","Lars, nimm!"],["👦","Danke! Tor!"]],"Menschen reagieren gegenseitig aufeinander.","Pingpong: Ich spiele, du spielst zurück."],
+["y","Soziale Kommunikation","Der Trainer sagt nichts, zeigt nur 👍.",[["🧔","~Gut gemacht!"],["🧑","Merci, Trainer!"]],"Austausch von Infos mit Worten, Gesten, Blicken.","Interaktion = was passiert, Kommunikation = wie die Infos fliegen."],
+["y","Soziales Handeln","Nico hält einer Frau die Tür auf.",[["🧑","Bitte sehr!"],["👵","Danke, junger Mann!"]],"Handeln, das sich an anderen Menschen orientiert.","Denkst du dabei an andere → sozial. Allein niesen → nicht."],
+["o","Soziale Werte","In der Kabine hängt ein Plakat: FAIRPLAY.",[["🧔","Bei uns zählt Fairness!"],["🧑","Logisch!"]],"Allgemeine Ideen, was gut und wichtig ist.","Werte = Kompass 🧭, zeigen nur die Richtung."],
+["o","Anomie","Match, aber der Schiri ist nicht gekommen …",[["😡","Regeln? Egal!"],["🧑","Was gilt jetzt?!"]],"Zustand ohne klare Normen; keiner weiss, was gilt.","A-nomie = ohne Norm = Match ohne Schiri."],
+["o","Wertewandel","Familienessen bei Opa.",[["👴","Früher: chrampfe bis 70!"],["🧑","Heute: Work-Life-Balance!"]],"Werte verändern sich mit der Zeit.","Opas Werte ≠ Nicos Werte."],
+["o","Bedingungen für Wertewandel","Nico scrollt auf dem Handy.",[["🧑","Krass, wie andere leben!"],["📱","Neue Technik, Medien, Wohlstand, Bildung"]],"Technik, Wohlstand, Bildung, Medien, Globalisierung.","Ändert sich die Welt, ändern sich die Werte."],
+["y","Soziale Normen","Neue Teamregel.",[["🧔","Zu spät = 10 Liegestütze!"],["🧑","Okay …"]],"Konkrete Verhaltensregeln, die aus Werten folgen.","Wert = Kompass, Norm = Wegweiser 🪧."],
+["y","Kann-Norm","Nico bringt freiwillig Kuchen mit 🎂.",[["🧑","Für euch!"],["👦","Mega, Nico!"]],"Freiwillig: Lob, wenn man's tut, keine Strafe, wenn nicht.","Kann = Bonus 🎁."],
+["y","Soll-Norm","Nico kommt rein und grüsst nicht.",[["🧑","…"],["🧔","Hä? Kein «Hoi»?! 😒"]],"Wird erwartet: Bruch gibt Kritik oder Ausgrenzung.","Soll = böser Blick."],
+["y","Muss-Norm","Nico fährt nachts Velo ohne Licht.",[["👮","40 Franken Busse!"],["🧑","Mist!"]],"Pflicht, oft Gesetz: Verstoss wird bestraft.","Muss = Busse ⚖️."],
+["y","Geltung","Nico kommt mit Krawatte in die Garderobe.",[["🧑","Was denn?"],["👦","Wotsch hürote? 😂"]],"Für wen, wo und wann eine Norm gilt.","Krawatte: im Büro ✔️, in der Garderobe ❌."],
+["v","Soziale Position","Aufstellung an der Taktiktafel.",[["🧑","Ich: Verteidiger"],["👦","Ich: Captain"]],"Platz einer Person in der Gruppe/Gesellschaft.","Position = Platz auf der Aufstellung."],
+["v","Zugeschriebene Position","Spital, vor 20 Jahren.",[["👩‍⚕️","Es ist ein Bub!"],["👶","Uäää!"]],"Bekommt man ohne Zutun: Geschlecht, Alter, Herkunft.","Schon bei der Geburt aufs Etikett geschrieben."],
+["v","Erworbene Position","Lehrabschlussfeier.",[["🧑‍🎓","Zimmermann EFZ – selbst erarbeitet!"],["👷","Bravo!"]],"Durch eigene Leistung erreicht.","Erworben = erarbeitet, wie ein Diplom."],
+["v","Soziale Rolle","Nico ist Verteidiger.",[["🧔","Als Verteidiger bleibst du hinten!"],["🧑","Verstanden."]],"Erwartungen, die an eine Position geknüpft sind.","Position = Stuhl 🪑, Rolle = Drehbuch 📜."],
+["v","Homo sociologicus","Nico im Roboter-Modus.",[["🤖","Ich tue genau, was erwartet wird. Piep."]],"Mensch als Rollenspieler, der Erwartungen einfach erfüllt.","Roboter, der nur sein Drehbuch abspielt."],
+["v","Role-Taking","Erster Tag in der Lehre.",[["🧑","~Was erwartet der Chef? Pünktlich, anpacken!"],["👷","Guten Morgen!"]],"Sich in die Erwartungen anderer hineinversetzen.","Taking = Rolle so nehmen, wie sie verlangt wird."],
+["v","Role-Making","Nico wird Captain.",[["🧑","Ich führe mit Humor statt Brüllen!"],["👦","Gefällt mir!"]],"Die Rolle selbst aktiv mitgestalten.","Making = selber am Drehbuch schreiben ✏️."],
+["v","Rollendistanz","Nico jobbt als Kellner.",[["🧑","Bitte sehr, der Herr! 😉"],["👦","~Er spielt das nur."]],"Abstand zur Rolle: man spielt sie, ist sie aber nicht.","Kellner, der dem Kollegen zuzwinkert."],
+["p","Rollenkonflikt","Zwei Erwartungen, ein Nico.",[["🧑","Ich kann nicht beides!"]],"Erwartungen passen nicht zusammen.","Zwei Drehbücher, ein Schauspieler."],
+["p","Intrarollenkonflikt","Nico als SPIELER, zwei Trainer.",[["🧔","Greif an!"],["🧑","???"],["👨","Bleib hinten!"]],"Widerspruch INNERHALB einer Rolle.","Intra = innen: eine Rolle, zwei Befehle."],
+["p","Interrollenkonflikt","Nico als SCHÜLER und als SPIELER.",[["👨‍🏫","Morgen Prüfung!"],["🧑","Ahhh!"],["🧔","Heute Match!"]],"Widerspruch ZWISCHEN zwei Rollen.","Inter = zwischen, wie im Internet."],
+["p","Rollendruck","Alle wollen etwas von Nico.",[["👨‍🏫","Gute Noten!"],["😰","…"],["🧔","Gewinnen!"]],"Druck, die Erwartungen einer Rolle zu erfüllen.","Schraubzwinge 🗜️: Je mehr Erwartungen, desto enger."],
+["g","Sozialisation","Nicos Leben im Zeitraffer.",[["👶","Uää"],["🧒","Schule!"],["🧑","Beruf!"]],"Lebenslanges Hineinwachsen in die Gesellschaft.","Setzling 🌱 wird Baum 🌳."],
+["g","Aspekte der Sozialisation","Nico wird geprägt UND prägt selbst.",[["👩","Sag danke!"],["🧑","Mami, wir trennen jetzt Abfall!"]],"Man wird geformt (passiv) und formt mit (aktiv).","Wie Ton 🏺: geformt werden und mitformen."],
+["g","Primäre Sozialisation","Klein-Nico am Küchentisch.",[["👩","Sag bitte und danke!"],["👶","Dankeee!"]],"Familie, Kindheit: Sprache, Grundwerte, Vertrauen.","1 = Familie = Fundament 🏠."],
+["g","Sekundäre Sozialisation","Nico in Schule und Verein.",[["👨‍🏫","Hand hoch!"],["👦","Komm in den Unihockeyclub!"]],"Schule, Freunde, Verein, Lehre.","2 = Mauern auf dem Fundament."],
+["g","Tertiäre Sozialisation","Nico mit 35.",[["👷","Neue Maschine, du lernst nie aus!"],["🧑‍🍼","Und jetzt bin ich Papi!"]],"Erwachsenenalter: Beruf, Umzug, Elternschaft.","3 = Umbau am fertigen Haus 🔨."]
+];
+const K3=[
+["b","Soziale Kontrolle","Überall passt jemand auf.",[["👮","Ich schaue zu!"],["🧑","~Und mein Gewissen auch."]],"Alles, was sorgt, dass Normen eingehalten werden.","Unsichtbarer Schiri im Alltag 👁️."],
+["b","Interne Kontrolle","Nico findet ein Portemonnaie. Niemand schaut.",[["🧑","~Nei, ich gib's ab. 😇"]],"Man kontrolliert sich selbst: Gewissen.","Intern = im Kopf drin 🧠."],
+["b","Externe Kontrolle","Blitzkasten am Strassenrand 📸.",[["👮","Zu schnell!"],["🧑","Ups."]],"Andere kontrollieren: Polizei, Eltern, Lehrer.","Extern = von aussen."],
+["p","Sanktionen","Trainer erklärt die Regeln.",[["🧔","Tor = Lob! Foul = Strafbank!"],["🧑","Alles klar."]],"Reaktionen auf Verhalten: Belohnung oder Strafe.","Zuckerbrot 🍬 und Peitsche."],
+["p","Innere vs. äussere Sanktion","Nico foult.",[["🧑","~Ich schäme mich …"],["🧑‍⚖️","2 Minuten!"]],"Innere: Scham/Stolz von mir selbst. Äussere: kommt von anderen.","Gedanke = innen, Schiri = aussen."],
+["p","Formelle vs. informelle Sanktion","Prüfungsrückgabe.",[["👨‍🏫","Note 3,5."],["👦","Hahaha 😂"]],"Formell: offiziell geregelt. Informell: spontan, im Alltag.","Gibt es ein Formular 📄? → formell."],
+["p","Positive vs. negative Sanktion","Beim Chef im Büro.",[["👷","Bonus für dich! 👍"],["🧑","Und das nächste Mal Verwarnung? 👎"]],"Positiv = Belohnung, negativ = Strafe.","Daumen hoch oder runter."],
+["g","Konformität","Alle tragen die gleichen Stulpen.",[["👦","Gleiche wie wir?"],["🧑","Klar, wie alle!"]],"Sich so verhalten, wie die Gruppe erwartet.","Mit der Herde laufen 🐑🐑🐑."],
+["g","Konformitätsdruck / -zwang","Ausgang nach dem Match.",[["👦","Komm, mach mit, sonst bist du langweilig!"],["🧑","~Na gut …"]],"Druck oder Zwang, sich anzupassen, sonst Nachteile.","Druck = Herde schubst, Zwang = Hirtenhund treibt."],
+["g","Nonkonformität","Hochzeit: alle im Anzug, Nico im Hoodie.",[["🤵","Echt jetzt?"],["🧑","Ich bleib mir treu!"]],"Bewusst nicht nach den Erwartungen handeln.","Das Zebra 🦓 in der Schafherde."],
+["o","Devianz","Jemand verlässt den normalen Weg.",[["🧑","~Gut oder schlecht? Kommt drauf an!"]],"Abweichung von Normen, positiv oder negativ.","De-via = vom Weg ab 🛤️."],
+["o","Positive Devianz","Ein Kind fällt in den See. Nico springt rein.",[["🧑","Halt dich fest!"],["👥","Ein Held!"]],"Abweichung, die als gut gilt; kann Fortschritt bringen.","Anders, aber 👍: Held, Erfinder."],
+["o","Negative Devianz","Im Zug nach Rappi.",[["🗣️","JAAA, ICH BIN IM ZUG!"],["🧑","🙄"]],"Unerwünschte Abweichung, aber nicht strafbar.","Nervt, aber keine Polizei."],
+["o","Kriminalität","Im Laden wird geklaut.",[["👮","Diebstahl! Mitkommen!"],["🦹","Mist!"]],"Abweichung gegen das Gesetz (Muss-Norm).","Kommt die Polizei → Kriminalität 🚔."],
+["v","Randgruppe","Ein Obdachloser auf der Bank. Alle gehen schnell vorbei.",[["🧔","~Mich sieht niemand."],["🚶","…"]],"Gruppe am Rand: wenig Ansehen, wenig Macht.","Allein auf der Insel 🏝️."],
+["y","Norm als Massstab","Nico zückt den Meterstab.",[["🧑","Ist das normal? Kommt drauf an, woran ich messe!"]],"Normen sind die Messlatte für normal vs. abweichend.","Meterstab 📏 des Zimmermanns."],
+["y","Statistische Norm","Umfrage in der Klasse.",[["👨‍🏫","Wer hat Netflix? 90 %!"],["🧑","Also normal."]],"Normal ist, was die MEISTEN tun.","Statistik = Mehrheit im Diagramm 📊."],
+["y","Gesellschaftliche Norm","Infoveranstaltung.",[["👩‍🏫","Man sollte nicht rauchen."],["🧑","Stimmt."]],"Normal ist, was die Gesellschaft für richtig hält (ideal).","Was man «soll» 🏛️."],
+["y","Individuelle Norm","Nico allein am See.",[["🧑","Ich bin gern allein, mir geht's gut damit!"]],"Normal ist, was der Person selbst gut tut.","«Für MICH passt's.»"],
+["v","Problematik der normbezogenen Sicht","Die Mehrheit urteilt.",[["👥","Wer anders ist, ist schräg!"],["🧑","😢"]],"Die Mehrheit bestimmt, was normal ist; Abweichende werden abgewertet.","Der Meterstab urteilt über Menschen."],
+["v","Minderheit","Fünf gegen einen.",[["👥","Wir bestimmen!"],["🧍","Und ich?"]],"Gruppe mit Merkmal, das die Mehrheit nicht hat; oft benachteiligt.","1 gegen viele: Die Vielen machen die Regeln."],
+["p","Stigma","Kollegen zeigen auf Nicos Narbe.",[["👦","Schau mal, die Narbe!"],["🧑","~Hmpf."]],"Ein Merkmal, das abwertend gesehen wird (Goffman).","Brandzeichen 🔥: früher eingebrannt."],
+["p","Stigmatisierung","Das Gerücht macht die Runde.",[["👦","Mit der Narbe ist er sicher ein Schläger!"],["🧑","Bin ich nicht!"]],"Das Merkmal wird auf die ganze Person übertragen.","Ein Fleck → «der ist ganz dreckig»."],
+["p","Beschädigte Identität","Nico vor dem Spiegel 🪞.",[["🧑","~Vielleicht bin ich ja wirklich so …"]],"Die Person übernimmt das negative Bild, Selbstwert sinkt.","Gesprungener Spiegel 💔."],
+["b","Etikettierung / Labeling","Der Lehrer hat sich festgelegt.",[["👨‍🏫","Du bist halt der Störenfried!"],["🧑","🏷️ ???"]],"Jemand wird in eine Schublade gesteckt.","Etikett 🏷️ auf die Schublade."],
+["b","Labeling-Approach","Ein paar Wochen später …",[["🧑","Wenn eh alle das denken … dann stör ich halt!"]],"Abweichung entsteht erst durch das Etikett der anderen.","Selbsterfüllende Prophezeiung: Man wird, wie man genannt wird."]
+];
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function draw(list,el){
+  el.innerHTML=list.map(([c,t,cap,chars,d,e],i)=>{
+    const r=((i*37)%7-3)*0.5;
+    const ch=chars.map(([f,s])=>{const th=s.startsWith("~");return `<div class="char"><div class="say${th?" think":""}">${esc(th?s.slice(1):s)}</div><div class="fig" aria-hidden="true">${f}</div></div>`}).join("");
+    return `<article class="note ${c}" style="--r:${r}deg"><h3 class="t">${esc(t)}</h3><div class="panel"><div class="cap">${esc(cap)}</div><div class="stage">${ch}</div></div><p class="d">${esc(d)}</p><p class="e">${esc(e)}</p></article>`;
+  }).join("");
+}
+draw(K2,document.getElementById("b2"));draw(K3,document.getElementById("b3"));
+const btns=[...document.querySelectorAll(".chips button")];
+function setF(f){btns.forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===f));
+  document.querySelectorAll(".sec").forEach(s=>s.hidden=!(f==="all"||s.dataset.k===f));
+  try{localStorage.setItem("sozf",f)}catch(e){}}
+btns.forEach(b=>b.addEventListener("click",()=>setF(b.dataset.f)));
+/* ---------- Lernkarten (wie Quizlet) ---------- */
+const ALL=[...K2.map(x=>({x,k:"k2"})),...K3.map(x=>({x,k:"k3"}))];
+const $=id=>document.getElementById(id);
+let filt="all",mode="learn",side="bild",deck=[],pos=0,back=false,res={},typed=null;
+const norm=s=>s.toLowerCase().replace(/[ä]/g,"ae").replace(/[ö]/g,"oe").replace(/[ü]/g,"ue").replace(/ß/g,"ss").replace(/[^a-z0-9]/g,"");
+function lev(a,b){const m=[];for(let i=0;i<=a.length;i++){m[i]=[i];for(let j=1;j<=b.length;j++)m[i][j]=i?Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]===b[j-1]?0:1)):j}return m[a.length][b.length]}
+function isRight(input,term){const a=norm(input);if(a.length<3)return false;
+  const opts=term.split(/\s*\/\s*/).map(norm).concat(norm(term));
+  return opts.some(o=>{const tol=o.length>12?3:o.length>6?2:1;return lev(a,o)<=tol})}
+function panelHTML(x){const[c,t,cap,chars]=x;return `<div class="panel"><div class="cap">${esc(cap)}</div><div class="stage">${chars.map(([f,s])=>{const th=s.startsWith("~");return `<div class="char"><div class="say${th?" think":""}">${esc(th?s.slice(1):s)}</div><div class="fig" aria-hidden="true">${f}</div></div>`}).join("")}</div></div>`}
+let topicCtx=null;
+function build(list,ctx){deck=list.slice();pos=0;back=false;res={};typed=null;topicCtx=ctx||null;render()}
+function pool(){return ALL.filter(o=>filt==="all"||o.k===filt)}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function render(){
+  const tb=$("topicBar");if(topicCtx){tb.hidden=false;tb.innerHTML=`📖 Theorie: <b>${esc(topicCtx.name)}</b> <button class="lnk" id="tbProbe">🎯 Zur Probeprüfung</button> <button class="lnk th" id="tbBack">📋 Lernziele</button>`;
+    $("tbProbe").onclick=()=>probe(topicCtx);$("tbBack").onclick=()=>setMode("goals")}else tb.hidden=true;
+  const card=$("card");const yes=Object.values(res).filter(v=>v===1).length,no=Object.values(res).filter(v=>v===0).length;
+  $("nYes").textContent=yes;$("nNo").textContent=no;$("barI").style.width=(deck.length?(yes/deck.length*100):0)+"%";
+  if(pos>=deck.length){
+    $("cnt").textContent=deck.length+" / "+deck.length;$("ansBtns").hidden=true;
+    const wrong=deck.filter((o,i)=>res[i]===0);
+    card.innerHTML=`<div class="note y"><div class="done"><h3>${wrong.length?"Fast geschafft!":"Alles gewusst! 🎉"}</h3><p class="d">✅ ${yes} gewusst · 🔁 ${no} nochmal</p>${wrong.length?'<button class="no" id="bWrong" style="font-family:var(--hand);font-size:1.15rem;padding:8px 16px;border-radius:10px;border:2px solid #c44;background:#ffb3b3;cursor:pointer">🔁 Nur die '+wrong.length+' falschen üben</button>':""}</div></div>`;
+    const bw=$("bWrong");if(bw)bw.onclick=e=>{e.stopPropagation();build(shuffle(wrong))};return}
+  $("ansBtns").hidden=false;
+  const o=deck[pos],x=o.x,[c,t,cap,chars,d,e]=x;$("cnt").textContent=(pos+1)+" / "+deck.length;
+  let inner;
+  const vd=typed?`<p class="verdict ${typed.ok?"ok":"bad"}">${typed.ok?"✅ Richtig!":"❌ Leider falsch."} Deine Antwort: «${esc(typed.val)}»<br><small>Enter = weiter</small></p>`:"";
+  if(side==="bild"){inner=!back?`${panelHTML(x)}<form class="ask" id="askF" autocomplete="off"><input id="askI" placeholder="Begriff eintippen …" aria-label="Begriff eintippen" enterkeyhint="done"><button type="submit">Prüfen</button></form><p class="hint">oder Karte antippen zum Umdrehen</p>`:`${vd}<h3 class="big">${esc(t)}</h3><p class="d">${esc(d)}</p><p class="e">${esc(e)}</p>`}
+  else{inner=!back?`<h3 class="big">${esc(t)}</h3><p class="hint">Was bedeutet das? Tippen zum Umdrehen</p>`:`${panelHTML(x)}<p class="d">${esc(d)}</p><p class="e">${esc(e)}</p>`}
+  card.innerHTML=`<div class="note ${c}">${inner}</div>`;
+  const f=$("askF");if(f){const i=$("askI");f.onclick=ev=>ev.stopPropagation();
+    f.onsubmit=ev=>{ev.preventDefault();const v=i.value.trim();if(!v){flip();return}typed={val:v,ok:isRight(v,t)};back=true;render();const n=$("card").firstElementChild;if(n)n.classList.add("flip");$("card").focus()};
+    if(matchMedia("(hover:hover)").matches)i.focus({preventScroll:true})}
+}
+function flip(){if(pos>=deck.length)return;back=!back;render();const n=$("card").firstElementChild;if(n)n.classList.add("flip")}
+function answer(v){if(pos>=deck.length)return;res[pos]=v;pos++;back=false;typed=null;render()}
+$("card").onclick=flip;$("bFlip").onclick=flip;
+$("bNext").onclick=()=>{if(pos<deck.length){pos++;back=false;typed=null;render()}};
+$("bPrev").onclick=()=>{if(pos>0){pos--;back=false;typed=null;render()}};
+$("bYes").onclick=()=>answer(1);$("bNo").onclick=()=>answer(0);
+$("bShuf").onclick=()=>build(shuffle(pool()));$("bReset").onclick=()=>build(pool());
+$("bSide").onclick=()=>{side=side==="bild"?"begriff":"bild";$("bSide").textContent=side==="bild"?"Vorne: Bild":"Vorne: Begriff";back=false;render();try{localStorage.setItem("sozside",side)}catch(e){}};
+document.addEventListener("keydown",ev=>{if(mode!=="learn"||ev.target.tagName==="INPUT"||ev.target.tagName==="BUTTON"&&(ev.key===" "||ev.key==="Enter"))return;
+  if(ev.key==="Enter"&&typed&&back){ev.preventDefault();answer(typed.ok?1:0);return}
+  if(ev.key===" "){ev.preventDefault();flip()}else if(ev.key==="ArrowRight")$("bNext").click();else if(ev.key==="ArrowLeft")$("bPrev").click();else if(ev.key==="1")answer(0);else if(ev.key==="2")answer(1)});
+function setMode(m){mode=m;document.querySelectorAll(".mode button[data-m]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===m));
+  $("study").hidden=m!=="learn";$("train").hidden=m!=="train";$("goals").hidden=m!=="goals";if(m==="goals")gRender();document.querySelectorAll(".sec").forEach(s=>s.hidden=m!=="board"||!(filt==="all"||s.dataset.k===filt));
+  document.querySelector(".chips").style.display=(m==="train"||m==="goals")?"none":"";if(m==="train")tRender();
+  try{localStorage.setItem("sozmode",m)}catch(e){}}
+document.querySelectorAll(".mode button[data-m]").forEach(b=>b.addEventListener("click",()=>setMode(b.dataset.m)));
+const _setF=setF;setF=function(f){filt=f;_setF(f);setMode(mode);build(shuffle(pool()))};
+btns.forEach(b=>{b.replaceWith(b.cloneNode(true))});
+document.querySelectorAll(".chips button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".chips button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f===b.dataset.f));setF(b.dataset.f)}));
+try{const sd=localStorage.getItem("sozside");if(sd=="begriff"){side="begriff";$("bSide").textContent="Vorne: Begriff"}}catch(e){}
+try{const s=localStorage.getItem("sozf");if(s)filt=s;document.querySelectorAll(".chips button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f===filt))}catch(e){}
+mode="goals";try{const m=localStorage.getItem("sozmode");if(m)mode=m}catch(e){}
+/* ---------- Prüfungstraining: Unterscheiden, Fallbeispiele, Stellungnahme ---------- */
+/* Figuren wie auf den Post-its: 🧑 Nico · 👦 Lars · 🧔 Trainer · 👷 Chef · 👨‍🏫 Lehrer */
+const UNT=[
+{cap:"Am Donnerstag: BM-Prüfung lernen. Am gleichen Abend: Cupmatch.",ch:[["🧑","~Schüler oder Spieler?!"]],q:"Welcher Konflikt ist das?",o:["Intrarollenkonflikt","Interrollenkonflikt","Rollendistanz"],a:1,why:"Zwei VERSCHIEDENE Rollen (Schüler + Spieler) prallen aufeinander → INTER = zwischen den Rollen."},
+{cap:"Nico als Spieler. Zwei Trainer, zwei Erwartungen.",ch:[["🧔","Hart in die Zweikämpfe!"],["👨‍🦳","Fair bleiben, Spass haben!"]],q:"Welcher Konflikt ist das?",o:["Interrollenkonflikt","Rollendruck","Intrarollenkonflikt"],a:2,why:"Beide Erwartungen betreffen die GLEICHE Rolle (Spieler) → INTRA = innerhalb einer Rolle."},
+{cap:"1. Lehrtag. Nico schaut genau, was der Chef will.",ch:[["👷","Um 7 Uhr da, Werkzeug sauber!"],["🧑","Alles klar, mach ich genau so."]],q:"Was macht Nico?",o:["Role-Taking","Role-Making","Rollendistanz"],a:0,why:"Er übernimmt die Erwartungen genau so, wie sie sind → Role-TAKING (nehmen)."},
+{cap:"Nico ist jetzt Captain und führt etwas Neues ein.",ch:[["🧑","Ab heute: Kreis vor jedem Match!"],["👦","Cool, Captain!"]],q:"Was macht Nico?",o:["Role-Taking","Role-Making","Homo sociologicus"],a:1,why:"Er gestaltet die Captain-Rolle selbst mit → Role-MAKING (machen)."},
+{cap:"Nico kommt in die Garderobe und sagt nichts.",ch:[["👦","Nicht mal Hoi sagen?!"],["🧑","…"]],q:"Welche Norm hat Nico verletzt?",o:["Kann-Norm","Soll-Norm","Muss-Norm"],a:1,why:"Grüssen wird erwartet, Strafe gibt es keine, nur Stirnrunzeln → SOLL-Norm."},
+{cap:"Lars ist mit 16 der Jüngste im Team.",ch:[["🧔","Lars, du trägst die Bälle, Jüngster!"],["👦","~Kann ich ja nichts dafür."]],q:"Was für eine Position ist «Jüngster»?",o:["erworbene Position","zugeschriebene Position","soziale Rolle"],a:1,why:"Das Alter kann man nicht selbst verdienen → ZUGESCHRIEBEN."},
+{cap:"Im Zug telefoniert Lars extrem laut.",ch:[["👵","Tssss!"],["👦","JA, ICH BIN IM ZUG!"]],q:"Was ist das?",o:["negative Devianz","Kriminalität","positive Devianz"],a:0,why:"Stört und wird abgelehnt, ist aber nicht verboten → negative Devianz. Kriminalität wäre gegen das Gesetz."},
+{cap:"Match: Nico foult, der Schiri pfeift.",ch:[["🧑‍⚖️","2 Minuten Strafe!"],["🧑","~Ich schäme mich so…"]],q:"Was ist die SCHAM von Nico?",o:["äussere formelle Sanktion","innere Sanktion","informelle positive Sanktion"],a:1,why:"Die Scham kommt aus ihm selbst → INNERE Sanktion. Die 2 Minuten wären äussere, formelle, negative."},
+{cap:"Nach dem Match: Team lacht über Lars' Eigentor.",ch:[["🧑","Hahaha, Eigentor-Lars!"],["👦","~Peinlich…"]],q:"Das Auslachen ist eine …",o:["formelle negative Sanktion","informelle negative Sanktion","innere Sanktion"],a:1,why:"Nicht offiziell geregelt (kein Formular), von anderen, unangenehm → informell + negativ (+ äusser)."},
+{cap:"Im Team kommen fast alle 5 Min. zu spät.",ch:[["🧔","Schon wieder alle zu spät!"],["🧑","~Machen ja alle…"]],q:"Nach welcher Norm ist Zuspätkommen hier «normal»?",o:["statistische Norm","gesellschaftliche Norm","individuelle Norm"],a:0,why:"«Die meisten machen es» = Durchschnitt → statistisch normal. Gesellschaftlich ist Pünktlichkeit erwünscht."},
+{cap:"Fairness ist dem Team wichtig. Darum: Handschlag nach jedem Spiel.",ch:[["🧑","Gutes Spiel!"],["👦","Danke, euch auch!"]],q:"Der Handschlag ist …",o:["ein sozialer Wert","eine soziale Norm","Anomie"],a:1,why:"Fairness = Wert (Richtung, Kompass). Handschlag = konkrete Regel = NORM (Wegweiser)."},
+{cap:"Neuer Klub: kein Trainer, keine Regeln, jeder macht was er will.",ch:[["🧑","Wann ist Training?"],["👦","Keine Ahnung, gilt eh nix."]],q:"Wie nennt man diesen Zustand?",o:["Nonkonformität","Anomie","Wertewandel"],a:1,why:"Normen gelten nicht mehr, niemand weiss, was gilt → ANOMIE (ohne Norm)."},
+{cap:"Nico hat eine grosse Narbe im Gesicht.",ch:[["👦","Der sieht gefährlich aus…"],["🧑","~Bin ich nicht!"]],q:"Die Narbe, die abwertend gesehen wird, ist ein …",o:["Stigma","Etikett","Rollenkonflikt"],a:0,why:"Ein sichtbares Merkmal, das negativ bewertet wird → STIGMA (Brandzeichen)."},
+{cap:"Der Lehrer stempelt Lars ab.",ch:[["👨‍🏫","Du bist halt unser Störenfried."],["👦","~Dann bin ich's halt…"]],q:"Was passiert hier vor allem?",o:["Etikettierung / Labeling","Konformität","Role-Making"],a:0,why:"Lars bekommt ein Etikett «Störenfried» und übernimmt es → Labeling-Approach, selbsterfüllende Prophezeiung."},
+{cap:"Alle tragen Markenschuhe. Nico trägt alte Turnschuhe.",ch:[["👦","Kauf dir mal richtige Schuhe!"],["🧑","~Muss ich jetzt wohl…"]],q:"Was spürt Nico?",o:["Konformitätsdruck","Anomie","positive Sanktion"],a:0,why:"Die Gruppe drängt ihn, sich anzupassen → Konformitätsdruck."},
+{cap:"Nico mit 35: neuer Job, neue Regeln.",ch:[["👷","Hier läuft's anders als in der Lehre."],["🧑","Ich lerne um."]],q:"Welche Sozialisation ist das?",o:["primäre","sekundäre","tertiäre"],a:2,why:"Im Erwachsenenalter (Beruf, Umzug, Elternschaft) → TERTIÄR."}
+];
+const FALL=[
+{t:"Fall 1 · Nicos erster Monat (Kap. 2)",k:"k2",p:[
+ ["Nico startet bei einer neuen Zimmerei.",[["👷","Bei uns grüsst man und ist um 7 Uhr da!"],["🧑","Okay!"]]],
+ ["Die ersten Tage schaut Nico genau hin.",[["🧑","~Die anderen machen's so, also ich auch."]]],
+ ["Der Chef will Überstunden. Um 18 Uhr ist Training.",[["👷","Heute bis 19 Uhr!"],["🧔","Training um 18!"]]],
+ ["Nico ist neu Captain.",[["🧔","Als Captain musst du IMMER da sein!"],["🧑","~So viel Druck…"]]],
+ ["Nach einem Monat traut sich Nico.",[["🧑","Chef, wir könnten das Gerüst schneller stellen!"],["👷","Gute Idee!"]]]],
+ opts:["Soll-Norm","Sekundäre Sozialisation","Role-Taking","Interrollenkonflikt","Rollendruck","Erworbene Position","Role-Making","Anomie","Intrarollenkonflikt","Zugeschriebene Position","Muss-Norm"],
+ sol:[["Soll-Norm","Bild 1: grüssen, um 7 Uhr da sein","Wird erwartet, Verstoss gibt Ärger, aber keine Strafe vom Gesetz."],
+  ["Sekundäre Sozialisation","Bild 1–2: Nico lernt die Regeln in der Lehre/im Betrieb","Hineinwachsen in eine neue Gruppe ausserhalb der Familie."],
+  ["Role-Taking","Bild 2: macht es wie die anderen","Er übernimmt die Erwartungen an die Lehrlingsrolle."],
+  ["Interrollenkonflikt","Bild 3: Überstunden vs. Training","Zwei verschiedene Rollen (Lehrling + Spieler) widersprechen sich."],
+  ["Erworbene Position","Bild 4: Captain","Durch eigene Leistung erreicht."],
+  ["Rollendruck","Bild 4: «Du musst IMMER da sein»","Hoher Druck, die Erwartungen der Rolle zu erfüllen."],
+  ["Role-Making","Bild 5: schlägt eine neue Arbeitsweise vor","Er gestaltet seine Rolle aktiv mit."]]},
+{t:"Fall 2 · Lars im Team (Kap. 3)",k:"k3",p:[
+ ["Lars ist neu: ruhig, alter Stock, macht Fehler.",[["👦","~Hoffentlich merkt's keiner…"]]],
+ ["Das Team lacht ihn aus.",[["🧑‍🦱","Hahaha, Holzstock-Lars!"],["👦","…"]]],
+ ["Nico lacht zuerst mit, weil alle lachen.",[["🧑‍🦱","Lach doch auch!"],["🧑","~Na gut… haha."]]],
+ ["Wochen später.",[["👦","~Ich bin halt einfach schlecht."],["🧔","Lars, schon wieder ein Fehlpass!"]]],
+ ["Nico macht nicht mehr mit.",[["🧑","Hört auf! Lars, nimm!"],["🧔","Stark, Nico! 👍"]]]],
+ opts:["Minderheit","Informelle negative Sanktion","Stigmatisierung","Konformitätsdruck","Etikettierung / Labeling","Beschädigte Identität","Nonkonformität","Positive Sanktion","Kriminalität","Formelle Sanktion","Anomie"],
+ sol:[["Minderheit","Bild 1: Lars ist anders als die Mehrheit","Die Mehrheit bestimmt, was «normal» ist; Lars weicht ab."],
+  ["Informelle negative Sanktion","Bild 2: Auslachen","Spontane, nicht geregelte Strafe von anderen."],
+  ["Stigmatisierung / Etikettierung","Bild 2: «Holzstock-Lars»","Ein Merkmal (alter Stock, Fehler) wird zum Etikett für die ganze Person."],
+  ["Konformitätsdruck","Bild 3: «Lach doch auch!»","Nico passt sich der Gruppe an, um nicht aufzufallen."],
+  ["Beschädigte Identität","Bild 4: «Ich bin halt schlecht»","Lars übernimmt das negative Bild, Selbstwert sinkt."],
+  ["Labeling-Approach","Bild 4: noch mehr Fehlpässe","Selbsterfüllende Prophezeiung: Er wird so, wie man ihn nennt."],
+  ["Nonkonformität","Bild 5: Nico stellt sich gegen das Team","Er handelt bewusst gegen die Erwartung der Gruppe."],
+  ["Positive Sanktion","Bild 5: «Stark, Nico! 👍»","Lob = Belohnung für erwünschtes Verhalten."]]}
+];
+const STELL=[
+{cap:"Die Schule plant ein Punktesystem fürs Verhalten.",ch:[["👨‍🏫","Pünktlich = +5 Punkte, Handy im Unterricht = −10!"],["🧑","~Gute Idee?"]],q:"Sollte die Schule ein Social-Scoring-System einführen? Nimm Stellung mit mind. 3 Begriffen.",
+ m:["<b>These:</b> Ich bin eher dagegen.","<b>Argument 1 (externe Kontrolle):</b> Wir halten Regeln nur noch wegen der Punkte ein, nicht aus Überzeugung. Die interne Kontrolle (Gewissen) wird schwächer.","<b>Argument 2 (Stigmatisierung / Randgruppe):</b> Schüler mit wenig Punkten werden abgestempelt und ausgegrenzt. Das Etikett «schlechter Schüler» kann zur selbsterfüllenden Prophezeiung werden.","<b>Argument 3 (Konformitätsdruck):</b> Alle müssen gleich sein; positive Devianz (z. B. eigene Ideen, Kritik) wird bestraft.","<b>Gegenseite:</b> Positive Sanktionen können motivieren, z. B. Pünktlichkeit belohnen.","<b>Fazit:</b> Einzelne Belohnungen ja, ein ganzes Punktesystem nein."]},
+{cap:"Im Team hat jeder einen Spitznamen. Lars heisst «Holzstock».",ch:[["🧑‍🦱","Ist doch nur Spass!"],["👦","~Für mich nicht…"]],q:"Sind Spitznamen im Team harmlos? Nimm Stellung mit mind. 3 Begriffen.",
+ m:["<b>These:</b> Nicht immer. Es kommt darauf an, ob der Name abwertet.","<b>Argument 1 (Etikettierung):</b> Ein abwertender Spitzname ist ein Etikett. Wer es oft hört, übernimmt es (Labeling-Approach).","<b>Argument 2 (beschädigte Identität):</b> Lars verliert Selbstwert und spielt schlechter, eine selbsterfüllende Prophezeiung.","<b>Argument 3 (informelle Sanktion / Minderheit):</b> Der Spott ist eine informelle negative Sanktion der Mehrheit gegen einen, der abweicht.","<b>Gegenseite:</b> Freundliche Spitznamen können zum Zusammenhalt beitragen (Gruppenzugehörigkeit).","<b>Fazit:</b> Okay, wenn alle es lustig finden. Sobald jemand abgewertet wird, sollte man aufhören (Nonkonformität zeigen, wie Nico)."]}
+];
+let tTab="unt",uOrder=[],uPos=0,uScore=[0,0],fIdx=0;
+try{const s=localStorage.getItem("sozttab");if(s)tTab=s}catch(e){}
+function strip(cap,ch){return panelHTML([null,null,cap,ch])}
+function tRender(){
+  document.querySelectorAll(".ttabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===tTab));
+  const H={unt:"Lernziel «unterscheiden»: Welcher von zwei ähnlichen Begriffen passt?",fall:"Lernziel «Fallbeispiel analysieren»: Lies den Comic, markiere alle Begriffe, die vorkommen, dann «Prüfen».",stell:"Lernziel «Stellung nehmen»: Schreib deine Antwort, dann vergleiche mit der Musterlösung."};
+  $("tHint").textContent=(tTab==="unt"&&uCtx?"Probe zum Thema «"+uCtx.name+"» · ":"")+H[tTab];
+  if(tTab==="unt")uRender();else if(tTab==="fall")fRender();else sRender();
+}
+let uCtx=null;
+function uStart(){uOrder=shuffle(uCtx?uCtx.unt.slice():UNT.map((_,i)=>i));uPos=0;uScore=[0,0]}
+function uRender(){
+  if(!uOrder.length)uStart();const B=$("tBody");
+  if(uPos>=uOrder.length){B.innerHTML=`<div class="note y"><div class="done"><h3>${uScore[0]} / ${uOrder.length} richtig</h3><p class="d">${uScore[0]===uOrder.length?"Perfekt! 🎉":"Die falschen nochmals anschauen lohnt sich."}</p></div></div><div class="tnav"><button class="go" id="uAgain">↺ Nochmal mischen</button></div>`;if(uCtx){B.insertAdjacentHTML("beforeend",`<div class="tnav">${uCtx.fall!=null?`<button class="go" id="uFall">🔎 Weiter: Fallbeispiel ${uCtx.fall+1}</button>`:""}<button id="uGoals">📋 Zurück zu den Lernzielen</button></div>`);
+    if($("uFall"))$("uFall").onclick=()=>{fIdx=uCtx.fall;tTab="fall";tRender()};$("uGoals").onclick=()=>setMode("goals")}
+  $("uAgain").onclick=()=>{uStart();uRender()};return}
+  const it=UNT[uOrder[uPos]];
+  B.innerHTML=`<div class="stat"><span>${uPos+1} / ${uOrder.length}</span><span>✅ ${uScore[0]}</span><span>❌ ${uScore[1]}</span></div><div class="note o">${strip(it.cap,it.ch)}<p class="tq">${esc(it.q)}</p><div class="opts2">${it.o.map((o,i)=>`<button data-i="${i}">${esc(o)}</button>`).join("")}</div><div id="uWhy"></div></div><div class="tnav"><button class="go" id="uNext" hidden>Weiter ▶</button></div>`;
+  B.querySelectorAll(".opts2 button").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;B.querySelectorAll(".opts2 button").forEach(x=>{x.disabled=true;if(+x.dataset.i===it.a)x.classList.add("ok")});
+    if(i!==it.a)b.classList.add("bad");uScore[i===it.a?0:1]++;$("uWhy").innerHTML=`<p class="why">${i===it.a?"✅ ":"❌ "}${esc(it.why)}</p>`;$("uNext").hidden=false;$("uNext").focus()});
+  $("uNext").onclick=()=>{uPos++;uRender()};
+}
+function fRender(){
+  const f=FALL[fIdx],B=$("tBody");
+  B.innerHTML=`<div class="tnav">${FALL.map((x,i)=>`<button class="${i===fIdx?"go":""}" data-f="${i}">${esc(x.t.split(" · ")[0])}</button>`).join("")}</div>
+  <div class="note ${f.k==="k2"?"g":"p"}"><h3 class="t">${esc(f.t)}</h3><div class="strip">${f.p.map((p,i)=>`<div class="panel"><span class="num">${i+1}</span>${strip(p[0],p[1]).replace(/^<div class="panel">|<\/div>$/g,"")}</div>`).join("")}</div>
+  <p class="tq">Welche Begriffe kommen vor? Tippe alle an.</p><div class="tchips" id="fCh">${f.opts.map(o=>`<button aria-pressed="false">${esc(o)}</button>`).join("")}</div>
+  <div class="tnav"><button class="go" id="fChk">✔ Prüfen</button><button id="fSol">Musterlösung</button></div><div id="fOut"></div></div>
+  <p class="hint">In der Prüfung immer 3 Schritte: <b>Begriff → Stelle im Text → warum es passt</b>.</p>`;
+  B.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{fIdx=+b.dataset.f;fRender()});
+  B.querySelectorAll("#fCh button").forEach(b=>b.onclick=()=>{if(b.classList.contains("ok")||b.classList.contains("bad")||b.classList.contains("miss"))return;b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true")});
+  const right=new Set(f.sol.map(s=>s[0]).flatMap(s=>s.split(" / ")));
+  const isR=o=>right.has(o)||[...right].some(r=>o.includes(r)||r.includes(o.split(" / ")[0]));
+  $("fChk").onclick=()=>{let ok=0,bad=0,miss=0;B.querySelectorAll("#fCh button").forEach(b=>{const on=b.getAttribute("aria-pressed")==="true",r=isR(b.textContent);
+      if(on&&r){b.classList.add("ok");ok++}else if(on){b.classList.add("bad");bad++}else if(r){b.classList.add("miss");miss++}});
+    $("fOut").innerHTML=`<p class="why">✅ ${ok} gefunden · ❌ ${bad} falsch · gestrichelt = ${miss} übersehen</p>`;showSol()};
+  $("fSol").onclick=showSol;
+  function showSol(){$("fOut").innerHTML=($("fOut").innerHTML.includes("gefunden")?$("fOut").innerHTML:"")+`<div class="solwrap"><table class="sol"><thead><tr><th>Begriff</th><th>Stelle</th><th>Warum es passt</th></tr></thead><tbody>${f.sol.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td>${esc(s[1])}</td><td>${esc(s[2])}</td></tr>`).join("")}</tbody></table></div>`;$("fSol").hidden=true}
+}
+function sRender(){
+  const B=$("tBody");
+  B.innerHTML=STELL.map((s,i)=>`<div class="note v"><h3 class="t">Aufgabe ${i+1}</h3>${strip(s.cap,s.ch)}<p class="tq">${esc(s.q)}</p>
+  <textarea class="ans" id="sA${i}" aria-label="Deine Antwort zu Aufgabe ${i+1}" placeholder="These → Argument mit Begriff 1, 2, 3 → Gegenseite → Fazit"></textarea>
+  <div class="tnav"><button class="go" data-s="${i}">Musterlösung zeigen</button></div><div id="sM${i}"></div></div>`).join("");
+  STELL.forEach((s,i)=>{const t=$("sA"+i);try{t.value=localStorage.getItem("sozans"+i)||""}catch(e){}
+    t.oninput=()=>{try{localStorage.setItem("sozans"+i,t.value)}catch(e){}}});
+  B.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{const i=+b.dataset.s;$("sM"+i).innerHTML=`<div class="why">${STELL[i].m.map(x=>`<p style="margin:4px 0">${x}</p>`).join("")}<p style="margin:6px 0 0"><i>Check: Hast du mind. 3 Begriffe <u>erklärt</u> und auf den Fall <u>angewendet</u>?</i></p></div>`;b.hidden=true});
+}
+document.querySelectorAll(".ttabs button").forEach(b=>b.onclick=()=>{tTab=b.dataset.t;if(uCtx){uCtx=null;uOrder=[]}try{localStorage.setItem("sozttab",tTab)}catch(e){}tRender()});
+
+/* ---------- Lernziele mit Links zu Theorie und Probe ---------- */
+const GOALS=[
+ ["Begriffe <b>erklären</b>","learnB","🃏 Lernkarten (vorne: Begriff)"],
+ ["Begriffe <b>voneinander unterscheiden</b>","unt","⚖️ Unterscheiden"],
+ ["Begriffe mit <b>Beispielen</b> veranschaulichen","learnP","🃏 Lernkarten (vorne: Bild) + eigenes Beispiel"],
+ ["<b>Fallbeispiele</b> mit den Begriffen analysieren","fall","🔎 Fallbeispiele"],
+ ["Eine <b>Stellungnahme</b> mit den Begriffen begründen","stell","🗣️ Stellung nehmen"]];
+const TOPICS=[
+ {k:"k2",c:"y",name:"Interaktion & Handeln",terms:["Soziale Interaktion","Soziale Kommunikation","Soziales Handeln"],unt:[],fall:0},
+ {k:"k2",c:"o",name:"Werte & Normen",terms:["Soziale Werte","Anomie","Wertewandel","Bedingungen für Wertewandel","Soziale Normen","Kann-Norm","Soll-Norm","Muss-Norm","Geltung"],unt:[4,10,11],fall:0},
+ {k:"k2",c:"v",name:"Position & Rolle",terms:["Soziale Position","Zugeschriebene Position","Erworbene Position","Soziale Rolle","Homo sociologicus","Role-Taking","Role-Making","Rollendistanz"],unt:[2,3,5],fall:0},
+ {k:"k2",c:"p",name:"Rollenkonflikte",terms:["Rollenkonflikt","Intrarollenkonflikt","Interrollenkonflikt","Rollendruck"],unt:[0,1],fall:0},
+ {k:"k2",c:"g",name:"Sozialisation",terms:["Sozialisation","Aspekte der Sozialisation","Primäre Sozialisation","Sekundäre Sozialisation","Tertiäre Sozialisation"],unt:[15],fall:0},
+ {k:"k3",c:"b",name:"Soziale Kontrolle & Sanktionen",terms:["Soziale Kontrolle","Interne Kontrolle","Externe Kontrolle","Sanktionen","Innere vs. äussere Sanktion","Formelle vs. informelle Sanktion","Positive vs. negative Sanktion"],unt:[7,8],fall:1},
+ {k:"k3",c:"g",name:"Konformität & Devianz",terms:["Konformität","Konformitätsdruck / -zwang","Nonkonformität","Devianz","Positive Devianz","Negative Devianz","Kriminalität","Randgruppe"],unt:[6,14],fall:1},
+ {k:"k3",c:"y",name:"Norm als Massstab",terms:["Norm als Massstab","Statistische Norm","Gesellschaftliche Norm","Individuelle Norm","Problematik der normbezogenen Sicht","Minderheit"],unt:[9],fall:1},
+ {k:"k3",c:"p",name:"Stigma & Labeling",terms:["Stigma","Stigmatisierung","Beschädigte Identität","Etikettierung / Labeling","Labeling-Approach"],unt:[12,13],fall:1}];
+const byTerm=Object.fromEntries(ALL.map(o=>[o.x[1],o]));
+function noteHTML(x){const[c,t,cap,chars,d,e]=x;return `<div class="note ${c}"><h3 class="t">${esc(t)}</h3>${panelHTML(x)}<p class="d">${esc(d)}</p><p class="e">${esc(e)}</p></div>`}
+function gRender(){
+  const G=$("goals");
+  G.innerHTML=`<div class="gwrap"><div class="note y" style="transform:none"><h3 class="t">📋 Lernziele: Sie können …</h3>
+  <ol class="gl">${GOALS.map((g,i)=>`<li><b class="n">${i+1}</b><span>${g[0]}</span><button class="lnk" data-goal="${g[1]}">${g[2]} ▶</button></li>`).join("")}</ol>
+  <p class="step">So lernst du: <b>1.</b> Thema wählen → <b>📖 Theorie</b> (Comic-Karten) → <b>2.</b> direkt <b>🎯 Probe</b> → <b>3.</b> am Schluss Fallbeispiele + Stellungnahme.</p></div>
+  ${["k2","k3"].map(k=>`<h2>${k==="k2"?"Kapitel 2 · Soziales Handeln":"Kapitel 3 · Soziale Kontrolle und Abweichung"}</h2><div class="topics">${TOPICS.map((t,i)=>t.k!==k?"":`<div class="note ${t.c} topic" style="--r:0deg"><h3>${esc(t.name)}</h3><span class="kap">${t.terms.length} Begriffe · antippen = Theorie</span>
+    <div class="terms">${t.terms.map(n=>`<button data-th="${esc(n)}" data-tp="${i}">${esc(n)}</button>`).join("")}</div>
+    <div class="tacts"><button class="lnk th" data-learn="${i}">📖 Theorie lernen</button><button class="lnk" data-probe="${i}">🎯 Probe</button></div></div>`).join("")}</div>`).join("")}
+  <div class="note v" style="transform:none"><h3 class="t">🏁 Probeprüfung komplett</h3><p class="d">Wenn alle Themen sitzen: beide Fallbeispiele und eine Stellungnahme lösen, von Hand, ohne Hilfe.</p>
+  <div class="tacts"><button class="lnk" data-goal="fall">🔎 Fallbeispiele</button><button class="lnk" data-goal="stell">🗣️ Stellung nehmen</button><button class="lnk th" data-goal="unt">⚖️ Alle Unterscheiden-Fragen</button></div></div></div>`;
+  G.querySelectorAll("[data-goal]").forEach(b=>b.onclick=()=>goGoal(b.dataset.goal));
+  G.querySelectorAll("[data-learn]").forEach(b=>b.onclick=()=>learnTopic(TOPICS[+b.dataset.learn]));
+  G.querySelectorAll("[data-probe]").forEach(b=>b.onclick=()=>probe(TOPICS[+b.dataset.probe]));
+  G.querySelectorAll("[data-th]").forEach(b=>b.onclick=()=>showTheory(TOPICS[+b.dataset.tp],b.dataset.th));
+}
+function goGoal(g){
+  if(g==="learnB"||g==="learnP"){side=g==="learnB"?"begriff":"bild";$("bSide").textContent=side==="bild"?"Vorne: Bild":"Vorne: Begriff";setMode("learn");build(shuffle(pool()));return}
+  uCtx=null;uOrder=[];tTab=g;setMode("train");
+}
+function learnTopic(t){side="bild";$("bSide").textContent="Vorne: Bild";filt="all";setMode("learn");build(t.terms.map(n=>byTerm[n]).filter(Boolean),t);window.scrollTo(0,0)}
+function probe(t){$("ovl").hidden=true;if(t.unt.length){uCtx=t;uStart();tTab="unt"}else{uCtx=null;fIdx=t.fall;tTab="fall"}setMode("train");window.scrollTo(0,0)}
+function showTheory(t,name){const list=t.terms;let i=list.indexOf(name);const O=$("ovl"),Bx=$("ovbox");
+  const draw=()=>{const o=byTerm[list[i]];Bx.innerHTML=`${o?noteHTML(o.x):""}<div class="tnav"><button id="oPrev" ${i?"":"disabled"}>◀</button><button id="oClose">✕ Schliessen</button><button id="oNext" ${i<list.length-1?"":"disabled"}>▶</button></div><div class="tnav"><button class="go" id="oProbe">🎯 Probe: ${esc(t.name)}</button></div>`;
+    $("oPrev").onclick=()=>{i--;draw()};$("oNext").onclick=()=>{i++;draw()};$("oClose").onclick=close;$("oProbe").onclick=()=>probe(t);$("oClose").focus()};
+  const close=()=>{O.hidden=true};O.onclick=e=>{if(e.target===O)close()};
+  document.addEventListener("keydown",function k(e){if(O.hidden){document.removeEventListener("keydown",k);return}if(e.key==="Escape"){close();document.removeEventListener("keydown",k)}});
+  O.hidden=false;draw()}
+
+/* ---------- Fokus-Modus (wie im Dashboard): nur die Karte + Vollbild ---------- */
+const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function focusOn(){document.body.classList.add("focus");$("fsBtn").textContent="✕ Vollbild beenden";
+  const d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;if(f&&!fsEl()){try{const r=f.call(d);if(r&&r.catch)r.catch(()=>{})}catch(e){}}
+  if(mode==="board")setMode("learn");window.scrollTo(0,0)}
+function focusOff(){document.body.classList.remove("focus");$("fsBtn").textContent="⛶ Vollbild";
+  if(fsEl()){try{(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(e){}}}
+$("fsBtn").onclick=()=>document.body.classList.contains("focus")?focusOff():focusOn();
+const fsSync=()=>{if(!fsEl()&&document.body.classList.contains("focus"))focusOff()};
+document.addEventListener("fullscreenchange",fsSync);document.addEventListener("webkitfullscreenchange",fsSync);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.body.classList.contains("focus"))focusOff()});
+document.querySelectorAll(".mode button[data-m]").forEach(b=>b.addEventListener("click",()=>{if(b.dataset.m==="board"&&document.body.classList.contains("focus"))focusOff()}));
+
+setMode(mode);build(shuffle(pool()));
+</script>
+
+</html>
