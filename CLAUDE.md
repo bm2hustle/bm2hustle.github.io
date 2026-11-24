@@ -24,3 +24,6 @@ Testversion = Ordner `test/` (Kopie der Seite), erreichbar unter https://bm2hust
 
 ## Git
 - Committen als `Claude <noreply@anthropic.com>`; push mit `git -c push.negotiate=true push`.
+
+## Führung (Tour)
+- In `index.html` steht das Array `TOUR`. Für jede neue sichtbare Funktion einen Schritt mit **neuer `id`** anhängen (z. B. `t3-vokabeln`). Jeder Browser sieht nur Schritte, deren `id` er noch nicht kennt – also nur Neues.

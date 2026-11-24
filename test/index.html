@@ -174,6 +174,16 @@ body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:so
 }
 .moreBtn{display:none;font-family:var(--hand);font-size:.95rem;border:0;background:none;color:inherit;text-decoration:underline;cursor:pointer;padding:0}
 @media (max-width:520px){.moreBtn{display:inline}}
+.tour{position:fixed;inset:0;z-index:60}
+.thole{position:fixed;border-radius:10px;box-shadow:0 0 0 9999px rgba(20,18,15,.62);outline:3px solid var(--cap);transition:all .25s ease;pointer-events:none}
+.tbox{position:fixed;left:50%;transform:translateX(-50%);width:min(380px,calc(100vw - 32px));background:var(--cap);color:#1d1b18;border:3px solid #1d1b18;border-radius:8px;padding:12px 14px;box-shadow:0 10px 24px rgba(0,0,0,.4);display:flex;flex-direction:column;gap:8px}
+.tbox h4{font-family:var(--comic);font-weight:400;letter-spacing:.6px;font-size:1.25rem;margin:0}
+.tbox p{margin:0;line-height:1.3}
+.tbox .tb{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tbox .tb small{opacity:.7}
+.tbox button{font-family:var(--hand);font-size:1.05rem;border:2px solid #1d1b18;border-radius:8px;padding:3px 12px;cursor:pointer;background:#fff;color:#1d1b18}
+.tbox button.go{background:#1d1b18;color:#fff}
+@media (prefers-reduced-motion:reduce){.thole{transition:none}}
 .foot{font-size:.9rem;opacity:.75;text-align:center}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -262,6 +272,8 @@ body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:so
   </section>
 
   <p class="foot hideinfocus" id="foot"></p>
+  <p class="foot"><button class="moreBtn" style="display:inline" id="tourAgain">🧭 Führung nochmals anzeigen</button></p>
+  <div class="tour" id="tour" hidden><div class="thole" id="thole"></div><div class="tbox" id="tbox" role="dialog" aria-live="polite"></div></div>
 </div>
 
 <script src="hub-data.js"></script>
@@ -635,6 +647,33 @@ function myPlan(P,e){const id=e.id,K="plan-"+id;let cfg=LS.get(K,null);
   function bind(c){$("plF").onsubmit=ev=>{ev.preventDefault();const nd=[...P.querySelectorAll(".wd input:checked")].map(x=>+x.value);
     LS.set(K,{start:$("plS").value||TODAY,min:+$("plM").value,days:nd.length?nd:[0,1,2,3,4],done:c.done||{}});myPlan(P,e)}}}
 
+/* ---------- Führung: zeigt nur, was für diesen Browser neu ist ---------- */
+const TOUR=[
+ {id:"t1-subj",view:"start",sel:"#subjbar",t:"📚 Deine Fächer",x:"Sortiert nach der nächsten Prüfung. Tippe ein Fach an: Du siehst sofort wann, was und worüber – und kannst direkt lernen."},
+ {id:"t1-next",view:"start",sel:"#nextBox",t:"⏳ Nächste Prüfung",x:"Countdown bis zur nächsten Prüfung. «Jetzt dafür lernen» bringt dich direkt hin."},
+ {id:"t1-week",view:"start",sel:"#week",t:"📌 Diese Woche",x:"Alle Prüfungen, Abgaben und Hausaufgaben bis Sonntag. Den ganzen Überblick hat der Kalender."},
+ {id:"t2-pills",view:"start",sel:".pills",t:"🆕 Heute · Frage · App",x:"Stundenplan mit Zimmern, jeden Tag eine Frage zur nächsten Prüfung, und: Prüfungen als Kalender-Abo aufs Handy oder BM2 Hustle als App installieren."},
+ {id:"t1-search",view:"start",sel:'.nav a[data-v="suche"]',t:"🔍 Suchen",x:"Findet jeden Begriff in Theorie, Stoff, Karteikarten und Quizfragen."},
+ {id:"t1-meld",view:"start",sel:'.nav a[data-v="melden"]',t:"📣 Melden",x:"Fehlt eine Prüfung oder stimmt etwas nicht? Hier meldest du es."},
+ {id:"t1-info",view:"fach",sel:".info",t:"📅 Wann, was, worüber",x:"Alles zur Prüfung auf einen Blick."},
+ {id:"t2-tabs",view:"fach",sel:".tabs",t:"🧭 So lernst du",x:"🆕 Mein Lernplan · 📖 Theorie & 🆕 Videos · 🎮 Üben · 🏁 Probeprüfung · ✍️ eigene Karten · ⬇️ Übungsblätter. Am Handy seitwärts wischen."}];
+let tourQ=[],tourI=0;
+function tourSeen(){return LS.get("tour-seen",[])}
+function tourStart(view){if(!$("tour").hidden)return;const seen=tourSeen();tourQ=TOUR.filter(t=>t.view===view&&!seen.includes(t.id)&&document.querySelector(t.sel));tourI=0;if(tourQ.length)tourShow()}
+function tourMark(ids){LS.set("tour-seen",[...new Set([...tourSeen(),...ids])])}
+function tourShow(){const st=tourQ[tourI],el=document.querySelector(st.sel);if(!el){tourNext();return}
+  el.scrollIntoView({block:"center",behavior:"instant"});const T=$("tour");T.hidden=false;
+  requestAnimationFrame(()=>{const r=el.getBoundingClientRect(),pad=6,H=$("thole");
+    Object.assign(H.style,{left:(r.left-pad)+"px",top:(r.top-pad)+"px",width:(r.width+2*pad)+"px",height:(r.height+2*pad)+"px"});
+    const B=$("tbox");B.innerHTML=`<h4>${esc(st.t)}</h4><p>${esc(st.x)}</p><div class="tb"><small>${tourI+1} / ${tourQ.length}</small><span><button id="tSkip">Überspringen</button> <button class="go" id="tNext">${tourI+1<tourQ.length?"Weiter ▶":"Los geht's!"}</button></span></div>`;
+    const below=r.bottom+12+180<innerHeight;B.style.top=below?(r.bottom+14)+"px":"";B.style.bottom=below?"":(innerHeight-r.top+14)+"px";
+    if(!below&&r.top<200){B.style.bottom="";B.style.top=Math.max(12,innerHeight-220)+"px"}
+    $("tNext").onclick=tourNext;$("tSkip").onclick=()=>{tourMark(tourQ.map(t=>t.id));tourEnd()};$("tNext").focus({preventScroll:true})})}
+function tourNext(){tourMark([tourQ[tourI].id]);tourI++;if(tourI<tourQ.length)tourShow();else tourEnd()}
+function tourEnd(){$("tour").hidden=true;tourQ=[];window.scrollTo(0,0)}
+document.addEventListener("keydown",e=>{if(!$("tour").hidden&&e.key==="Escape"){tourMark(tourQ.map(t=>t.id));tourEnd()}});
+$("tourAgain").onclick=()=>{LS.set("tour-seen",[]);location.hash="start";setTimeout(()=>tourStart("start"),300)};
+
 /* ---------- Router ---------- */
 function route(){let h=(location.hash||"#start").slice(1);let v=h.startsWith("fach-")?"fach":h;
   if(!["start","kalender","faecher","melden","fach","suche"].includes(v)){v="start";h="start"}
@@ -643,7 +682,8 @@ function route(){let h=(location.hash||"#start").slice(1);let v=h.startsWith("fa
   document.querySelectorAll(".nav a[aria-current]").forEach(a=>a.setAttribute("aria-current","page"));
   if(v!=="fach")rSubjbar(null);
   if(v==="start"){rStart();rWeek();rHeute();rFdt();rApp()}else if(v==="kalender"){rCal();rStart()}else if(v==="faecher")rFaecher();else if(v==="suche")rSuche();else if(v==="fach")rFach(h.slice(5));
-  if(v!=="fach")window.scrollTo(0,0)}
+  if(v!=="fach")window.scrollTo(0,0);
+  clearTimeout(route.tt);route.tt=setTimeout(()=>tourStart(v),600)}
 window.addEventListener("hashchange",route);route();
 $("foot").textContent="Stand: "+fmt(H.updated)+" · Fehlt etwas? 📣 Melden · Dein Fortschritt und Lernplan bleiben nur in deinem Browser.";
 </script>
