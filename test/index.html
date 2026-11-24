@@ -175,6 +175,14 @@ body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:so
 .moreBtn{display:none;font-family:var(--hand);font-size:.95rem;border:0;background:none;color:inherit;text-decoration:underline;cursor:pointer;padding:0}
 @media (max-width:520px){.moreBtn{display:inline}}
 .tour{position:fixed;inset:0;z-index:60}
+.namebg{position:fixed;inset:0;z-index:70;background:rgba(20,18,15,.62);display:flex;align-items:center;justify-content:center;padding:16px}
+.namebg[hidden]{display:none}
+.namebox{width:min(400px,100%);background:var(--cap);color:#1d1b18;border:3px solid #1d1b18;border-radius:8px;padding:16px;box-shadow:0 10px 24px rgba(0,0,0,.4);display:flex;flex-direction:column;gap:10px;transform:rotate(-1deg)}
+.namebox h4{font-family:var(--comic);font-weight:400;letter-spacing:.6px;font-size:1.5rem;margin:0}
+.namebox p{margin:0;line-height:1.3}
+.namebox input{font-family:var(--hand);font-size:1.15rem;padding:6px 10px;border:2px solid #1d1b18;border-radius:8px;min-width:0}
+.namebox button{font-family:var(--hand);font-size:1.1rem;border:2px solid #1d1b18;border-radius:8px;padding:6px 12px;cursor:pointer;background:#1d1b18;color:#fff}
+tr.me,li.me{background:rgba(255,224,102,.55)}
 .thole{position:fixed;border-radius:10px;box-shadow:0 0 0 9999px rgba(20,18,15,.62);outline:3px solid var(--cap);transition:all .25s ease;pointer-events:none}
 .tbox{position:fixed;left:50%;transform:translateX(-50%);width:min(380px,calc(100vw - 32px));background:var(--cap);color:#1d1b18;border:3px solid #1d1b18;border-radius:8px;padding:12px 14px;box-shadow:0 10px 24px rgba(0,0,0,.4);display:flex;flex-direction:column;gap:8px}
 .tbox h4{font-family:var(--comic);font-weight:400;letter-spacing:.6px;font-size:1.25rem;margin:0}
@@ -272,7 +280,8 @@ body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:so
   </section>
 
   <p class="foot hideinfocus" id="foot"></p>
-  <p class="foot"><button class="moreBtn" style="display:inline" id="tourAgain">🧭 Führung nochmals anzeigen</button></p>
+  <p class="foot"><button class="moreBtn" style="display:inline" id="tourAgain">🧭 Führung nochmals anzeigen</button> · <button class="moreBtn" style="display:inline" id="nameChg">👤 Name ändern</button></p>
+  <div class="namebg" id="nameBg" hidden><form class="namebox" id="nameF" role="dialog" aria-labelledby="nameH"><h4 id="nameH">👋 Wie heisst du?</h4><p>Gib deinen Namen oder Spitznamen ein. Damit stehst du in den Klassen-Ranglisten.</p><p><b>Nimm immer den gleichen Namen</b>, auch am Handy und am Laptop. Dann zählen alle deine Punkte für dich und nicht für eine «neue Person».</p><input id="nameIn" maxlength="16" required autocomplete="nickname" placeholder="z. B. Fabian oder Schupli"><button type="submit">Los geht's ➜</button></form></div>
   <div class="tour" id="tour" hidden><div class="thole" id="thole"></div><div class="tbox" id="tbox" role="dialog" aria-live="polite"></div></div>
 </div>
 
@@ -527,14 +536,14 @@ function wahrfalsch(G,id){const p=pairsOf(id);let pts=0,end=Date.now()+45000,tm;
 /* ---------- Klassen-Rangliste (Supabase). Ohne Zugangsdaten: nur persönlicher Rekord ---------- */
 const LB={url:"https://psmvwyxgatlrqcsoschx.supabase.co",key:"sb_publishable_9v7zkqD1rIBeNUDxNLuIaA_wVmRb0X5",
   ok(){return !!(this.url&&this.key)},
-  async top(k,id){const asc=GAMEINFO[k][2]<0;const r=await fetch(`${this.url}/rest/v1/scores?select=nick,score,created_at&exam=eq.${encodeURIComponent(id)}&game=eq.${k}&order=score.${asc?"asc":"desc"},created_at.asc&limit=10`,{headers:{apikey:this.key}});if(!r.ok)throw new Error(r.status+" "+(await r.text()).slice(0,140));return r.json()},
+  async top(k,id){const asc=GAMEINFO[k][2]<0;const r=await fetch(`${this.url}/rest/v1/scores?select=nick,score,created_at&exam=eq.${encodeURIComponent(id)}&game=eq.${k}&order=score.${asc?"asc":"desc"},created_at.asc&limit=300`,{headers:{apikey:this.key}});if(!r.ok)throw new Error(r.status+" "+(await r.text()).slice(0,140));const seen=new Set();return (await r.json()).filter(x=>{const n=x.nick.trim().toLowerCase();return !seen.has(n)&&seen.add(n)}).slice(0,10)},
   async add(k,id,nick,score){const r=await fetch(`${this.url}/rest/v1/scores`,{method:"POST",headers:{apikey:this.key,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({exam:id,game:k,nick,score})});if(!r.ok)throw 0},
   async render(box,k,id,score){if(!box)return;
     if(!this.ok()){box.innerHTML=`<p class="why">🏆 Die Klassen-Rangliste kommt bald. Dein Rekord ist gespeichert.</p>`;return}
     const draw=async(sent)=>{let rows=[];try{rows=await this.top(k,id)}catch(e){box.innerHTML=`<p class="why">Rangliste gerade nicht erreichbar.<br><small style="opacity:.7">Fehler: ${esc(String(e&&e.message||e))}</small></p>`;return}
-      box.innerHTML=`<div class="gamebox" style="border-width:2px"><b>🏆 Klassen-Rangliste</b>${rows.length?`<ol style="margin:4px 0;padding-left:22px">${rows.map(r=>`<li><b>${esc(r.nick)}</b> · ${fmtScore(k,r.score)}</li>`).join("")}</ol>`:`<p class="empty" style="margin:0">Noch niemand drin – sei die/der Erste!</p>`}
-      ${sent?`<p style="margin:0">✅ Eingetragen.</p>`:`<form id="lbF" style="display:flex;gap:6px;flex-wrap:wrap"><input id="lbN" maxlength="16" required placeholder="Spitzname (kein echter Name nötig)" value="${esc(LS.get("nick",""))}" style="flex:1;min-width:0;font-family:var(--hand);font-size:1.05rem;padding:5px 8px;border:2px solid var(--line);border-radius:8px"><button class="btn go" type="submit">In Rangliste eintragen</button></form><p class="empty" style="margin:0;font-size:.9rem">Freiwillig. Ohne Eintragen bleibt dein Ergebnis privat.</p>`}</div>`;
-      const f=$("lbF");if(f)f.onsubmit=async ev=>{ev.preventDefault();const n=$("lbN").value.trim().slice(0,16);if(!n)return;LS.set("nick",n);try{await LB.add(k,id,n,score);draw(true)}catch(e){box.insertAdjacentHTML("beforeend",`<p class="why">Eintragen hat nicht geklappt.</p>`)}}};
+      box.innerHTML=`<div class="gamebox" style="border-width:2px"><b>🏆 Klassen-Rangliste</b>${rows.length?`<ol style="margin:4px 0;padding-left:22px">${rows.map(r=>`<li class="${r.nick.trim().toLowerCase()===LS.get("nick","").trim().toLowerCase()?"me":""}"><b>${esc(r.nick)}</b> · ${fmtScore(k,r.score)}</li>`).join("")}</ol>`:`<p class="empty" style="margin:0">Noch niemand drin – sei die/der Erste!</p>`}
+      ${sent?`<p style="margin:0">✅ Eingetragen.</p>`:LS.get("nick","")?`<div class="gpick"><button class="btn go" id="lbMe">🏆 Als ${esc(LS.get("nick",""))} eintragen</button></div><p class="empty" style="margin:0;font-size:.9rem">Freiwillig. Pro Name zählt nur dein bester Wert.</p>`:`<form id="lbF" style="display:flex;gap:6px;flex-wrap:wrap"><input id="lbN" maxlength="16" required placeholder="Spitzname (kein echter Name nötig)" value="${esc(LS.get("nick",""))}" style="flex:1;min-width:0;font-family:var(--hand);font-size:1.05rem;padding:5px 8px;border:2px solid var(--line);border-radius:8px"><button class="btn go" type="submit">In Rangliste eintragen</button></form><p class="empty" style="margin:0;font-size:.9rem">Freiwillig. Ohne Eintragen bleibt dein Ergebnis privat.</p>`}</div>`;
+      const me=$("lbMe");if(me)me.onclick=async()=>{me.disabled=true;try{await LB.add(k,id,LS.get("nick","").slice(0,16),score);draw(true)}catch(e){me.disabled=false;box.insertAdjacentHTML("beforeend",`<p class="why">Eintragen hat nicht geklappt.</p>`)}};const f=$("lbF");if(f)f.onsubmit=async ev=>{ev.preventDefault();const n=$("lbN").value.trim().slice(0,16);if(!n)return;LS.set("nick",n);try{await LB.add(k,id,n,score);draw(true)}catch(e){box.insertAdjacentHTML("beforeend",`<p class="why">Eintragen hat nicht geklappt.</p>`)}}};
     draw(false)}};
 function mc(G,id,list,fix){let i=0,ok=0;
   const r=()=>{if(i>=list.length){if(!fix){gameOver(G,"mc",id,ok,`<p style="margin:0">${ok} / ${list.length} richtig. Falsche Fragen landen in «🔁 Meine Fehler».</p>`);return}G.innerHTML=`<div class="gamebox"><h3>${ok} / ${list.length} richtig ${ok===list.length?"🎉":""}</h3><div class="gpick"><button id="again">↺ Nochmal</button></div></div>`;$("again").onclick=()=>startGame("fx",id);return}
@@ -719,7 +728,7 @@ const TOUR=[
  {id:"t2-tabs",view:"fach",sel:".tabs",t:"🧭 So lernst du",x:"🆕 Mein Lernplan · 📖 Theorie & 🆕 Videos · 🎮 Üben · 🏁 Probeprüfung · ✍️ eigene Karten · ⬇️ Übungsblätter. Am Handy seitwärts wischen."}];
 let tourQ=[],tourI=0;
 function tourSeen(){return LS.get("tour-seen",[])}
-function tourStart(view){if(!$("tour").hidden)return;const seen=tourSeen();tourQ=TOUR.filter(t=>t.view===view&&!seen.includes(t.id)&&document.querySelector(t.sel));tourI=0;if(tourQ.length)tourShow()}
+function tourStart(view){if(!$("tour").hidden||!LS.get("nick",""))return;const seen=tourSeen();tourQ=TOUR.filter(t=>t.view===view&&!seen.includes(t.id)&&document.querySelector(t.sel));tourI=0;if(tourQ.length)tourShow()}
 function tourMark(ids){LS.set("tour-seen",[...new Set([...tourSeen(),...ids])])}
 function tourShow(){const st=tourQ[tourI],el=document.querySelector(st.sel);if(!el){tourNext();return}
   el.scrollIntoView({block:"center",behavior:"instant"});const T=$("tour");T.hidden=false;
@@ -733,6 +742,14 @@ function tourNext(){tourMark([tourQ[tourI].id]);tourI++;if(tourI<tourQ.length)to
 function tourEnd(){$("tour").hidden=true;tourQ=[];window.scrollTo(0,0)}
 document.addEventListener("keydown",e=>{if(!$("tour").hidden&&e.key==="Escape"){tourMark(tourQ.map(t=>t.id));tourEnd()}});
 $("tourAgain").onclick=()=>{LS.set("tour-seen",[]);location.hash="start";setTimeout(()=>tourStart("start"),300)};
+
+/* ---------- Name (einmal pro Browser) ---------- */
+function askName(force){const cur=LS.get("nick","");if(cur&&!force)return;$("nameIn").value=cur;$("nameBg").hidden=false;setTimeout(()=>$("nameIn").focus(),50)}
+$("nameF").onsubmit=ev=>{ev.preventDefault();const n=$("nameIn").value.trim().replace(/\s+/g," ").slice(0,16);if(!n)return;LS.set("nick",n);$("nameBg").hidden=true;
+  $("nameChg").textContent="👤 "+n+" · Name ändern";const v=(location.hash||"#start").slice(1);tourStart(v.startsWith("fach-")?"fach":v)};
+$("nameChg").onclick=()=>askName(true);
+if(LS.get("nick",""))$("nameChg").textContent="👤 "+LS.get("nick","")+" · Name ändern";
+askName(false);
 
 /* ---------- Router ---------- */
 function route(){let h=(location.hash||"#start").slice(1);let v=h.startsWith("fach-")?"fach":h;
