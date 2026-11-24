@@ -22,7 +22,29 @@ for(const e of exams){const list=(TMAP[e.id]||[]).map(id=>D.readings[id]).filter
   if(list.length)theory[e.id]=list}
 const games={};for(const e of exams){const g={};for(const k of ['quiz','pairs','decks','cloze','order']){if(D[k]&&D[k][e.id])g[k]=D[k][e.id].filter(Boolean)}if(Object.keys(g).length)games[e.id]=g}
 const extra=fs.existsSync(path.join(__dirname,'extra.json'))?JSON.parse(fs.readFileSync(path.join(__dirname,'extra.json'),'utf8')):{};
-const HUB=Object.assign({updated:TODAY,subjects,exams,games,theory},extra);
+const VP=path.join(__dirname,'videos.json');const videos=fs.existsSync(VP)?JSON.parse(fs.readFileSync(VP,'utf8')):{};
+const HUB=Object.assign({updated:TODAY,subjects,exams,games,theory,videos},extra);
 const js='/* BM2 Hustle – Daten (automatisch erzeugt mit tools/build-hub-data.js) */\nwindow.HUB='+JSON.stringify(HUB).replace(/</g,'\\u003c')+';\n';
 fs.writeFileSync(path.join(__dirname,'..','hub-data.js'),js);
 console.log('hub-data.js:',exams.length,'Termine,',Object.keys(games).length,'mit Übungen,',Object.keys(theory).length,'mit Theorie');
+
+// ---------- Kalender-Abo: calendar.ics (alle Termine, Erinnerung am Vortag) ----------
+const icsEsc=s=>String(s).replace(/\\/g,'\\\\').replace(/;/g,'\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+const fold=l=>{const out=[];let s=l;while(Buffer.byteLength(s)>74){let n=74;while(Buffer.byteLength(s.slice(0,n))>74)n--;out.push(s.slice(0,n));s=' '+s.slice(n)}out.push(s);return out.join('\r\n')};
+const d8=s=>s.replace(/-/g,'');
+const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+Z$/,'Z');
+const addDay=s=>{const d=new Date(s+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+1);return d.toISOString().slice(0,10)};
+const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//BM2 Hustle//DE','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:BM2 Hustle Prüfungen','X-WR-TIMEZONE:Europe/Zurich','REFRESH-INTERVAL;VALUE=DURATION:PT6H','X-PUBLISHED-TTL:PT6H',
+'BEGIN:VTIMEZONE','TZID:Europe/Zurich','BEGIN:DAYLIGHT','TZOFFSETFROM:+0100','TZOFFSETTO:+0200','TZNAME:CEST','DTSTART:19700329T020000','RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU','END:DAYLIGHT','BEGIN:STANDARD','TZOFFSETFROM:+0200','TZOFFSETTO:+0100','TZNAME:CET','DTSTART:19701025T030000','RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU','END:STANDARD','END:VTIMEZONE'];
+for(const e of exams){const subj=(subjects[e.subj]||{name:e.subj}).name;const test=e.type!=='Hausaufgabe'&&e.type!=='Abgabe';
+  const kind=test?'Prüfung':e.type;
+  L.push('BEGIN:VEVENT','UID:'+e.id+'@bm2hustle.github.io','DTSTAMP:'+stamp);
+  if(e.time){const[h,m]=e.time.split(':').map(Number);const end=new Date(Date.UTC(2000,0,1,h,m+(test?90:45)));
+    L.push('DTSTART;TZID=Europe/Zurich:'+d8(e.date)+'T'+String(h).padStart(2,'0')+String(m).padStart(2,'0')+'00','DTEND;TZID=Europe/Zurich:'+d8(e.date)+'T'+String(end.getUTCHours()).padStart(2,'0')+String(end.getUTCMinutes()).padStart(2,'0')+'00')}
+  else L.push('DTSTART;VALUE=DATE:'+d8(e.date),'DTEND;VALUE=DATE:'+d8(addDay(e.date)));
+  L.push(fold('SUMMARY:'+icsEsc((test?'📝 ':'🏠 ')+subj+': '+e.title)),fold('DESCRIPTION:'+icsEsc(kind+(e.topics.length?'\nStoff:\n- '+e.topics.join('\n- '):'')+'\n\nLernen: https://bm2hustle.github.io/#fach-'+e.id)),'URL:https://bm2hustle.github.io/#fach-'+e.id);
+  if(test)L.push('BEGIN:VALARM','ACTION:DISPLAY',fold('DESCRIPTION:'+icsEsc('Morgen: '+subj+' '+kind)),'TRIGGER:-P1D','END:VALARM');
+  L.push('END:VEVENT')}
+L.push('END:VCALENDAR');
+fs.writeFileSync(path.join(__dirname,'..','calendar.ics'),L.join('\r\n')+'\r\n');
+console.log('calendar.ics:',exams.length,'Termine');

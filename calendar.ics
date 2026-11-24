@@ -1,0 +1,262 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//BM2 Hustle//DE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:BM2 Hustle Prüfungen
+X-WR-TIMEZONE:Europe/Zurich
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:Europe/Zurich
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:wrha@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;TZID=Europe/Zurich:20261124T103000
+DTEND;TZID=Europe/Zurich:20261124T111500
+SUMMARY:🏠 Wirtschaft & Recht: HA WR: Skript Mietrecht Kap. 5 + 6 fertig
+DESCRIPTION:Hausaufgabe\nStoff:\n- Kap. 5 Beendigung der Miete: lesen + al
+ le Übungen\n- Kap. 6 Der Mieterschutz: lesen + alle Übungen\n- Fragen n
+ otieren (für die Lektion)\n\nLernen: https://bm2hustle.github.io/#fach-w
+ rha
+URL:https://bm2hustle.github.io/#fach-wrha
+END:VEVENT
+BEGIN:VEVENT
+UID:soz1@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;TZID=Europe/Zurich:20261126T135000
+DTEND;TZID=Europe/Zurich:20261126T152000
+SUMMARY:📝 Soziologie: Soziologie Kap. 2 + 3 (Frau Marti)
+DESCRIPTION:Prüfung\nStoff:\n- Kap. 2 Soziales Handeln: Sinn sozialen Han
+ delns\, Webers 4 Handlungstypen (zweckrational\, wertrational\, affektuel
+ l\, traditional)\n- Werte\, Normen\, soziale Rollen\, Rollenkonflikt\n- S
+ ozialisation (Durkheim vs. Hurrelmann)\, primär/sekundär/tertiär\, Tr
+ äger\n- Kap. 3 Soziale Kontrolle (intern/extern) und Sanktionen (positiv
+ /negativ\, formell/informell\, innere/äussere)\n- Konformität\, Konform
+ itätsdruck (Asch\, Sherif)\, Überangepasstheit\n- Devianz (positiv/nega
+ tiv)\, Nonkonformismus\, Randgruppen\, Kriminalität/Delinquenz\n- Lernzi
+ ele: OneNote «2 Soziales Handeln» + «3 Soziale Kontrolle und Abweichun
+ g»\n\nLernen: https://bm2hustle.github.io/#fach-soz1
+URL:https://bm2hustle.github.io/#fach-soz1
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Soziologie Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:psy2@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;TZID=Europe/Zurich:20261127T092500
+DTEND;TZID=Europe/Zurich:20261127T105500
+SUMMARY:📝 Psychologie/Philo: Psychologie Prüfung 2 + Philosophie (Herr
+  Richter)
+DESCRIPTION:Prüfung\nStoff:\n- Kap. 3 Wahrnehmung\n- Kap. 4 Gedächtnis +
+  Lernen\n- Kap. 9 Entwicklung\n- Erkenntnistheorie (Realismus\, Konstrukt
+ ivismus)\n- Anthropologie: Argumentation\n\nLernen: https://bm2hustle.git
+ hub.io/#fach-psy2
+URL:https://bm2hustle.github.io/#fach-psy2
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Psychologie/Philo Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:bio2@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;TZID=Europe/Zurich:20261201T135000
+DTEND;TZID=Europe/Zurich:20261201T152000
+SUMMARY:📝 Biologie: Biologie 2. Biotest: Zellteilung\, Genetik\, Mutati
+ onen (Classtime)
+DESCRIPTION:Prüfung\nStoff:\n- Zellteilung: Zellzyklus (Interphase\, Mito
+ se\, Zytokinese) + Steuerung · Mitose-Phasen · Chromosomen + Karyogramm
+  (diploid\, haploid\, homolog) · Meiose + Unterschiede zur Mitose · Rek
+ ombination (inter-/intrachromosomal = Crossing-over) · Geschlechtsbestim
+ mung\n- Molekulare Genetik: Nukleotide + DNA/RNA · DNA-Replikation + Enz
+ yme · Proteinbiosynthese (Transkription\, Translation)\, essenzielle Ami
+ nosäuren · genetischer Code\, Codon\, Triplett\n- Mutationen: Ursachen 
+ + Typen (Gen-/Punktmutation\, Aberrationen) · Konsequenzen\, Erbkrankhei
+ ten\n- Classtime\, max. 1 Lektion · Lernziele-Blatt Aeberhard «KW 49»\
+ n\nLernen: https://bm2hustle.github.io/#fach-bio2
+URL:https://bm2hustle.github.io/#fach-bio2
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Biologie Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:deu2@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;TZID=Europe/Zurich:20261203T083000
+DTEND;TZID=Europe/Zurich:20261203T100000
+SUMMARY:📝 Deutsch: DEU Prüfung 3: Literaturgeschichte
+DESCRIPTION:Prüfung\nStoff:\n- Literaturepochen (Überblick)\n- Aufkläru
+ ng\n- Sturm und Drang\n- Kabale und Liebe (Schiller)\n\nLernen: https://b
+ m2hustle.github.io/#fach-deu2
+URL:https://bm2hustle.github.io/#fach-deu2
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Deutsch Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:eng3@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;TZID=Europe/Zurich:20261204T112000
+DTEND;TZID=Europe/Zurich:20261204T125000
+SUMMARY:📝 Englisch: English Exam 4 (Units 5+6)
+DESCRIPTION:Prüfung\nStoff:\n- U5 Vocabulary: Money + Phrasal verbs (mone
+ y)\n- U5 Grammar: Modal verbs of obligation\, prohibition\, advice (prese
+ nt + past)\n- U5 Grammar: Modal verbs of speculation + deduction (present
+ /future + past)\n- U6 Vocabulary: Body\, Health + Idioms\n- U6 Grammar: Z
+ ero\, first\, second + third conditional\n- FCE Reading & Use of English 
+ (Parts 2\, 4\, 6)\n- FCE Listening (Parts 2\, 3\, 4)\n\nLernen: https://b
+ m2hustle.github.io/#fach-eng3
+URL:https://bm2hustle.github.io/#fach-eng3
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Englisch Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:fra3@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;TZID=Europe/Zurich:20261207T074500
+DTEND;TZID=Europe/Zurich:20261207T091500
+SUMMARY:📝 Französisch: Französisch: CE + PE
+DESCRIPTION:Prüfung\nStoff:\n- Compréhension écrite (CÉ)\n- Production
+  écrite (PÉ)\n- Emploi passé composé / imparfait (u. 26)\n- Vokabeln 
+ Kap. 7–8 (laut Semesterplan im Unterricht)\n- Oscar et la dame rose (Le
+ ktüre)\n\nLernen: https://bm2hustle.github.io/#fach-fra3
+URL:https://bm2hustle.github.io/#fach-fra3
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Französisch Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:mat3@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;TZID=Europe/Zurich:20261209T092500
+DTEND;TZID=Europe/Zurich:20261209T105500
+SUMMARY:📝 Mathematik: Mathe Prüfung 3: Quadr. Gleichungen\, Textaufgab
+ en\, Datenanalyse
+DESCRIPTION:Prüfung\nStoff:\n- Kap. 10: 2 Grundformen (S.107)\n- 10.1 Rei
+ nquadratische Gleichungen (S.107–108\, Aufg. S.108: 1–4)\n- 10.2.1 Fa
+ ktorzerlegung (S.109)\n- 10.2.2 abc-Formel + Diskriminante (S.109–110) 
+ – ein Muss!\n- Aufgaben S.111: 1–7 und 9 (nicht 8\, 10)\n- 10.4 Texta
+ ufgaben: Zahlenrätsel S.117–118: 1–27\, Mischungs-/Leistungsaufgaben
+  S.121–122: 1–14\n- 5.6 Textaufgaben (lineare Gl.): Zahlenrätsel S.4
+ 0: 1–12\, Mischungsrechnen S.47–48: 1–16\, Arbeit und Leistung S.51
+ –52\n- 9.4 Textaufgaben (Gleichungssysteme): Zahlenrätsel S.92: 1–14
+ \, Mischungsrechnen S.96: 1–7\, Arbeit und Leistung S.102: 1–4\n- Kap
+ . 16 Datenanalyse (SOL\, S.168–206): Merkmalsarten\, absolute/relative 
+ Häufigkeit\, Säulen-/Kreisdiagramm\, Histogramm\, Mittelwert\, Median\,
+  Modus\, Spannweite\, Standardabweichung\, Quartile\, Boxplot\, Ausreisse
+ r\n- Fällt weg: 10.2.3 Quadr. Ergänzung\, 10.2.4 Vieta\, 10.3 Wurzelgle
+ ichungen\, S.119–120 Prozent/Zins\n\nLernen: https://bm2hustle.github.i
+ o/#fach-mat3
+URL:https://bm2hustle.github.io/#fach-mat3
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Mathematik Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:wr2@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;TZID=Europe/Zurich:20261215T103000
+DTEND;TZID=Europe/Zurich:20261215T120000
+SUMMARY:📝 Wirtschaft & Recht: Wirtschaft & Recht Prüfung 2
+DESCRIPTION:Prüfung\nStoff:\n- Stoff noch offen (alles nach der Prüfung 
+ vom 17.11.)\n\nLernen: https://bm2hustle.github.io/#fach-wr2
+URL:https://bm2hustle.github.io/#fach-wr2
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Wirtschaft & Recht Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:idpa2@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;VALUE=DATE:20261218
+DTEND;VALUE=DATE:20261219
+SUMMARY:🏠 IDPA: IDPA Abgabe
+DESCRIPTION:Abgabe\nStoff:\n- Arbeit fertig + Korrekturlesen (14.12.)\n\nL
+ ernen: https://bm2hustle.github.io/#fach-idpa2
+URL:https://bm2hustle.github.io/#fach-idpa2
+END:VEVENT
+BEGIN:VEVENT
+UID:gp3@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;TZID=Europe/Zurich:20261218T135000
+DTEND;TZID=Europe/Zurich:20261218T152000
+SUMMARY:📝 Geschichte & Politik: GP Prüfung 3: Imperialismus + Vorausse
+ tzungen 1. Weltkrieg
+DESCRIPTION:Prüfung\nStoff:\n- Imperialismus: Begriff\, Ursachen\, Zusamm
+ enhang mit Industrialisierung\n- Ideologie: Sozialdarwinismus\, «White M
+ an's Burden»\, mission civilisatrice\n- Race to Africa – europäische 
+ Konkurrenz\n- Vom Imperialismus zum 1. Weltkrieg\n- Neue Staaten\, Flotte
+ nrüstung\, Bündnissysteme\, Pulverfass Balkan\n\nLernen: https://bm2hus
+ tle.github.io/#fach-gp3
+URL:https://bm2hustle.github.io/#fach-gp3
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Geschichte & Politik Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:fra4@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;VALUE=DATE:20270104
+DTEND;VALUE=DATE:20270105
+SUMMARY:📝 Französisch: Test de vocabulaire ch. 7–9
+DESCRIPTION:Prüfung\nStoff:\n- Vokabeln Kapitel 7\n- Vokabeln Kapitel 8\n
+ - Vokabeln Kapitel 9\n- (im Unterricht am 4.1. neu: Superlatif u. 24)\n\n
+ Lernen: https://bm2hustle.github.io/#fach-fra4
+URL:https://bm2hustle.github.io/#fach-fra4
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Französisch Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:fra5@bm2hustle.github.io
+DTSTAMP:20261124T211437Z
+DTSTART;VALUE=DATE:20270114
+DTEND;VALUE=DATE:20270115
+SUMMARY:📝 Französisch: Französisch: Application
+DESCRIPTION:Prüfung\nStoff:\n- Stoff noch offen\n\nLernen: https://bm2hus
+ tle.github.io/#fach-fra5
+URL:https://bm2hustle.github.io/#fach-fra5
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen: Französisch Prüfung
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR
