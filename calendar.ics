@@ -186,11 +186,10 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wr2@bm2hustle.github.io
 DTSTAMP:20261124T211437Z
-DTSTART;TZID=Europe/Zurich:20261215T103000
-DTEND;TZID=Europe/Zurich:20261215T120000
-SUMMARY:📝 Wirtschaft & Recht: Wirtschaft & Recht Prüfung 2
-DESCRIPTION:Prüfung\nStoff:\n- Stoff noch offen (alles nach der Prüfung 
- vom 17.11.)\n\nLernen: https://bm2hustle.github.io/#fach-wr2
+DTSTART;TZID=Europe/Zurich:20261215T130000
+DTEND;TZID=Europe/Zurich:20261215T143000
+SUMMARY:📝 Wirtschaft & Recht: Mietrecht + Familienrecht
+DESCRIPTION:Prüfung\nStoff:\n- Mietrecht\n- Familienrecht\n\nLernen: https://bm2hustle.github.io/#fach-wr2
 URL:https://bm2hustle.github.io/#fach-wr2
 BEGIN:VALARM
 ACTION:DISPLAY
