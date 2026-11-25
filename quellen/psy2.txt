@@ -1,0 +1,125 @@
+Psychologie Prüfung 2 + Philosophie (Herr Richter) – Prüfung am 2026-11-27 (BM2)
+
+Prüfungsstoff:
+- Kap. 3 Wahrnehmung
+- Kap. 4 Gedächtnis + Lernen
+- Kap. 9 Entwicklung
+- Erkenntnistheorie (Realismus, Konstruktivismus)
+- Anthropologie: Argumentation
+
+## Bild-Übersicht: Psychologie + Philosophie
+Gedächtnis-Modell
+ Reiz über die 7 Sinne
+ →
+ Ultrakurzzeit Sekundenbruchteile – Filter (Aufmerksamkeit)
+ →
+ Kurzzeit ca. 7 Einheiten, Sekunden – wiederholen!
+ →
+ Langzeit unbegrenzt – Abruf
+ 1 Enkodierung aufnehmen
+ →
+ 2 Speicherung ablegen + verknüpfen
+ →
+ 3 Abruf erinnern / wiedererkennen
+ Explizit ↔ Implizit
+ Explizit – episodisch Erlebnisse: mein Geburtstag
+ Explizit – semantisch Wissen: Bern = Hauptstadt
+ Implizit – prozedural Können: Velofahren, Penalty schiessen
+ Implizit – Priming früherer Reiz wirkt unbewusst
+ 5 Gedächtnishemmungen
+ Proaktiv alt stört neu
+ Retroaktiv neu stört alt
+ Ähnlichkeit Ähnliches verwechselt
+ Affektiv Angst → Blackout
+ Ekphorisch Neues kurz vor Abruf
+ Piaget – Zeitstrahl
+ 0–2 sensomotorisch · Objektpermanenz
+ →
+ 2–7 präoperational · Egozentrismus
+ →
+ 7–11 konkret-operational · Mengenerhaltung
+ →
+ ab 12 formal-operational · abstrakt
+ Erikson – 8 Krisen
+ Säugling Urvertrauen vs. Misstrauen
+ →
+ Kleinkind Autonomie vs. Scham
+ →
+ Vorschule Initiative vs. Schuld
+ →
+ Schule Werksinn vs. Minderwertigkeit
+ Jugend Identität vs. Diffusion
+ →
+ früh Erw. Intimität vs. Isolation
+ →
+ mittel Erw. Generativität vs. Stagnation
+ →
+ spät Erw. Integrität vs. Verzweiflung
+ Erziehungsstile (Lewin)
+ Autoritär Kontrolle, Strafen → unselbständig
+ Demokratisch Grenzen + Mitbestimmung → ideal
+ Laisser-faire keine Regeln → keine Orientierung
+ Sterben (Kübler-Ross)
+ 1 Verleugnung
+ →
+ 2 Zorn
+ →
+ 3 Verhandeln
+ →
+ 4 Depression
+ →
+ 5 Akzeptanz
+ Philosophie: Erkenntnistheorie
+ Naiver Realismus Welt = so wie ich sie sehe. Kritik: Sinnestäuschungen
+ Konstruktivismus Wirklichkeit wird aktiv konstruiert
+ Radikaler Konstr. objektive Erkenntnis unmöglich – Gehirn baut seine Welt
+
+## Begriffe
+- Die 7 Sinne?: Sehen, hören, tasten, schmecken, riechen, Bewegung (kinästhetisch), Gleichgewicht
+- Schwellen + Adaptation?: Absolutschwelle: wird wahrgenommen · Unterschiedsschwelle: kleinster Unterschied (Weber) · Adaptationsniveau: persönlicher Massstab · Sensorische Adaptation: Gewöhnung
+- Deprivation + Hospitalismus?: Reizentzug → Halluzinationen, Desorientierung. Hospitalismus (Spitz): Heimkinder ohne Zuwendung → Entwicklungsstörungen.
+- Werbung + AIDA?: Bewusst, unbewusst, unterschwellig. AIDA: Attention – Interest – Desire – Action.
+- Gedächtnis: 3 Speicher + 3 Phasen?: Ultrakurzzeit (Sekunden), Kurzzeit (begrenzt, ca. 7 Einheiten), Langzeit (unbegrenzt). Enkodierung – Speicherung – Abruf.
+- Explizit vs. implizit?: Explizit: episodisch (Erlebnis), semantisch (Wissen). Implizit: prozedural (Velofahren), Priming.
+- 5 Gedächtnishemmungen?: Proaktiv (alt stört neu), retroaktiv (neu stört alt), Ähnlichkeit, affektiv (Gefühle), ekphorisch (Neues kurz vor Abruf).
+- Piaget – 4 Stufen?: 0–2 sensomotorisch · 2–7 präoperational · 7–11 konkret-operational · ab 12 formal-operational
+- Erikson – Jugend + Erwachsene?: Jugend: Identität vs. Diffusion · früh: Intimität vs. Isolation · mittel: Generativität vs. Stagnation · spät: Integrität vs. Verzweiflung
+- Erziehungsstile (Lewin)?: Autoritär (Kontrolle) · demokratisch (Grenzen + Mitbestimmung, ideal) · laisser-faire (keine Regeln)
+- Sterben + Trauer?: Kübler-Ross: Verleugnung, Zorn, Verhandeln, Depression, Akzeptanz. Kast: Nicht-wahrhaben, Emotionen, Suchen/Trennen, neuer Bezug.
+- Naiver Realismus vs. (radikaler) Konstruktivismus?: Naiv: Welt = so wie wahrgenommen. Konstruktivismus: Wirklichkeit wird aktiv konstruiert. Radikal: objektive Erkenntnis unmöglich.
+
+## Übungsfragen mit Lösung
+- Wie viele Sinne nennt dein Lernblatt? → 7 (sehen, hören, tasten, schmecken, riechen, Bewegung, Gleichgewicht)
+- Was sind nicht-sensorische Faktoren? → Stimmung, Erfahrung, Einstellungen, selektive Aufmerksamkeit
+- Cocktailparty-Effekt? → Man hört im Lärm plötzlich den eigenen Namen → selektive Aufmerksamkeit
+- Was untersucht die Psychophysik? → Beziehung zwischen physikalischem Reiz und Empfindung (Fechner)
+- Absolutschwelle (Reizschwelle)? → Bereich, in dem ein Reiz überhaupt wahrgenommen wird
+- Unterschiedsschwelle? → Kleinster Unterschied zwischen 2 Reizen, den man noch merkt (Weber)
+- Gestank im Bus merkt man nach einer Weile kaum mehr → ? → Sensorische Adaptation
+- Eine Last ist für den Bauarbeiter leicht, für den Studenten schwer → ? → Adaptationsniveau
+- Folgen von Reizentzug (Deprivation)? → Halluzinationen, Desorientierung, schlechtere Konzentration
+- Hospitalismus (René Spitz)? → Heimkinder ohne Zuwendung: Entwicklungsverzögerung, emotionale + sprachliche Störungen
+- Parapsychologie? → Untersuchung paranormaler Phänomene (Telepathie, Hellsehen) – bis heute nicht bewiesen
+- AIDA in der Werbung? → Attention – Interest – Desire – Action
+- Phasen der Informationsverarbeitung? → Enkodierung – Speicherung – Abruf
+- Velofahren gehört zu welchem Gedächtnis? → Implizit – prozedural
+- «Bern ist die Hauptstadt» gehört zu … → explizit – semantisch
+- «Mein letzter Geburtstag» gehört zu … → explizit – episodisch
+- Proaktive Hemmung? → Alt stört neu (alte Telefonnummer kommt immer zuerst)
+- Retroaktive Hemmung? → Neu stört alt (neu Gelerntes überdeckt das vorher Gelernte)
+- Franz-Wörter direkt nach Englisch-Wörtern lernen → ? → Ähnlichkeitshemmung
+- Blackout an der Prüfung wegen Angst → ? → Affektive Hemmung
+- Direkt vor der Prüfung noch Neues lernen stört → ? → Ekphorische Hemmung
+- Kognitive Lernstrategien? → Wiederholen, Elaborieren, Organisieren, Selbstkontrolle
+- Piaget 0–2 Jahre? → Sensomotorisch (Objektpermanenz)
+- Piaget 2–7 Jahre? → Präoperational (Egozentrismus, Symbolspiel)
+- Piaget 7–11 Jahre? → Konkret-operational (Mengenerhaltung)
+- Piaget ab 12 Jahren? → Formal-operational (abstrakt, Hypothesen)
+- Assimilation vs. Akkommodation? → Assimilation = Neues ins Schema einordnen; Akkommodation = Schema anpassen
+- Eriksons Krise der Adoleszenz? → Identität vs. Identitätsdiffusion
+- Kohlberg: Worauf kommt es bei der Moral an? → Wie man eine Entscheidung begründet (Heinz-Dilemma)
+- Idealer Erziehungsstil nach Lewin? → Demokratisch (Grenzen + Mitbestimmung)
+- Sterbephasen nach Kübler-Ross? → Verleugnung – Zorn – Verhandeln – Depression – Akzeptanz
+- Naiver Realismus? → Die Welt ist genau so, wie wir sie wahrnehmen (Kritik: Sinnestäuschungen, Farben entstehen erst im Gehirn.)
+- Radikaler Konstruktivismus? → Wir können die Realität nie objektiv erkennen – das Gehirn konstruiert seine Wirklichkeit
+- Was ist ein Gedankenexperiment? → Ein vorgestelltes Szenario, um eine Idee zu prüfen (z. B. Gehirn im Tank)

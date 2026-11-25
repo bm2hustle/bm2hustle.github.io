@@ -1,0 +1,111 @@
+Biologie 2. Biotest: Zellteilung, Genetik, Mutationen (Classtime) – Prüfung am 2026-12-01 (BM2)
+
+Prüfungsstoff:
+- Zellteilung: Zellzyklus (Interphase, Mitose, Zytokinese) + Steuerung · Mitose-Phasen · Chromosomen + Karyogramm (diploid, haploid, homolog) · Meiose + Unterschiede zur Mitose · Rekombination (inter-/intrachromosomal = Crossing-over) · Geschlechtsbestimmung
+- Molekulare Genetik: Nukleotide + DNA/RNA · DNA-Replikation + Enzyme · Proteinbiosynthese (Transkription, Translation), essenzielle Aminosäuren · genetischer Code, Codon, Triplett
+- Mutationen: Ursachen + Typen (Gen-/Punktmutation, Aberrationen) · Konsequenzen, Erbkrankheiten
+- Classtime, max. 1 Lektion · Lernziele-Blatt Aeberhard «KW 49»
+
+## Bild-Übersicht: Zellteilung + Proteinbiosynthese
+Zellzyklus
+ Interphase G1 wachsen · S: DNA verdoppeln · G2 vorbereiten
+ →
+ Mitose Kern teilt sich (PMAT)
+ →
+ Zytokinese Zelle schnürt sich durch
+ Mitose – PMAT
+ 1 Prophase Chromosomen verdichten · Kernhülle weg · Spindel
+ →
+ 2 Metaphase Chromosomen in der Mitte (Äquatorebene)
+ →
+ 3 Anaphase Chromatiden werden zu den Polen gezogen
+ →
+ 4 Telophase Neue Kernhüllen · Chromosomen entspiralisieren
+ Ergebnis Mitose: 2 identische Zellen mit 46 Chromosomen (diploid) → Wachstum, Ersatz.
+ Meiose – 2 Teilungen
+ Meiose I Homologe getrennt · Crossing-over · 46 → 23
+ →
+ Meiose II Chromatiden getrennt (wie Mitose)
+ →
+ Ergebnis 4 haploide Keimzellen , alle verschieden
+ Vom Gen zum Protein
+ DNA (Kern) Gen = Bauplan
+ →
+ Transkription RNA-Polymerase → mRNA · Spleissen
+ →
+ mRNA durch Kernpore ins Zytoplasma
+ →
+ Translation Ribosom + tRNA → Aminosäurekette
+ →
+ Protein Faltung → 3D
+ DNA-Matrize TAC GGT ACC ATT 
+ mRNA (Codon) AUG CCA UGG UAA 
+ tRNA (Anticodon) UAC GGU ACC – 
+ Aminosäure Met (Start) Pro Trp STOPP 
+ Basenregel: DNA → mRNA: A→U, T→A, G→C, C→G . RNA hat Uracil statt Thymin.
+
+## Begriffe
+- Nukleotid – Aufbau (Genetik): Phosphat + Zucker (Desoxyribose) + Base A/T/G/C · Paare: A–T, G–C
+- DNA vs. RNA (Genetik): DNA: Desoxyribose, Thymin, Doppelstrang, Erbinfo · RNA: Ribose, Uracil, Einzelstrang, Bote/Transport
+- DNA-Replikation (Genetik): Helicase öffnet → DNA-Polymerase baut komplementär → Ligase verbindet · semikonservativ
+- Genetischer Code (Genetik): Codon = Triplett = 3 Basen → 1 Aminosäure · universell, eindeutig, degeneriert · AUG Start, UAA/UAG/UGA Stopp
+- Karyogramm (Genetik): Bild aller Chromosomen, nach Grösse geordnet: 22 Paare Autosomen + XX/XY
+- Rekombination – 2 Arten (Genetik): interchromosomal = zufällige Verteilung der Chromosomen · intrachromosomal = Crossing-over → Vielfalt
+- Mutationstypen (Genetik): Gen-/Punktmutation (1 Base) · Chromosomenaberration strukturell (Stück fehlt/verdoppelt) · numerisch/Genommutation (Trisomie 21)
+- Erbkrankheiten – Beispiele (Genetik): Down-Syndrom (Trisomie 21) · Sichelzellanämie (Punktmutation) · Mukoviszidose · Bluterkrankheit (X-chromosomal)
+- Mitose – 4 Phasen mit je 1 Merkmal?: Prophase: Chromosomen verdichten, Kernhülle weg · Metaphase: Chromosomen in der Mitte · Anaphase: Chromatiden zu den Polen · Telophase: neue Kernhüllen
+- Mitose vs. Meiose?: Mitose: 2 identische diploide Zellen (Wachstum). Meiose: 4 verschiedene haploide Keimzellen (Fortpflanzung).
+- Meiose I vs. Meiose II?: I: homologe Chromosomen getrennt (Reduktion, Crossing-over). II: Schwesterchromatiden getrennt (wie Mitose).
+- DNA – Aufbau?: Doppelhelix (Watson & Crick 1953, Franklin). Nukleotid = Phosphat + Desoxyribose + Base. A–T, G–C. Stränge antiparallel + komplementär.
+- Transkription?: Im Kern: RNA-Polymerase liest einen DNA-Strang ab → mRNA. Danach Spleissen → reife mRNA durch Kernpore.
+- Translation?: Im Zytoplasma am Ribosom: mRNA-Codons werden gelesen, tRNA (Anticodon) bringt AS, AS werden verknüpft (Peptidbindung).
+- Genetischer Code?: 3 Basen = 1 Codon = 1 AS · 64 Codons, 20 AS · Start AUG (Met) · Stopp UAA, UAG, UGA
+- DNA → mRNA → tRNA übersetzen?: DNA→mRNA: A→U, T→A, G→C, C→G. mRNA→tRNA wieder komplementär. Codon in der Codon-Sonne nachschauen (innen nach aussen).
+- Wozu Proteine?: Baustoff, Transport, Bewegung (Aktin/Myosin), Antikörper, Enzyme
+
+## Übungsfragen mit Lösung
+- Woraus besteht ein Nukleotid? → Phosphat + Zucker (Desoxyribose) + Base (A, T, G oder C) (Nukleotide werden über Zucker und Phosphat zu Ketten verknüpft; die Basen paaren A–T und G–C.)
+- DNA vs. RNA – welcher Unterschied stimmt? → RNA: Ribose statt Desoxyribose, Uracil statt Thymin, meist einzelsträngig
+- Wie läuft die DNA-Replikation ab? → Helicase öffnet die Doppelhelix, DNA-Polymerase baut komplementäre Stränge, Ligase verbindet Stücke → 2 identische DNA (semikonservativ)
+- Was heisst «semikonservativ» bei der Replikation? → Jede neue DNA besteht aus 1 altem und 1 neuen Strang
+- Welches Enzym öffnet die DNA-Doppelhelix? → Helicase
+- Was ist ein Codon (Triplett)? → 3 aufeinanderfolgende Basen der mRNA, die für 1 Aminosäure codieren
+- Warum bestimmt eine DNA-Sequenz ein Protein eindeutig? → Jedes Codon codiert genau 1 Aminosäure → die Basenfolge legt die Aminosäurefolge fest (Der Code ist eindeutig (1 Codon → 1 AS), aber degeneriert (1 AS kann mehrere Codons haben).)
+- Was sind essenzielle Aminosäuren? → Aminosäuren, die der Körper nicht selbst herstellen kann → müssen mit der Nahrung kommen
+- Was zeigt ein Karyogramm? → Alle Chromosomen eines Menschen nach Grösse geordnet (22 Paare + XX oder XY)
+- Diploid vs. haploid? → diploid = doppelter Chromosomensatz (2n = 46, Körperzellen) · haploid = einfacher Satz (n = 23, Keimzellen)
+- Homologe Chromosomen sind … → die 2 gleich gebauten Chromosomen eines Paars – eins von der Mutter, eins vom Vater
+- Interchromosomale Rekombination ist … → die zufällige Verteilung der väterlichen und mütterlichen Chromosomen in der Meiose (Intrachromosomal = Crossing-over (Stückaustausch zwischen homologen Chromatiden). Beides → genetische Vielfalt.)
+- Wie wird das Geschlecht beim Menschen bestimmt? → Durch das Spermium: X → Mädchen (XX), Y → Junge (XY)
+- Was ist eine Punktmutation (Genmutation)? → Änderung einer einzelnen Base in der DNA (z. B. Sichelzellanämie)
+- Trisomie 21 (Down-Syndrom) ist eine … → numerische Chromosomenaberration (Genommutation): Chromosom 21 ist 3× vorhanden
+- Ursachen von Mutationen? → spontan (Kopierfehler) oder durch Mutagene: UV-/Röntgenstrahlung, Chemikalien (z. B. Tabakrauch), Viren
+- Mutation in einer Körperzelle vs. Keimzelle? → Körperzelle: nur diese Person betroffen (z. B. Krebs) · Keimzelle: wird an Kinder vererbt
+- Wie viele Chromosomen hat eine menschliche Körperzelle? → 46 (23 Paare)
+- Wie viele Chromosomen hat eine Keimzelle (Ei/Spermium)? → 23 (haploid)
+- Was passiert in der S-Phase der Interphase? → Die DNA wird verdoppelt (Replikation)
+- Prophase (Mitose): → Chromosomen verdichten sich, Kernhülle löst sich, Spindelapparat bildet sich
+- Metaphase: → Chromosomen ordnen sich in der Äquatorialebene an
+- Anaphase: → Schwesterchromatiden werden getrennt und zu den Polen gezogen
+- Telophase: → Neue Kernhüllen entstehen, Chromosomen entspiralisieren sich
+- Richtige Reihenfolge der Mitose? → Prophase – Metaphase – Anaphase – Telophase (Eselsbrücke: «PMAT».)
+- Ergebnis der Mitose? → 2 genetisch identische, diploide Tochterzellen
+- Ergebnis der Meiose? → 4 haploide, genetisch verschiedene Keimzellen
+- Was wird in der Meiose I getrennt? → Die homologen Chromosomen (Reduktionsteilung)
+- Was wird in der Meiose II getrennt? → Die Schwesterchromatiden (wie bei der Mitose)
+- Was ist Crossing-over? → Austausch von Stücken zwischen homologen Chromosomen (Prophase I) → neue Genkombinationen
+- Wozu dient die Mitose? → Wachstum und Ersatz von Zellen
+- Basenpaarung in der DNA? → A – T und G – C
+- Ein Nukleotid besteht aus … → Phosphat + Zucker (Desoxyribose) + Base
+- Gegenstrang zu 5'-GCTGTGAT-3'? → CGACACTA
+- Wo findet die Transkription statt? → Im Zellkern
+- Wo findet die Translation statt? → An den Ribosomen im Zytoplasma
+- Welches Enzym macht die Transkription? → RNA-Polymerase
+- Was unterscheidet RNA von DNA? → Uracil statt Thymin, Ribose statt Desoxyribose, nur 1 Strang
+- Ein Codon besteht aus … → 3 Basen (Triplett) = 1 Aminosäure
+- Startcodon? → AUG (Methionin)
+- Welche sind Stoppcodons? → UAA, UAG, UGA
+- DNA-Matrize TAC → mRNA? → AUG (T→A, A→U, C→G.)
+- Was macht die tRNA? → Bringt die passende Aminosäure zum Ribosom (Anticodon passt zum Codon)
+- Was passiert beim Spleissen? → Unnütze Stücke werden aus der mRNA herausgeschnitten → reife mRNA
+- Wie viele Codons gibt es – für wie viele Aminosäuren? → 64 Codons für 20 Aminosäuren

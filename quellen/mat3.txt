@@ -1,0 +1,184 @@
+Mathe Prüfung 3: Quadr. Gleichungen, Textaufgaben, Datenanalyse – Prüfung am 2026-12-09 (BM2)
+
+Prüfungsstoff:
+- Kap. 10: 2 Grundformen (S.107)
+- 10.1 Reinquadratische Gleichungen (S.107–108, Aufg. S.108: 1–4)
+- 10.2.1 Faktorzerlegung (S.109)
+- 10.2.2 abc-Formel + Diskriminante (S.109–110) – ein Muss!
+- Aufgaben S.111: 1–7 und 9 (nicht 8, 10)
+- 10.4 Textaufgaben: Zahlenrätsel S.117–118: 1–27, Mischungs-/Leistungsaufgaben S.121–122: 1–14
+- 5.6 Textaufgaben (lineare Gl.): Zahlenrätsel S.40: 1–12, Mischungsrechnen S.47–48: 1–16, Arbeit und Leistung S.51–52
+- 9.4 Textaufgaben (Gleichungssysteme): Zahlenrätsel S.92: 1–14, Mischungsrechnen S.96: 1–7, Arbeit und Leistung S.102: 1–4
+- Kap. 16 Datenanalyse (SOL, S.168–206): Merkmalsarten, absolute/relative Häufigkeit, Säulen-/Kreisdiagramm, Histogramm, Mittelwert, Median, Modus, Spannweite, Standardabweichung, Quartile, Boxplot, Ausreisser
+- Fällt weg: 10.2.3 Quadr. Ergänzung, 10.2.4 Vieta, 10.3 Wurzelgleichungen, S.119–120 Prozent/Zins
+
+## Quadratische Gleichungen – die 4 Wege
+Eine quadratische Gleichung hat ein x² . Normalform: ax² + bx + c = 0. Sie hat 0, 1 oder 2 Lösungen .
+ 1. Reinquadratisch (kein bx): ax² + c = 0
+ x² allein stellen, dann Wurzel ziehen – ± nicht vergessen! 
+ 2x² − 18 = 0 → x² = 9 → x = ±3 · x² + 4 = 0 → x² = −4 → keine Lösung 
+ 2. Ohne c: ax² + bx = 0 → x ausklammern
+ x² − 5x = 0 → x(x − 5) = 0 → x = 0 oder x = 5 
+ Nullprodukt: Ein Produkt ist 0, wenn ein Faktor 0 ist. Nie durch x teilen – sonst verlierst du x = 0!
+ 3. Faktorzerlegung (Vieta): x² + bx + c = 0
+ Suche 2 Zahlen: mal ergibt c, plus ergibt b.
+ x² + 5x + 6 = 0 → 2·3 = 6, 2+3 = 5 → (x+2)(x+3) = 0 → x = −2 oder −3 
+ x² − x − 12 = 0 → (−4)·3 = −12, −4+3 = −1 → (x−4)(x+3) = 0 → x = 4 oder −3 
+ Binomische Formeln erkennen: x² + 6x + 9 = (x+3)² → nur eine Lösung x = −3.
+ 4. abc-Formel (geht immer)
+ x = ( −b ± √(b² − 4ac) ) : (2a) 
+ Diskriminante D = b² − 4ac : D > 0 → 2 Lösungen · D = 0 → 1 Lösung · D < 0 → keine Lösung.
+ 2x² + 3x − 2 = 0: a=2, b=3, c=−2 → D = 9 + 16 = 25 → x = (−3 ± 5) : 4 → x = 0,5 oder −2 
+ Zuerst auf Normalform bringen (alles auf eine Seite, = 0). Vorzeichen von b und c mitnehmen!
+ Textaufgaben – Rezept
+ Unbekannte festlegen (x = …)
+ Gleichung aus dem Text aufstellen
+ Auf Normalform bringen und lösen
+ Lösungen prüfen: passt sie zum Text? (Längen nie negativ!)
+ Antwortsatz
+ Rechteck: Länge 3 cm mehr als Breite, Fläche 40 cm² → x(x+3) = 40 → x² + 3x − 40 = 0 → (x+8)(x−5) = 0 → x = 5 (−8 fällt weg) → 5 cm × 8 cm.
+
+## Textaufgaben – Zahlenrätsel, Mischung, Arbeit/Leistung
+Rezept für jede Textaufgabe
+ Unbekannte festlegen: x = … (bei 2 Unbekannten: x und y)
+ Text in Gleichung übersetzen (Satz für Satz)
+ Lösen: linear (Kap. 5), Gleichungssystem (Kap. 9) oder quadratisch (Kap. 10)
+ Prüfen: passt das Ergebnis zum Text? (keine negativen Längen, Personen, Flaschen)
+ Antwortsatz 
+ Übersetzen
+ Text Mathe 
+ das Doppelte / 3fache einer Zahl 2x / 3x 
+ um 5 grösser x + 5 
+ der dritte Teil x : 3 
+ Quadrat einer Zahl x² 
+ Kehrwert 1/x 
+ aufeinanderfolgende Zahlen x und x + 1 
+ Verhältnis 5 : 6 5x und 6x 
+ Mischungsrechnen (Buch S.45–46)
+ m₁ · c₁ + m₂ · c₂ = (m₁ + m₂) · c 
+ m = Menge (Liter, kg) · c = Konzentration, Preis pro kg oder % · links die 2 Sorten, rechts die Mischung.
+ Glace: 3 L mit 300 g/L + 5 L mit 400 g/L → 3·300 + 5·400 = 8·x → x = 2900 : 8 = 362,5 g/L 
+ Wasser dazugeben = Sorte mit c = 0 %. Messing: 130 kg Kupfer (100 %) + x kg Zink (0 %) = (130 + x) kg mit 65 % → 130·100 = (130 + x)·65 → x = 70 kg 
+ Arbeit und Leistung (Buch S.49–50)
+ Zeit · Leistung = Arbeit · Wer allein t braucht, hat die Leistung 1/t pro Zeiteinheit. Die ganze Arbeit = 1 . Zusammen: Leistungen addieren .
+ Zeit allein Leistung 
+ Lastwagen I x 1/x 
+ Lastwagen II 30 1/30 
+ Zusammen 18 Tage: 18 · (1/30 + 1/x) = 1 → x = 45 Tage 
+ Schon ein Teil erledigt? Rest = 1 − erledigter Teil. Maler: Debrunner (9 h) arbeitet 3 h allein = 3/9 erledigt → x · (1/6 + 1/9) = 1 − 3/9 → x = 2,4 h 
+ Mit 2 Unbekannten (Kap. 9.4, Buch S.91–102)
+ Zwei gesuchte Grössen → x und y festlegen → 2 Gleichungen aufstellen → mit Additions- oder Einsetzungsverfahren lösen. Lösung: L = {(x/y)}.
+ Zahlenrätsel S.91: Summe 100, 3x − 25 = 2y → (1) x + y = 100, (2) 3x − 2y = 25 → (1)·2 + (2): 5x = 225 → x = 45 , y = 55 
+ Mischung S.95: 80 kg zu x + 70 kg zu y = 150 kg zu 7.40 und 100 kg zu x + 50 kg zu y = 150 kg zu 7.00 → (1) 80x + 70y = 1110, (2) 100x + 50y = 1050 → x = 6 , y = 9 CHF/kg 
+ Leistung S.101: Durchfluss = Volumen : Zeit. Beide Pumpen 90 Min → Becken leer: 90/t₁ + 90/t₂ = 1. Pumpe 1: 24 Min, Pumpe 2: 40 Min → 2/5 leer: 24/t₁ + 40/t₂ = 2/5 → t₁ = 360 , t₂ = 120 Min 
+ Bei Leistungsaufgaben mit «braucht 5 Tage weniger» entsteht oft eine quadratische Gleichung → abc-Formel. Die negative Lösung fällt weg!
+
+## Kap. 16 Datenanalyse – das Wichtigste
+Aufgabe 1 (S.170) – neue Links vom Lehrer (Nov. 2026): 
+1a Alterspyramide: BFS Alterspyramide · Erwerbslosenquote ILO international (BFS) 
+1b: Arbeitsmarkt in Europa (bpb) · Statistischer Atlas der Schweiz 
+1c: Statistisches Amt Kanton Zürich 
+ Statistik = Daten aus der Vergangenheit auswerten. Wahrscheinlichkeitsrechnung = Prognosen für die Zukunft. Zusammen: Stochastik .
+ Merkmalsarten (S.174)
+ qualitativ (Kategorien) quantitativ (Zahlen) 
+ nominal : keine Rangfolge (Geschlecht, Beruf) diskret : abzählbar (Anzahl Kinder) 
+ ordinal : Rangfolge (Noten, Sterne) stetig : jeder Wert möglich (Grösse, Temperatur) 
+ Häufigkeiten
+ absolut = wie oft ein Wert vorkommt · relativ = absolut : n (zwischen 0 und 1). Relativ braucht man, um verschieden grosse Gruppen zu vergleichen (Zürich 120/600 = 20 %, Chur 100/200 = 50 %).
+ Relative Summenhäufigkeit : alle relativen Häufigkeiten bis zu einem Wert zusammengezählt («50 % sprangen höchstens 400 cm»).
+ Diagramme
+ Säulen-/Balkendiagramm (Lücken zwischen Säulen) · Kreisdiagramm (Anteile, Winkel = rel. Häufigkeit · 360°) · Histogramm : Werte in Klassen , Balken ohne Lücke, höchstens √n Klassen . Formen: symmetrisch, rechtsschief (Ausläufer rechts), linksschief, uni-/bi-/multimodal.
+ Achtung bei Grafiken: verzerrte oder abgeschnittene Achsen täuschen (China-Grafik, Börsen AG).
+ Lagemasse (Mädchen: 360, 390, 390, 400, 410, 420, 420, 420)
+ Mittelwert x̄ = Summe : n = 3210 : 8 = 401,25 
+ Median x̃ = Mitte der sortierten Liste; bei gerader Anzahl Mittel der 2 mittleren: (400 + 410) : 2 = 405 
+ Modus = häufigster Wert = 420 
+ Min 360, Max 420, Spannweite R = 60
+ Streuung
+ Standardabweichung s : 1. Abweichung jedes Werts vom Mittelwert · 2. quadrieren · 3. alles addieren · 4. durch n − 1 teilen (= Varianz s²) · 5. Wurzel ziehen. Mädchen: s² = 441,07 → s ≈ 21,0 .
+ Variationskoeffizient v = s : x̄ – zum Vergleichen, egal welche Einheit.
+ Quartile + Boxplot
+ Q1: 25 % darunter · Q2 = Median · Q3: 75 % darunter · IQR = Q3 − Q1 (mittlere 50 %).
+ Boxplot = 5 Werte: Min – Q1 – Median – Q3 – Max. Box von Q1 bis Q3, Strich beim Median, Antennen bis Min/Max. Ausreisser : mehr als 1,5 · IQR von der Box weg → als Punkt.
+ Robust (Ausreisser egal): Median, Modus, IQR. Empfindlich : Mittelwert, s, Spannweite. Viele Taschenrechner (TI-30X) rechnen x̄, s, Median direkt aus.
+
+## Begriffe
+- Reinquadratisch lösen: x² allein → Wurzel → ± !
+- ax² + bx = 0: x ausklammern → x = 0 oder x = −b/a
+- Faktorzerlegung (Vieta): 2 Zahlen: mal = c, plus = b
+- abc-Formel: x = (−b ± √(b² − 4ac)) : 2a
+- Diskriminante: D = b² − 4ac → >0: 2 · =0: 1 · <0: keine
+- Textaufgabe – 5 Schritte: x festlegen · Gleichung · Normalform lösen · prüfen (negativ?) · Antwortsatz
+- 4 Merkmalsarten: qualitativ: nominal / ordinal · quantitativ: diskret / stetig
+- Absolute vs. relative Häufigkeit: absolut = Anzahl · relativ = Anzahl : n (0–1)
+- Lagemasse: Mittelwert x̄ (Summe : n) · Median x̃ (Mitte) · Modus (häufigster)
+- Streuungsmasse: Spannweite R · Varianz s² · Standardabweichung s (durch n − 1) · IQR · v = s : x̄
+- Boxplot: Min – Q1 – Median – Q3 – Max; Ausreisser > 1,5·IQR von der Box
+- Robust vs. empfindlich: robust: Median, Modus, IQR · empfindlich: x̄, s, R
+- Histogramm: Klassen gleich breit, max. √n Klassen, Balken ohne Lücke
+
+## Übungsfragen mit Lösung
+- Lösungen von x² = 25? → x = 5 oder x = −5 (Wurzel ziehen: ± nicht vergessen!)
+- Lösungen von 2x² − 18 = 0? → x = ±3 (2x² = 18 → x² = 9 → ±3.)
+- Lösungen von x² + 4 = 0? → keine Lösung (x² = −4 geht nicht (Quadrat nie negativ).)
+- Lösungen von x² − 5x = 0? → x = 0 oder x = 5 (x(x−5) = 0 → Nullprodukt.)
+- Warum darf man bei x² = 3x nicht durch x teilen? → Man verliert die Lösung x = 0 (Besser: x² − 3x = 0 → x(x−3) = 0.)
+- x² + 5x + 6 = (x + ?)(x + ?) → (x+2)(x+3) (2·3 = 6, 2+3 = 5.)
+- Lösungen von x² − x − 12 = 0? → x = 4 oder x = −3 ((x−4)(x+3).)
+- Lösungen von (x − 7)(x + 2) = 0? → x = 7 oder x = −2 (Jeden Faktor = 0 setzen.)
+- x² + 6x + 9 = ? → (x + 3)² (1. binomische Formel → nur eine Lösung x = −3.)
+- Die abc-Formel lautet: → x = (−b ± √(b² − 4ac)) : 2a (Auswendig lernen!)
+- Diskriminante D = ? → b² − 4ac (Steht unter der Wurzel.)
+- D < 0 bedeutet… → keine Lösung (Wurzel aus negativer Zahl geht nicht.)
+- D = 0 bedeutet… → genau eine Lösung (± 0 ergibt das Gleiche.)
+- 2x² + 3x − 2 = 0: a, b, c = ? → a = 2, b = 3, c = −2 (Vorzeichen mitnehmen!)
+- D von 2x² + 3x − 2 = 0? → 25 (9 − 4·2·(−2) = 9 + 16.)
+- Lösungen von 2x² + 3x − 2 = 0? → x = 0,5 oder x = −2 ((−3 ± 5) : 4.)
+- Lösungen von x² − 6x + 8 = 0? → x = 2 oder x = 4 (2·4 = 8, 2+4 = 6 → (x−2)(x−4).)
+- Was ist der 1. Schritt bei 3x² = 5x − 2? → Alles auf eine Seite: 3x² − 5x + 2 = 0 (Immer zuerst Normalform = 0.)
+- Rechteck: Länge = Breite + 3, Fläche 40. Gleichung? → x(x + 3) = 40 (Fläche = Länge · Breite.)
+- x² + 3x − 40 = 0 → welche Lösung passt für eine Länge? → x = 5 ((x+8)(x−5); Längen sind nie negativ.)
+- Statistik vs. Wahrscheinlichkeitsrechnung? → Statistik wertet Vergangenes aus, W'rechnung macht Prognosen (Beides zusammen heisst Stochastik.)
+- Geschlecht oder Beruf ist ein … Merkmal → qualitativ-nominal (Kategorien ohne Rangordnung.)
+- Schulnoten oder Hotel-Sterne sind … → qualitativ-ordinal (Man kann sie in eine Rangfolge bringen.)
+- Anzahl Geschwister ist … → quantitativ-diskret (Abzählbar: 0, 1, 2 …)
+- Körpergrösse oder Temperatur ist … → quantitativ-stetig (Jeder Wert dazwischen ist möglich.)
+- Absolute Häufigkeit = ? → Anzahl, wie oft ein Wert vorkommt (z. B. 3 Mädchen sprangen 420 cm.)
+- Relative Häufigkeit = ? → absolute Häufigkeit : Anzahl aller Werte (Liegt immer zwischen 0 und 1 (0–100 %).)
+- Zürich: 120 von 600 wählen A. Relative Häufigkeit? → 0,2 = 20 % (120 : 600 = 0,2.)
+- Warum relative statt absolute Häufigkeit? → um Stichproben verschiedener Grösse zu vergleichen (Zürich 600 vs. Chur 200 Befragte.)
+- Mittelwert x̄ = ? → Summe aller Werte : Anzahl Werte (Mädchen: 3210 : 8 = 401,25 cm.)
+- Median x̃ = ? → der Wert in der Mitte der sortierten Liste (Bei gerader Anzahl: Mittel der 2 mittleren Werte.)
+- Median von 360, 390, 390, 400, 410, 420, 420, 420? → 405 ((400 + 410) : 2 = 405.)
+- Modus x_mod = ? → der häufigste Wert (Mädchen: 420 (kommt 3× vor).)
+- Spannweite R = ? → Maximum − Minimum (Mädchen: 420 − 360 = 60.)
+- Was misst die Standardabweichung s? → wie stark die Werte um den Mittelwert streuen (Gross = Werte weit verstreut.)
+- Bei der Standardabweichung der Stichprobe teilt man durch … → n − 1 (Im Buch rechnen wir immer mit n − 1.)
+- Varianz s² und Standardabweichung s? → s = √(s²) (Erst Quadrate mitteln, dann Wurzel ziehen.)
+- Variationskoeffizient v = ? → s : x̄ (Zum Vergleichen von Streuungen mit verschiedenen Einheiten.)
+- Q1 (1. Quartil) bedeutet … → 25 % der Werte liegen darunter (Q2 = Median, Q3: 75 % darunter.)
+- IQR (Interquartilsabstand) = ? → Q3 − Q1 (In der Box liegen die mittleren 50 %.)
+- Die 5 Werte eines Boxplots? → Min, Q1, Median, Q3, Max (Box von Q1 bis Q3, Strich = Median.)
+- Ab wann ist ein Wert ein Ausreisser? → weiter als 1,5 · IQR von der Box entfernt (Unter Q1 − 1,5·IQR oder über Q3 + 1,5·IQR.)
+- Welche Masse sind robust gegen Ausreisser? → Median und Modus (und IQR) (Mittelwert, s und R reagieren empfindlich.)
+- Histogramm vs. Säulendiagramm? → Histogramm: Klassen, Balken ohne Lücke (Histogramm für stetige Daten in Klassen.)
+- Wie viele Klassen beim Histogramm (n Werte)? → höchstens √n (n = 20 → √20 ≈ 4,5 → 5 Klassen.)
+- Rechtsschiefe Verteilung heisst … → Ausläufer nach rechts, Gipfel links (z. B. Löhne: viele tiefe, wenige hohe.)
+- Bimodal heisst … → zwei Gipfel (Häufungspunkte) (uni = 1, bi = 2, multi = mehrere.)
+- Löhne: Mittelwert 3137, Median 2650. Warum ist x̄ grösser? → wenige sehr hohe Löhne ziehen x̄ nach oben (Rechtsschief – Median ist hier aussagekräftiger.)
+- Trick bei Grafiken (China, Börsen AG)? → Achsen verzerren (ungleiche Abstände, abgeschnittene y-Achse) (Immer Achsen genau anschauen!)
+- Erster Schritt bei jeder Textaufgabe? → Unbekannte festlegen: x = gesuchter Wert (Variablendeklaration!)
+- Summe zweier Zahlen ist 20. Kleinere = x. Grössere = ? → 20 − x (Buch S.39, Beispiel 1.)
+- Vater 3× so alt wie Tochter (x). Vor 6 Jahren 4× so alt. Gleichung? → 3x − 6 = 4(x − 6) (Beide 6 Jahre jünger → x = 18.)
+- Mischungsformel? → m₁·c₁ + m₂·c₂ = (m₁ + m₂)·c (Menge · Konzentration (oder Preis).)
+- 3 L mit 300 g/L + 5 L mit 400 g/L. Konzentration der Mischung? → 362,5 g/L ((900 + 2000) : 8.)
+- Wasser beim Mischungsrechnen hat die Konzentration … → 0 % (Darum fällt sein Teil weg: m·0 = 0.)
+- Zu 250 g 12%-Lösung 200 g Wasser. Wie viel %? → 6⅔ % (250·12 = 450·x → x = 6,67.)
+- Jemand braucht allein 6 h. Seine Leistung pro Stunde? → 1/6 der Arbeit (Leistung = Kehrwert der Zeit.)
+- Zeit · Leistung = ? → Arbeit (ganze Arbeit = 1) (Buch S.49.)
+- Presse A: 6 h, Presse B: 4 h. Zusammen? → 2,4 h (x·(1/6 + 1/4) = 1 → x = 2,4.)
+- Summe zweier Zahlen 118, Differenz 26. Gleichungssystem? → x + y = 118 und x − y = 26 (Addieren: 2x = 144 → 72 und 46.)
+- Wie viele Gleichungen braucht man für x und y? → 2 (Pro Unbekannte eine Gleichung.)
+- Wie schreibt man die Lösung mit x und y? → L = {(x/y)} (Zahlenpaar in Mengenklammern.)
+- Preis + 20 % Aufschlag = ? → 1,2x ((100 + 20) % von x.)
+- Durchfluss = ? → Volumen : Zeit (Wie Leistung = Arbeit : Zeit.)
