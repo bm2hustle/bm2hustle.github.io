@@ -36,3 +36,7 @@ Testversion = Ordner `test/` (Kopie der Seite), erreichbar unter https://bm2hust
 - **Herr Huber** – Chef im Elektro-Lehrbetrieb (Arbeit, Verträge, Geld)
 - **Opa Ernst** – Nicos Grossvater (früher vs. heute, Geschichte)
 Nie Robins echte Hobbys/Beruf/Wohnort verwenden (kein Unihockey, keine Zimmerei, kein Rapperswil).
+
+## Teilbereiche (tools/extra.json → "parts")
+- Mathe mat3 ist in quad/text/daten aufgeteilt; die Index-Bereiche (quiz, decks, pairs, cloze, order, theory, topics) zeigen auf die Reihenfolge in hub-data. Wenn sich die Spiele/Themen von mat3 im Dashboard ändern, die Bereiche prüfen.
+- Mathe-Coach: mathe.html (eigene Aufgaben) + mathe-buch.js (Buch-Begleiter: nur Seite/Nr. + eigene Tipps, NIE Buchtext kopieren).
