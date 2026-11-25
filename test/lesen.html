@@ -124,6 +124,9 @@ $("q").addEventListener("input",()=>{const q=norm($("q").value.trim());const H=$
   H.innerHTML=out.length?`<p class="note">${out.length>=60?"60+":out.length} Treffer</p>`+out.map(o=>`<button data-p="${o[0]}"><b>S. ${o[0]}</b> …${esc(o[1])}<mark>${esc(o[2])}</mark>${esc(o[3])}…</button>`).join(""):`<p class="note">Nichts gefunden.</p>`});
 $("hits").addEventListener("click",e=>{const b=e.target.closest("[data-p]");if(b){go(+b.dataset.p);$("side").classList.remove("open")}});
 
+// Lesezeit zählt auch zu «heute gelernt»
+let lastAct=Date.now();["pointerdown","keydown","wheel","pointermove"].forEach(ev=>addEventListener(ev,()=>{lastAct=Date.now()},{passive:true}));$("view").addEventListener("scroll",()=>{lastAct=Date.now()},{passive:true});
+setInterval(()=>{if(!document.hidden&&Date.now()-lastAct<180000){const d=new Date(),k="lern-"+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();LS.set(k,LS.get(k,0)+1)}},1000);
 (async()=>{try{doc=await pdfjsLib.getDocument(B.pdf).promise;const p1=await doc.getPage(5),vp=p1.getViewport({scale:1});base={w:vp.width,h:vp.height};
   const v=$("view");for(let n=1;n<=B.pages;n++){const d=document.createElement("div");d.className="pg";d.dataset.n=n;d.innerHTML=`<span class="no">S. ${n}</span>`;v.appendChild(d);boxes.push(d)}
   layout();const last=LS.get(KEY,0);const h=+(location.hash.match(/^#s(\d+)$/)||[])[1];
