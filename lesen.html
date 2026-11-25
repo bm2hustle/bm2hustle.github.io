@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesen · Kabale und Liebe · BM2 Hustle</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Bangers&display=swap">
+<style>
+:root{--bg:#e9ece6;--grid:#cfd8e3;--ink:#1d1b18;--muted:#5f584e;--line:#1d1b18;--paper:#fffdf6;--cap:#ffe066;--chip:#fff;--deu:#c0392b;--deuc:#ffb8b0;
+  --hand:"Patrick Hand","Comic Sans MS","Segoe Print",cursive;--comic:"Bangers","Impact","Arial Black",sans-serif}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px;font-family:var(--hand);font-size:18px;color:var(--ink);display:flex;flex-direction:column}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:10px 16px;background:var(--paper);border-bottom:3px solid var(--line)}
+header h1{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:1.8rem;margin:0;line-height:1}
+header h1 small{font-family:var(--hand);letter-spacing:0;font-size:1rem;color:var(--muted)}
+.btn{font-family:var(--hand);font-size:1.02rem;border:2px solid var(--line);background:var(--chip);color:var(--ink);border-radius:9px;padding:3px 11px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:4px;line-height:1.3}
+.btn:hover{background:var(--cap)}
+.btn:focus-visible,input:focus-visible{outline:3px solid #e0782b;outline-offset:2px}
+.btn.go{background:var(--ink);color:#fff}
+.grp{display:flex;align-items:center;gap:6px}
+.grp input{width:3.4em;font-family:var(--hand);font-size:1.05rem;text-align:center;border:2px solid var(--line);border-radius:8px;padding:2px}
+.sp{flex:1}
+main{flex:1;display:flex;min-height:0}
+aside{width:290px;flex:none;background:var(--paper);border-right:3px solid var(--line);overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+aside h2{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:1.3rem;margin:4px 0 0}
+#q{width:100%;font-family:var(--hand);font-size:1.05rem;border:2px solid var(--line);border-radius:8px;padding:4px 8px}
+#hits{display:flex;flex-direction:column;gap:4px;font-size:.95rem}
+#hits button{all:unset;cursor:pointer;padding:3px 6px;border-radius:6px;border:1px dashed #bbb;line-height:1.25}
+#hits button:hover,#hits button:focus-visible{background:var(--cap)}
+#hits b{color:var(--deu)}
+mark{background:var(--cap);padding:0 1px}
+.akt{margin:0}
+.akt>button{all:unset;cursor:pointer;font-weight:bold;display:block;padding:2px 4px;border-radius:6px}
+.akt ol{list-style:none;margin:0 0 4px;padding-left:12px}
+.akt li button{all:unset;cursor:pointer;display:flex;justify-content:space-between;gap:8px;width:100%;padding:1px 4px;border-radius:6px;font-size:.98rem}
+.akt button:hover,.akt button:focus-visible{background:var(--cap)}
+.akt li button.on{background:var(--deuc)}
+.akt small{color:var(--muted)}
+.note{font-size:.9rem;color:var(--muted);margin:0;line-height:1.3}
+#view{flex:1;overflow:auto;padding:18px 16px 60px;scroll-behavior:auto}
+.pg{position:relative;margin:0 auto 18px;background:#fff;box-shadow:0 2px 3px rgba(0,0,0,.15),0 10px 20px -8px rgba(0,0,0,.35)}
+.pg canvas{display:block;width:100%;height:100%}
+.pg .no{position:absolute;left:-46px;top:6px;font-size:.9rem;color:var(--muted);width:38px;text-align:right}
+#res{position:fixed;right:16px;bottom:14px;background:var(--cap);border:2px solid var(--line);border-radius:10px;padding:6px 12px;box-shadow:0 4px 10px rgba(0,0,0,.3);display:none;gap:8px;align-items:center}
+#res.show{display:flex}
+@media (max-width:820px){aside{display:none}aside.open{display:flex;position:fixed;inset:110px 0 0 0;z-index:5;width:auto}.pg .no{display:none}}
+@media (min-width:821px){#tocBtn{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <a class="btn" href="index.html#fach-deu" title="Zurück zu BM2 Hustle">◀ BM2 Hustle</a>
+  <h1>Kabale und Liebe <small>Friedrich Schiller · Damnick-Ausgabe</small></h1>
+  <span class="sp"></span>
+  <button class="btn" id="tocBtn">☰ Inhalt</button>
+  <div class="grp" aria-label="Seite">
+    <button class="btn" id="prev" title="Vorherige Seite (←)">◀</button>
+    Seite <input id="pin" inputmode="numeric" aria-label="Seitenzahl"> / <span id="ptot">127</span>
+    <button class="btn" id="next" title="Nächste Seite (→)">▶</button>
+  </div>
+  <div class="grp" aria-label="Zoom">
+    <button class="btn" id="zout" title="Kleiner">−</button><button class="btn" id="zfit" title="Seite einpassen">↔ Breite</button><button class="btn" id="zin" title="Grösser">+</button>
+  </div>
+  <button class="btn" id="fs">⛶ Vollbild</button>
+  <a class="btn" id="dl" download>⬇️ PDF</a>
+</header>
+<main>
+  <aside id="side">
+    <h2>🔎 Im Buch suchen</h2>
+    <input id="q" type="search" placeholder="z. B. Limonade, Wurm, Violoncell" autocomplete="off">
+    <div id="hits"></div>
+    <h2>📖 Inhalt</h2>
+    <div id="toc"></div>
+    <p class="note">Seiten- und Zeilenzahlen sind gleich wie im gedruckten Buch (Damnick-Verlag). Wo du aufgehört hast, merkt sich dein Browser.</p>
+    <p class="note">Gemeinfreier Text, Ausgabe vom Verlag zur freien Weitergabe freigegeben.</p>
+  </aside>
+  <div id="view" tabindex="-1"></div>
+</main>
+<div id="res" role="status"><span id="resT"></span><button class="btn go" id="resGo">Weiterlesen</button><button class="btn" id="resX" aria-label="Schliessen">✕</button></div>
+
+<script src="buecher/kabale/data.js"></script>
+<script src="lib/pdf.min.js"></script>
+<script data-goatcounter="https://bm2hustle.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>
+const B=window.BOOK,$=id=>document.getElementById(id);
+const LS={get(k,d){try{const v=localStorage.getItem("hustle-"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("hustle-"+k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const KEY="read-kabale";
+$("dl").href=B.pdf;$("ptot").textContent=B.pages;
+pdfjsLib.GlobalWorkerOptions.workerSrc="lib/pdf.worker.min.js";
+
+let doc,base={w:0,h:0},zoom=LS.get(KEY+"-zoom",0),cur=1;const boxes=[],done=new Set();
+// Inhaltsverzeichnis
+$("toc").innerHTML=B.toc.map((a,i)=>`<div class="akt"><button data-p="${a.p}">${esc(a.a)} <small>S. ${a.p}</small></button><ol>${a.s.map(s=>`<li><button data-p="${s[1]}" data-sc="${esc(a.a+" · "+s[0])}"><span>${esc(s[0])}</span><small>S. ${s[1]}</small></button></li>`).join("")}</ol></div>`).join("");
+$("toc").addEventListener("click",e=>{const b=e.target.closest("[data-p]");if(b){go(+b.dataset.p);$("side").classList.remove("open")}});
+$("tocBtn").onclick=()=>$("side").classList.toggle("open");
+
+function scale(){const avail=$("view").clientWidth-32-(innerWidth>820?60:0);const fit=Math.min(avail/base.w,1.9);return zoom?zoom:fit}
+function layout(){const s=scale();boxes.forEach(b=>{b.style.width=Math.round(base.w*s)+"px";b.style.height=Math.round(base.h*s)+"px"});done.clear();boxes.forEach(b=>{const c=b.querySelector("canvas");if(c)c.remove()});io.disconnect();boxes.forEach(b=>io.observe(b))}
+async function render(n){if(done.has(n))return;done.add(n);const b=boxes[n-1],page=await doc.getPage(n),s=scale(),dpr=Math.min(window.devicePixelRatio||1,2);
+  const vp=page.getViewport({scale:s*dpr}),c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;c.setAttribute("aria-label","Buchseite "+n);
+  await page.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;const old=b.querySelector("canvas");if(old)old.remove();b.appendChild(c)}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const n=+e.target.dataset.n;render(n);if(n>1)render(n-1);if(n<B.pages)render(n+1)}}),{root:$("view"),rootMargin:"600px 0px"});
+function curPage(){const v=$("view"),mid=v.scrollTop+v.clientHeight*0.35;let n=1;for(const b of boxes){if(b.offsetTop<=mid)n=+b.dataset.n;else break}return n}
+function go(n){n=Math.max(1,Math.min(B.pages,n|0));const b=boxes[n-1];if(b)$("view").scrollTop=b.offsetTop-10;setCur(n)}
+function setCur(n){cur=n;$("pin").value=n;LS.set(KEY,n);document.querySelectorAll(".akt li button").forEach(x=>x.classList.remove("on"));
+  let best=null;document.querySelectorAll(".akt li button").forEach(x=>{if(+x.dataset.p<=n)best=x});if(best)best.classList.add("on")}
+let st;$("view").addEventListener("scroll",()=>{clearTimeout(st);st=setTimeout(()=>setCur(curPage()),120)});
+$("prev").onclick=()=>go(cur-1);$("next").onclick=()=>go(cur+1);
+$("pin").addEventListener("change",()=>go(+$("pin").value));
+$("zin").onclick=()=>{zoom=+(scale()*1.15).toFixed(2);LS.set(KEY+"-zoom",zoom);const n=cur;layout();go(n)};
+$("zout").onclick=()=>{zoom=+(scale()/1.15).toFixed(2);LS.set(KEY+"-zoom",zoom);const n=cur;layout();go(n)};
+$("zfit").onclick=()=>{zoom=0;LS.set(KEY+"-zoom",0);const n=cur;layout();go(n)};
+$("fs").onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()};
+if(!document.documentElement.requestFullscreen)$("fs").hidden=true;
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight"||e.key==="PageDown"&&e.altKey){go(cur+1);e.preventDefault()}else if(e.key==="ArrowLeft"){go(cur-1);e.preventDefault()}});
+let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{if(!zoom){const n=cur;layout();go(n)}},200)});
+
+// Suche
+const norm=s=>s.toLowerCase().replace(/ſ/g,"s");
+$("q").addEventListener("input",()=>{const q=norm($("q").value.trim());const H=$("hits");if(q.length<3){H.innerHTML="";return}
+  const out=[];B.text.forEach((t,i)=>{const T=norm(t);let k=T.indexOf(q);while(k>=0&&out.length<60){out.push([i+1,t.slice(Math.max(0,k-40),k),t.substr(k,q.length),t.slice(k+q.length,k+q.length+50)]);k=T.indexOf(q,k+q.length)}});
+  H.innerHTML=out.length?`<p class="note">${out.length>=60?"60+":out.length} Treffer</p>`+out.map(o=>`<button data-p="${o[0]}"><b>S. ${o[0]}</b> …${esc(o[1])}<mark>${esc(o[2])}</mark>${esc(o[3])}…</button>`).join(""):`<p class="note">Nichts gefunden.</p>`});
+$("hits").addEventListener("click",e=>{const b=e.target.closest("[data-p]");if(b){go(+b.dataset.p);$("side").classList.remove("open")}});
+
+(async()=>{try{doc=await pdfjsLib.getDocument(B.pdf).promise;const p1=await doc.getPage(5),vp=p1.getViewport({scale:1});base={w:vp.width,h:vp.height};
+  const v=$("view");for(let n=1;n<=B.pages;n++){const d=document.createElement("div");d.className="pg";d.dataset.n=n;d.innerHTML=`<span class="no">S. ${n}</span>`;v.appendChild(d);boxes.push(d)}
+  layout();const last=LS.get(KEY,0);const h=+(location.hash.match(/^#s(\d+)$/)||[])[1];
+  if(h){go(h)}else{go(5);if(last>5){$("resT").textContent=`Du warst auf Seite ${last}.`;$("res").classList.add("show");$("resGo").onclick=()=>{go(last);$("res").classList.remove("show")};$("resX").onclick=()=>$("res").classList.remove("show")}}
+}catch(e){$("view").innerHTML=`<p style="background:#fff;padding:12px;border:2px solid #c44">Das Buch konnte nicht geladen werden. <a href="${B.pdf}">PDF direkt öffnen</a></p>`}})();
+</script>
+</body>
+</html>
