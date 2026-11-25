@@ -285,6 +285,8 @@ tr.me,li.me{background:rgba(255,224,102,.55)}
   <div class="tour" id="tour" hidden><div class="thole" id="thole"></div><div class="tbox" id="tbox" role="dialog" aria-live="polite"></div></div>
 </div>
 
+<script>window.goatcounter={path:function(){return location.pathname+(location.hash||"#start")}};</script>
+<script data-goatcounter="https://bm2hustle.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <script src="hub-data.js"></script>
 <script>
 "use strict";
@@ -501,6 +503,7 @@ function gameOver(G,k,id,score,extra){const{better,best}=bestSave(k,id,score),gi
   G.innerHTML=`<div class="gamebox"><h3 style="font-family:var(--comic);font-weight:400;font-size:1.9rem;margin:0">${gi[0]}: ${fmtScore(k,score)} ${gi[2]<0?"":gi[1]}</h3>
     <p style="margin:0">${better?"🎉 Neuer persönlicher Rekord!":"Dein Rekord: "+fmtScore(k,best)}</p>${extra||""}
     <div id="lbBox"></div><div class="gpick"><button class="btn go" id="again">↺ Nochmal</button></div></div>`;
+  try{goatcounter.count&&goatcounter.count({path:"spiel/"+k+"/"+id,title:GAMEINFO[k][0],event:true})}catch(e){}
   $("again").onclick=()=>startGame(k,id);LB.render($("lbBox"),k,id,score)}
 function hud(G,parts){return `<div class="stat" style="font-family:var(--comic);font-size:1.25rem;letter-spacing:.5px">${parts.join("")}</div>`}
 function qBox(q,cb){const opts=shuffle([q[1],...q[2]]).slice(0,4);return{html:`<p class="gq">${esc(q[0])}</p><div class="opts">${opts.map(o=>`<button>${esc(o)}</button>`).join("")}</div>`,bind:G=>G.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>cb(b.textContent===q[1],b))}}
@@ -761,8 +764,8 @@ function route(){let h=(location.hash||"#start").slice(1);let v=h.startsWith("fa
   if(v==="start"){rStart();rWeek();rHeute();rFdt();rApp()}else if(v==="kalender"){rCal();rStart()}else if(v==="faecher")rFaecher();else if(v==="suche")rSuche();else if(v==="fach")rFach(h.slice(5));
   if(v!=="fach")window.scrollTo(0,0);
   clearTimeout(route.tt);route.tt=setTimeout(()=>tourStart(v),600)}
-window.addEventListener("hashchange",route);route();
-$("foot").textContent="Stand: "+fmt(H.updated)+" · Fehlt etwas? 📣 Melden · Dein Fortschritt und Lernplan bleiben nur in deinem Browser.";
+window.addEventListener("hashchange",()=>{route();try{goatcounter.count&&goatcounter.count()}catch(e){}});route();
+$("foot").textContent="Stand: "+fmt(H.updated)+" · Fehlt etwas? 📣 Melden · Dein Fortschritt und Lernplan bleiben nur in deinem Browser. Besuche werden anonym gezählt (ohne Cookies).";
 </script>
 
 </html>
