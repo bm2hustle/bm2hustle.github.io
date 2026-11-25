@@ -24,7 +24,9 @@ const games={};for(const e of exams){const g={};for(const k of ['quiz','pairs','
 const extra=fs.existsSync(path.join(__dirname,'extra.json'))?JSON.parse(fs.readFileSync(path.join(__dirname,'extra.json'),'utf8')):{};
 const VP=path.join(__dirname,'videos.json');const videos=fs.existsSync(VP)?JSON.parse(fs.readFileSync(VP,'utf8')):{};
 const HUB=Object.assign({updated:TODAY,subjects,exams,games,theory,videos},extra);
-const js='/* BM2 Hustle – Daten (automatisch erzeugt mit tools/build-hub-data.js) */\nwindow.HUB='+JSON.stringify(HUB).replace(/</g,'\\u003c')+';\n';
+let js='/* BM2 Hustle – Daten (automatisch erzeugt mit tools/build-hub-data.js) */\nwindow.HUB='+JSON.stringify(HUB).replace(/</g,'\\u003c')+';\n';
+// Keine persönlichen Details von Robin auf der Seite (Figuren sind erfunden)
+js=js.replace(/Unihockey-Schuss/g,'Penalty schiessen').replace(/Unihockey/g,'Fussball').replace(/Zimmermann/g,'Elektriker');
 fs.writeFileSync(path.join(__dirname,'..','hub-data.js'),js);
 console.log('hub-data.js:',exams.length,'Termine,',Object.keys(games).length,'mit Übungen,',Object.keys(theory).length,'mit Theorie');
 

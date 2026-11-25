@@ -27,3 +27,12 @@ Testversion = Ordner `test/` (Kopie der Seite), erreichbar unter https://bm2hust
 
 ## Führung (Tour)
 - In `index.html` steht das Array `TOUR`. Für jede neue sichtbare Funktion einen Schritt mit **neuer `id`** anhängen (z. B. `t3-vokabeln`). Jeder Browser sieht nur Schritte, deren `id` er noch nicht kennt – also nur Neues.
+
+## Figuren (in allen Fächern gleich, auch in NotebookLM-Podcasts/Videos)
+- **Nico** – Hauptfigur, BM-Schüler, Lehre als Elektriker EFZ, spielt Fussball (Verteidiger, später Captain)
+- **Lars** – Nicos bester Kollege, neu im Team, macht Fehler, fragt nach
+- **Mia** – ehrgeizig, Klassenbeste, korrigiert und fasst zusammen
+- **Trainer Beni** – Fussballtrainer (Regeln, Druck, Motivation)
+- **Herr Huber** – Chef im Elektro-Lehrbetrieb (Arbeit, Verträge, Geld)
+- **Opa Ernst** – Nicos Grossvater (früher vs. heute, Geschichte)
+Nie Robins echte Hobbys/Beruf/Wohnort verwenden (kein Unihockey, keine Zimmerei, kein Rapperswil).
