@@ -188,6 +188,8 @@ body.zoom .zoombox.on{position:fixed;z-index:41;top:3vh;left:50%;transform:trans
 body.zoom .zoombox.on .zclose{display:inline-block!important}
 body.zoom .zoombox.on .zopen{display:none}
 body.zoom .zoombox.on .tafel{font-size:1.12rem}
+body.zoom .zoombox.on.wide{width:min(1400px,98vw);top:1vh;max-height:98vh;padding:6px 14px 10px}
+body.zoom .zoombox.on.wide .gamebox{gap:6px}
 body.zoom .zoombox.on .zbar{position:sticky;top:-12px;z-index:2;background:var(--paper);padding:4px 0}
 /* Lern-Uhr */
 .clock{display:flex;align-items:center;gap:6px;position:relative;font-size:1rem}
@@ -558,7 +560,7 @@ function weakOk(id,t,k){const w=weakGet(id),key=t+"|"+k;if(!w[key])return false;
 function weakCount(id){return Object.keys(weakGet(id)).length}
 function errAdd(id,q){weakAdd(id,"q",q)}
 function errDel(id,q){weakOk(id,"q",q)}
-function startGame(k,id){const g=H.games[id],G=$("game");
+function startGame(k,id){const g=H.games[id],G=$("game");$("gwrap").classList.remove("wide");
   if(k==="weak"||k==="fx"){weakTrain(G,id);return}
   if(k==="mc"||k==="fx"){let list=g.quiz;if(k==="fx"){const er=LS.get("err-"+id,[]);list=g.quiz.filter(q=>er.includes(q[0]))}mc(G,id,shuffle(list).slice(0,k==="fx"?99:12),k==="fx")}
   else if(k==="match")match(G,shuffle(g.pairs),id);
@@ -605,14 +607,14 @@ function speedmatch(G,id){const p=shuffle(pairsOf(id)).slice(0,6),L=shuffle(p.ma
     if(sel.dataset.i===b.dataset.i){sel.classList.remove("sel");sel.classList.add("ok");b.classList.add("ok");sel=null;if(++done===p.length){clearInterval(tm);gameOver(G,"speedmatch",id,Math.round(((performance.now()-t0)/1000+pen)*10)/10)}}
     else{pen+=2;const Lb=sel.dataset.s==="L"?sel:b;weakAdd(id,"p",p[+Lb.dataset.i][0]);b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}})}
 /* ---------- 🎱 Billard: Erklärung lesen, die Kugel mit dem passenden Begriff versenken ---------- */
-function billard(G,id){
+function billard(G,id){$("gwrap").classList.add("wide");
   const all=shuffle(pairsOf(id));let qi=0,pts=0,lives=3,shots=0,raf=null,over=false,msg="",msgT=0;
   const W=1000,H=520,M=34,R0=15,PR=27,FR=0.985;
   const pockets=[[M,M],[W/2,M-6],[W-M,M],[M,H-M],[W/2,H-M+6],[W-M,H-M]];
   const COL=["#e74c3c","#2e86de","#f1c40f","#8e44ad","#16a085","#e67e22"];
   G.innerHTML=`<div class="gamebox">${hud(G,[`<span>⭐ <b id="bP">0</b></span>`,`<span id="bL">❤️❤️❤️</span>`,`<span style="opacity:.75">Ziehen = zielen &amp; Stärke · Loslassen = Stoss</span>`])}
     <p class="gq" id="bQ" style="background:#fff8d6;border:2px solid #1d1b18;border-radius:8px;padding:6px 10px;margin:0"></p>
-    <canvas id="bC" style="width:100%;aspect-ratio:${W}/${H};display:block;border-radius:14px;touch-action:none;cursor:crosshair" aria-label="Billardtisch"></canvas>
+    <canvas id="bC" style="width:min(100%,calc((94vh - 230px) * ${W/H}));margin:0 auto;aspect-ratio:${W}/${H};display:block;border-radius:14px;touch-action:none;cursor:crosshair" aria-label="Billardtisch"></canvas>
     <p class="empty" style="margin:0">Versenke die Kugel mit dem <b>passenden Begriff</b>. Richtig +1 · falsche Kugel oder weisse Kugel versenkt = ❤️ weg.</p></div>`;
   const cv=$("bC"),cx=cv.getContext("2d");let balls=[],cue,aim=null,cur;
   function size(){const r=cv.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2);cv.width=r.width*d;cv.height=r.width*H/W*d}
@@ -646,8 +648,8 @@ function billard(G,id){
       cx.fillStyle="rgba(0,0,0,.5)";cx.fillRect(W/2-110,H-24,220,12);cx.fillStyle=d>170?"#e74c3c":d>90?"#f1c40f":"#2ecc71";cx.fillRect(W/2-110,H-24,220*d/220,12)}
     [...balls,cue].forEach(b=>{if(!b||b.gone)return;cx.fillStyle=b.c;cx.beginPath();cx.arc(b.x,b.y,R0,0,7);cx.fill();cx.strokeStyle="rgba(0,0,0,.4)";cx.lineWidth=1.5;cx.stroke();
       cx.fillStyle="rgba(255,255,255,.55)";cx.beginPath();cx.arc(b.x-5,b.y-5,4,0,7);cx.fill()});
-    cx.font="600 15px 'Patrick Hand',system-ui,sans-serif";cx.textAlign="center";cx.textBaseline="bottom";
-    balls.forEach(b=>{if(b.gone)return;const t=b.t.length>28?b.t.slice(0,27)+"…":b.t,w=cx.measureText(t).width+12;let y=b.y-R0-6;cx.fillStyle="rgba(255,253,246,.95)";cx.fillRect(b.x-w/2,y-19,w,20);cx.strokeStyle=b.c;cx.lineWidth=2;cx.strokeRect(b.x-w/2,y-19,w,20);cx.fillStyle="#1d1b18";cx.fillText(t,b.x,y)});
+    cx.font="600 19px 'Patrick Hand',system-ui,sans-serif";cx.textAlign="center";cx.textBaseline="bottom";
+    balls.forEach(b=>{if(b.gone)return;const t=b.t.length>28?b.t.slice(0,27)+"…":b.t,w=cx.measureText(t).width+12;let y=b.y-R0-6;cx.fillStyle="rgba(255,253,246,.95)";cx.fillRect(b.x-w/2,y-23,w,25);cx.strokeStyle=b.c;cx.lineWidth=2;cx.strokeRect(b.x-w/2,y-23,w,25);cx.fillStyle="#1d1b18";cx.fillText(t,b.x,y)});
     if(msg&&performance.now()-msgT<1800){cx.font="700 24px system-ui,sans-serif";cx.textBaseline="middle";const w=cx.measureText(msg).width+30;cx.fillStyle="rgba(0,0,0,.7)";cx.fillRect(W/2-w/2,H/2-22,w,44);cx.fillStyle="#fff";cx.fillText(msg,W/2,H/2)}}
   function loop(){if(over||!document.body.contains(cv)){cancelAnimationFrame(raf);return}physics();draw();raf=requestAnimationFrame(loop)}
   const pos=e=>{const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*W/r.width}};
