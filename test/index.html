@@ -174,6 +174,9 @@ body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:so
 }
 .moreBtn{display:none;font-family:var(--hand);font-size:.95rem;border:0;background:none;color:inherit;text-decoration:underline;cursor:pointer;padding:0}
 @media (max-width:520px){.moreBtn{display:inline}}
+.bookbar{display:flex;align-items:center;gap:12px;margin:0 0 12px;padding:10px 14px;background:var(--paper);border:3px solid var(--ink2);border-left-width:10px;border-radius:8px;color:var(--ink);text-decoration:none;box-shadow:0 6px 12px -6px rgba(0,0,0,.35)}
+.bookbar:hover{background:var(--c)}.bookbar:focus-visible{outline:3px solid #e0782b;outline-offset:2px}
+.bookbar .bk{font-size:2rem;line-height:1}.bookbar small{display:block;color:var(--muted);font-size:.95rem}.bookbar .go{margin-left:auto;font-weight:bold;white-space:nowrap}
 .tour{position:fixed;inset:0;z-index:60}
 .namebg{position:fixed;inset:0;z-index:70;background:rgba(20,18,15,.62);display:flex;align-items:center;justify-content:center;padding:16px}
 .namebg[hidden]{display:none}
@@ -373,17 +376,19 @@ function rSubjbar(cur){
   const a=$("subjbar").querySelector("[aria-current]");if(a)a.scrollIntoView({block:"nearest",inline:"nearest"})}
 
 /* ---------- Fach-Abschnitt ---------- */
+const BOOKS={DEU:[["Kabale und Liebe","Friedrich Schiller","lesen.html"]]};
+const bookBar=k=>(BOOKS[k]||[]).map(b=>`<a class="bookbar" id="bookBar" href="${b[2]}" style="--c:${S(k).c};--ink2:${S(k).ink}"><span class="bk">📖</span><span><b>Klassenlektüre: ${esc(b[0])}</b><small>${esc(b[1])} · online lesen, suchen, Seitenzahlen wie im Buch</small></span><span class="go">Lesen ▶</span></a>`).join("");
 let curExam=null,curTab="ziele";
 function rFach(id){
   const V=$("v-fach");const SK=id.toUpperCase();
-  if(H.subjects[SK]){const n=nextOf(SK);rSubjbar(SK);if(!n){V.innerHTML=`<div class="note flat" style="--c:${S(SK).c};--ink2:${S(SK).ink}"><h3 style="font-size:1.7rem">${esc(S(SK).name)}</h3><p>Gerade ist keine Prüfung eingetragen. Weisst du von einer? <a href="#melden">📣 Melden</a></p></div>`;return}id=n.id}
+  if(H.subjects[SK]){const n=nextOf(SK);rSubjbar(SK);if(!n){V.innerHTML=bookBar(SK)+`<div class="note flat" style="--c:${S(SK).c};--ink2:${S(SK).ink}"><h3 style="font-size:1.7rem">${esc(S(SK).name)}</h3><p>Gerade ist keine Prüfung eingetragen. Weisst du von einer? <a href="#melden">📣 Melden</a></p></div>`;return}id=n.id}
   const e=exById[id];if(!e){V.innerHTML=`<p>Diese Prüfung gibt es nicht mehr. <a href="#faecher">Zu den Fächern</a></p>`;return}
   rSubjbar(e.subj);
   const sib=ex.filter(x=>x.subj===e.subj);
   if(curExam!==id){curExam=id;curTab="ziele"}
   const g=H.games[id]||{},th=H.theory[id]||[];
   const tabs=[["ziele","🧭 So lernst du"],["plan","🗓️ Mein Lernplan"],["theorie","📖 Theorie & Videos"],["ueben","🎮 Üben"],["probe","🏁 Probeprüfung"],["meine","✍️ Meine Karten"],["dl","⬇️ Downloads"]];
-  V.innerHTML=`<div class="note flat" style="${sv(e)}"><div class="fhead"><span class="tag s">${esc(S(e.subj).name)}</span><span class="tag">${ic(e)} ${esc(e.type)}</span></div>
+  V.innerHTML=bookBar(e.subj)+`<div class="note flat" style="${sv(e)}"><div class="fhead"><span class="tag s">${esc(S(e.subj).name)}</span><span class="tag">${ic(e)} ${esc(e.type)}</span></div>
     <h3 style="font-size:1.7rem">${esc(e.title)}</h3>
     ${sib.length>1?`<div class="exsw hideinfocus" aria-label="Termine in ${esc(S(e.subj).name)}">${sib.map(x=>`<a href="#fach-${esc(x.id)}" ${x.id===e.id?'aria-current="true"':""}>${isTest(x)?"📝":"🏠"} ${fmt(x.date)} ${esc(isTest(x)?"Prüfung":x.type)}</a>`).join("")}</div>`:""}
     <dl class="info">
@@ -729,7 +734,8 @@ const TOUR=[
  {id:"t1-meld",view:"start",sel:'.nav a[data-v="melden"]',t:"📣 Melden",x:"Fehlt eine Prüfung oder stimmt etwas nicht? Hier meldest du es."},
  {id:"t1-info",view:"fach",sel:".info",t:"📅 Wann, was, worüber",x:"Alles zur Prüfung auf einen Blick."},
  {id:"t3-games",view:"fach",sel:".tabs",t:"🆕 Spiele mit Rangliste",x:"Unter 🎮 Üben: Blitz 60 s, Überleben, Meteoriten, Zuordnen auf Zeit, Wahr oder falsch. Schlag deinen Rekord!"},
- {id:"t4-notebook",view:"fach",sel:"#nbJump",t:"🎧 Neu: Podcast & Video",x:"Bei manchen Prüfungen gibt es jetzt einen Podcast, ein Erklärvideo und eine Infografik von NotebookLM – perfekt für unterwegs."},
+ {id:"t4-lektuere",view:"fach",sel:"#bookBar",t:"📖 Neu: Buch online lesen",x:"Bei Deutsch kannst du «Kabale und Liebe» direkt auf der Seite lesen – mit Suche, Inhaltsverzeichnis und den gleichen Seitenzahlen wie im Buch. Die Seite merkt sich, wo du warst."},
+{id:"t4-notebook",view:"fach",sel:"#nbJump",t:"🎧 Neu: Podcast & Video",x:"Bei manchen Prüfungen gibt es jetzt einen Podcast, ein Erklärvideo und eine Infografik von NotebookLM – perfekt für unterwegs."},
 {id:"t2-tabs",view:"fach",sel:".tabs",t:"🧭 So lernst du",x:"🆕 Mein Lernplan · 📖 Theorie & 🆕 Videos · 🎮 Üben · 🏁 Probeprüfung · ✍️ eigene Karten · ⬇️ Übungsblätter. Am Handy seitwärts wischen."}];
 let tourQ=[],tourI=0;
 function tourSeen(){return LS.get("tour-seen",[])}
