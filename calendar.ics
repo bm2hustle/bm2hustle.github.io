@@ -25,20 +25,8 @@ RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:wrha@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
-DTSTART;TZID=Europe/Zurich:20261124T103000
-DTEND;TZID=Europe/Zurich:20261124T111500
-SUMMARY:🏠 Wirtschaft & Recht: HA WR: Skript Mietrecht Kap. 5 + 6 fertig
-DESCRIPTION:Hausaufgabe\nStoff:\n- Kap. 5 Beendigung der Miete: lesen + al
- le Übungen\n- Kap. 6 Der Mieterschutz: lesen + alle Übungen\n- Fragen n
- otieren (für die Lektion)\n\nLernen: https://bm2hustle.github.io/#fach-w
- rha
-URL:https://bm2hustle.github.io/#fach-wrha
-END:VEVENT
-BEGIN:VEVENT
 UID:soz1@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;TZID=Europe/Zurich:20261126T135000
 DTEND;TZID=Europe/Zurich:20261126T152000
 SUMMARY:📝 Soziologie: Soziologie Kap. 2 + 3 (Frau Marti)
@@ -61,7 +49,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:psy2@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;TZID=Europe/Zurich:20261127T092500
 DTEND;TZID=Europe/Zurich:20261127T105500
 SUMMARY:📝 Psychologie/Philo: Psychologie Prüfung 2 + Philosophie (Herr
@@ -79,7 +67,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:bio2@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;TZID=Europe/Zurich:20261201T135000
 DTEND;TZID=Europe/Zurich:20261201T152000
 SUMMARY:📝 Biologie: Biologie 2. Biotest: Zellteilung\, Genetik\, Mutati
@@ -103,12 +91,18 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:deu2@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;TZID=Europe/Zurich:20261202T074500
-DTEND;TZID=Europe/Zurich:20261202T092000
-SUMMARY:📝 Deutsch: Literaturepochen (Barock, Aufklärung, Sturm und Drang)
-DESCRIPTION:Prüfung (2 Lektionen)\nStoff:\n- Barock, Aufklärung, Sturm und Drang\n- Texte/Gedichte zuordnen und analysieren (rhetorische Mittel)\n\nLernen: https://b
- m2hustle.github.io/#fach-deu2
+DTEND;TZID=Europe/Zurich:20261202T091500
+SUMMARY:📝 Deutsch: DEU Prüfung Literaturepochen: Barock\, Aufklärung\
+ , Sturm und Drang
+DESCRIPTION:Prüfung\nStoff:\n- Epochen: Barock\, Aufklärung\, Sturm und 
+ Drang\n- Theorie je Epoche: zeitgeschichtlicher Hintergrund\, Hauptgedank
+ en\, Einordnung in die Weltpolitik\n- Textauszüge (auch Gedichte) einer 
+ Epoche zuordnen\n- Texte inhaltlich und sprachlich analysieren (auch rhet
+ orische Mittel)\n- Kabale und Liebe (Schiller) als Beispiel für Sturm un
+ d Drang\n- Dauer: 2 Lektionen\n\nLernen: https://bm2hustle.github.io/#fac
+ h-deu2
 URL:https://bm2hustle.github.io/#fach-deu2
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -118,7 +112,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:eng3@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;TZID=Europe/Zurich:20261204T112000
 DTEND;TZID=Europe/Zurich:20261204T125000
 SUMMARY:📝 Englisch: English Exam 4 (Units 5+6)
@@ -138,7 +132,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:fra3@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;TZID=Europe/Zurich:20261207T074500
 DTEND;TZID=Europe/Zurich:20261207T091500
 SUMMARY:📝 Französisch: Französisch: CE + PE
@@ -155,7 +149,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:mat3@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;TZID=Europe/Zurich:20261209T092500
 DTEND;TZID=Europe/Zurich:20261209T105500
 SUMMARY:📝 Mathematik: Mathe Prüfung 3: Quadr. Gleichungen\, Textaufgab
@@ -184,11 +178,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:wr2@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;TZID=Europe/Zurich:20261215T130000
 DTEND;TZID=Europe/Zurich:20261215T143000
-SUMMARY:📝 Wirtschaft & Recht: Mietrecht + Familienrecht
-DESCRIPTION:Prüfung\nStoff:\n- Mietrecht\n- Familienrecht\n\nLernen: https://bm2hustle.github.io/#fach-wr2
+SUMMARY:📝 Wirtschaft & Recht: Wirtschaft & Recht Prüfung 2: Mietrecht 
+ + Familienrecht
+DESCRIPTION:Prüfung\nStoff:\n- Mietrecht (Skript Mietrecht\, inkl. Kap. 5
+  Beendigung der Miete\, Kap. 6 Mieterschutz)\n- Familienrecht\n\nLernen: 
+ https://bm2hustle.github.io/#fach-wr2
 URL:https://bm2hustle.github.io/#fach-wr2
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -198,7 +195,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:idpa2@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;VALUE=DATE:20261218
 DTEND;VALUE=DATE:20261219
 SUMMARY:🏠 IDPA: IDPA Abgabe
@@ -208,7 +205,7 @@ URL:https://bm2hustle.github.io/#fach-idpa2
 END:VEVENT
 BEGIN:VEVENT
 UID:gp3@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;TZID=Europe/Zurich:20261218T135000
 DTEND;TZID=Europe/Zurich:20261218T152000
 SUMMARY:📝 Geschichte & Politik: GP Prüfung 3: Imperialismus + Vorausse
@@ -228,7 +225,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:fra4@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;VALUE=DATE:20270104
 DTEND;VALUE=DATE:20270105
 SUMMARY:📝 Französisch: Test de vocabulaire ch. 7–9
@@ -244,7 +241,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:fra5@bm2hustle.github.io
-DTSTAMP:20261124T211437Z
+DTSTAMP:20261125T122842Z
 DTSTART;VALUE=DATE:20270114
 DTEND;VALUE=DATE:20270115
 SUMMARY:📝 Französisch: Französisch: Application
