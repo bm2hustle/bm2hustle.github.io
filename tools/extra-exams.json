@@ -1,1 +1,19 @@
-[]
+[
+ {
+  "id": "wr2",
+  "subj": "WR",
+  "date": "2026-12-15",
+  "time": "13:00",
+  "type": "schriftlich",
+  "title": "Wirtschaft & Recht Prüfung 2: Mietrecht + Familienrecht",
+  "topics": [
+   "Mietrecht (Skript Mietrecht, inkl. Kap. 5 Beendigung der Miete, Kap. 6 Mieterschutz)",
+   "Familienrecht"
+  ],
+  "material": [
+   "Teams-Aufgabe «Prüfung Wirtschaft» (15.12. 13:00)",
+   "WR-Skript Mietrecht"
+  ],
+  "unsure": false
+ }
+]
