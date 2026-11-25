@@ -104,11 +104,10 @@ END:VEVENT
 BEGIN:VEVENT
 UID:deu2@bm2hustle.github.io
 DTSTAMP:20261124T211437Z
-DTSTART;TZID=Europe/Zurich:20261203T083000
-DTEND;TZID=Europe/Zurich:20261203T100000
-SUMMARY:📝 Deutsch: DEU Prüfung 3: Literaturgeschichte
-DESCRIPTION:Prüfung\nStoff:\n- Literaturepochen (Überblick)\n- Aufkläru
- ng\n- Sturm und Drang\n- Kabale und Liebe (Schiller)\n\nLernen: https://b
+DTSTART;TZID=Europe/Zurich:20261202T074500
+DTEND;TZID=Europe/Zurich:20261202T092000
+SUMMARY:📝 Deutsch: Literaturepochen (Barock, Aufklärung, Sturm und Drang)
+DESCRIPTION:Prüfung (2 Lektionen)\nStoff:\n- Barock, Aufklärung, Sturm und Drang\n- Texte/Gedichte zuordnen und analysieren (rhetorische Mittel)\n\nLernen: https://b
  m2hustle.github.io/#fach-deu2
 URL:https://bm2hustle.github.io/#fach-deu2
 BEGIN:VALARM

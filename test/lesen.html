@@ -42,6 +42,31 @@ mark{background:var(--cap);padding:0 1px}
 .pg{position:relative;margin:0 auto 18px;background:#fff;box-shadow:0 2px 3px rgba(0,0,0,.15),0 10px 20px -8px rgba(0,0,0,.35)}
 .pg canvas{display:block;width:100%;height:100%}
 .pg .no{position:absolute;left:-46px;top:6px;font-size:.9rem;color:var(--muted);width:38px;text-align:right}
+#figs{position:fixed;inset:0;z-index:20;background:rgba(20,18,15,.62);display:none;padding:2vh 16px}
+#figs.show{display:block}
+#figs .box{max-width:1150px;height:96vh;margin:0 auto;overflow:auto;background:var(--paper);border:3px solid var(--line);border-radius:10px;padding:14px 20px 30px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+#figs h2{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:2rem;margin:0}
+#figs h3{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:1.4rem;margin:18px 0 6px}
+.fhead{display:flex;align-items:center;gap:10px;position:sticky;top:-14px;background:var(--paper);padding:6px 0;z-index:2}
+.konst{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;position:relative}
+.stand{grid-column:1/-1;font-weight:bold;padding:4px 10px;border-radius:6px;font-size:1rem}
+.stand.adel{background:#e4dcff}.stand.buerg{background:#ffe7c2}
+.fig{border:2px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff;cursor:pointer;text-align:center;line-height:1.2}
+.fig:hover,.fig:focus-visible{background:var(--cap);outline:none}
+.fig b{display:block;font-size:1.05rem}.fig small{color:var(--muted)}
+.rel{display:grid;grid-template-columns:1fr auto 1fr;gap:4px 10px;align-items:center;font-size:.98rem}
+.rel .a{text-align:right;font-weight:bold}.rel .b{font-weight:bold}.rel .m{background:#fff;border:1px dashed #999;border-radius:6px;padding:1px 8px;text-align:center}
+.rel .m.love{border-color:#c0392b;color:#c0392b}.rel .m.kab{border-color:#5b2a86;color:#5b2a86}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.card{background:#fff;border:2px solid var(--line);border-top-width:8px;border-radius:8px;padding:8px 12px;font-size:.98rem;line-height:1.3;scroll-margin-top:60px}
+.card.adel{border-top-color:#7c5cc4}.card.buerg{border-top-color:#d9730d}
+.card h4{font-family:var(--comic);font-weight:400;letter-spacing:.6px;font-size:1.35rem;margin:0}
+.card dl{display:grid;grid-template-columns:auto 1fr;gap:3px 8px;margin:6px 0}
+.card dt{font-weight:bold}.card dd{margin:0}
+.card .q{background:#fff8d6;border-left:4px solid var(--cap);padding:3px 8px;margin:4px 0}
+.card .q button{all:unset;cursor:pointer;color:var(--deu);text-decoration:underline;font-size:.9rem}
+.card .eb{border-top:2px dashed #ccc;padding-top:4px;margin-top:4px}
+@media (max-width:820px){.konst{grid-template-columns:repeat(2,1fr)}}
 #res{position:fixed;right:16px;bottom:14px;background:var(--cap);border:2px solid var(--line);border-radius:10px;padding:6px 12px;box-shadow:0 4px 10px rgba(0,0,0,.3);display:none;gap:8px;align-items:center}
 #res.show{display:flex}
 @media (max-width:820px){aside{display:none}aside.open{display:flex;position:fixed;inset:110px 0 0 0;z-index:5;width:auto}.pg .no{display:none}}
@@ -62,6 +87,7 @@ mark{background:var(--cap);padding:0 1px}
   <div class="grp" aria-label="Zoom">
     <button class="btn" id="zout" title="Kleiner">−</button><button class="btn" id="zfit" title="Seite einpassen">↔ Breite</button><button class="btn" id="zin" title="Grösser">+</button>
   </div>
+  <button class="btn go" id="figBtn">👥 Figuren</button>
   <button class="btn" id="fs">⛶ Vollbild</button>
   <a class="btn" id="dl" download>⬇️ PDF</a>
 </header>
@@ -77,6 +103,7 @@ mark{background:var(--cap);padding:0 1px}
   </aside>
   <div id="view" tabindex="-1"></div>
 </main>
+<div id="figs" role="dialog" aria-label="Figuren in Kabale und Liebe"><div class="box" id="figBox"></div></div>
 <div id="res" role="status"><span id="resT"></span><button class="btn go" id="resGo">Weiterlesen</button><button class="btn" id="resX" aria-label="Schliessen">✕</button></div>
 
 <script src="buecher/kabale/data.js"></script>
@@ -116,6 +143,33 @@ $("fs").onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();els
 if(!document.documentElement.requestFullscreen)$("fs").hidden=true;
 document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight"||e.key==="PageDown"&&e.altKey){go(cur+1);e.preventDefault()}else if(e.key==="ArrowLeft"){go(cur-1);e.preventDefault()}});
 let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{if(!zoom){const n=cur;layout();go(n)}},200)});
+
+// Figuren
+const F=[
+ {id:"luise",n:"Luise Miller",st:"buerg",k:"16 Jahre, Tochter des Musikers Miller",ch:"fromm, sanft, gehorsam, liebt Ferdinand ehrlich – aber sieht klar, dass die Standesgrenze stärker ist als ihre Liebe.",will:"Ferdinand lieben und gleichzeitig Gott und ihrem Vater treu bleiben. Am Ende opfert sie ihr Glück, um die Eltern zu retten.",sp:"leise, kurze Sätze, viele Gedankenstriche und Pausen; religiöse Bilder (Himmel, Gott, Grab).",rol:"Opfer der Kabale: schreibt den erzwungenen Liebesbrief an Kalb und schwört, ihn freiwillig geschrieben zu haben. Wird von Ferdinand vergiftet und sagt sterbend die Wahrheit.",q:["«Man trennt uns!»",15],eb:"Luise = zwischen zwei Welten gefangen: Herz bei Ferdinand, Pflicht beim Vater."},
+ {id:"ferdinand",n:"Ferdinand von Walter",st:"adel",k:"Major, Sohn des Präsidenten",ch:"leidenschaftlich, idealistisch, ehrlich, aber auch eifersüchtig und besitzergreifend. Typischer Held des Sturm und Drang.",will:"Luise heiraten – egal, was Stand und Vater sagen. Liebe soll über Adelsbriefe siegen.",sp:"stürmisch: Ausrufe, Übertreibungen, grosse Bilder (Hindernisse «wie Gebirge» nimmt er «für Treppen»).",rol:"Gegenspieler seines Vaters. Glaubt Luises falschem Brief, fordert Kalb heraus, vergiftet Luise und sich selbst mit Limonade.",q:["Adelsbrief gegen die «Handschrift des Himmels»",16],eb:"Ferdinand = Feuer 🔥: brennt für Liebe, verbrennt am Ende alles."},
+ {id:"praesident",n:"Präsident von Walter",st:"adel",k:"mächtigster Mann am Hof des Fürsten, Ferdinands Vater",ch:"skrupelloser Machtmensch, kalt, berechnend; verachtet Bürger («Bürgercanaille»). Ist durch ein Verbrechen (Mord am Vorgänger) an die Macht gekommen.",will:"Macht behalten: Ferdinand soll Lady Milford heiraten, damit er Einfluss auf den Fürsten hat.",sp:"kühl, ironisch, herablassend; spricht Untergebene in der 3. Person an («Wurm, besinn' Er sich»); französische Wörter («Mariage»).",rol:"Plant mit Wurm die Kabale. Am Schluss stellt er sich der Justiz, als Ferdinand stirbt.",q:["«Bürgercanaille»",17],eb:"Präsident = Schachspieler ♟️: Menschen sind für ihn nur Figuren."},
+ {id:"wurm",n:"Wurm",st:"adel",k:"Haussekretär des Präsidenten (bürgerlich, dient aber dem Adel)",ch:"hinterhältig, kriecherisch, eifersüchtig – will Luise selbst heiraten.",will:"Luise für sich; dafür Ferdinand ausschalten.",sp:"glatt, höflich, falsch – sagt nie direkt, was er meint.",rol:"Erfinder der Kabale: diktiert Luise den falschen Liebesbrief an Kalb und lässt sie einen Eid schwören. Am Ende verrät er den Präsidenten.",q:["Präsident: «Ich halte dich an deiner eigenen Schurkerei, wie den Schröter am Faden»",20],eb:"Wurm = Name ist Programm 🪱: kriecht, windet sich, nagt im Verborgenen."},
+ {id:"milford",n:"Lady Milford",st:"adel",k:"Favoritin (Geliebte) des Fürsten, eigentlich Johanna von Norfolk, eine geflüchtete Engländerin",ch:"stolz, gebildet, nicht nur böse: hat ein Gewissen und hilft heimlich Armen. Liebt Ferdinand wirklich.",will:"Ferdinand heiraten und mit ihm ein ehrliches Leben anfangen.",sp:"gewandt, elegant, selbstbewusst; wechselt zwischen Stolz und Gefühl.",rol:"Ferdinand weist sie ab, Luise verzichtet vor ihr auf Ferdinand. Lady Milford erkennt ihre Schuld und verlässt das Land (positive Wandlung).",q:["Sie ist Johanna von Norfolk",95],eb:"Lady Milford = goldener Käfig 🪙: reich, aber gefangen – am Ende fliegt sie raus."},
+ {id:"kalb",n:"Hofmarschall von Kalb",st:"adel",k:"Höfling, Freund des Präsidenten",ch:"eitel, dumm, feige, oberflächlich; interessiert sich vor allem für Mode und Klatsch.",will:"seine Stelle am Hof behalten.",sp:"geziert, voller französischer Ausdrücke («Mort de ma vie»), viel reden, nichts sagen.",rol:"Wird für die Kabale benutzt: der falsche Brief ist an ihn gerichtet. Ferdinand fordert ihn zum Duell, Kalb ist zu feige.",q:["Neuigkeit: der Herzog trägt «Merde d'Oye Biber»",21],eb:"Kalb = Kalb 🐄: dumm und bunt geschmückt, aber ohne eigenen Kopf."},
+ {id:"miller",n:"Miller",st:"buerg",k:"Stadtmusikant, Luises Vater",ch:"ehrlich, stolz auf seinen Stand, fromm, aufbrausend, streng; liebt seine Tochter über alles.",will:"die Ehre der Familie schützen – Luise soll keinen Adligen heiraten.",sp:"derb, direkt, volkstümlich, mit Flüchen und Redewendungen; sagt, was er denkt.",rol:"Warnt vor dem Adel, wird verhaftet. Für ihn verzichtet Luise auf Ferdinand.",q:["«Das Blutgeld meiner Tochter? – Schier dich zum Satan, infame Kupplerin!»",7],eb:"Miller = Eichenbaum 🌳: gerade, hart, nicht zu biegen."},
+ {id:"frau",n:"Frau Miller",st:"buerg",k:"Luises Mutter",ch:"eitel, geldgierig, naiv; träumt vom Aufstieg der Tochter.",will:"dass Luise eine «gnädige Madam» wird.",sp:"will vornehm wirken, benutzt Fremdwörter falsch («Herr Sekertare», «barrdu») – wirkt dadurch lächerlich.",rol:"Verrät Wurm aus Dummheit zu viel und hilft so unabsichtlich der Kabale.",q:["«Herr Sekertare»",9],eb:"Frau Miller = Möchtegern 👒: will nach oben, stolpert über ihre Wörter."},
+ {id:"sophie",n:"Sophie",st:"buerg",k:"Kammerjungfer der Lady",ch:"treu, aufmerksam.",will:"–",sp:"einfach",rol:"Nebenfigur: begleitet Lady Milford.",q:["",29],eb:""},
+ {id:"diener",n:"Kammerdiener des Fürsten",st:"buerg",k:"bringt der Lady Edelsteine vom Fürsten",ch:"bitter, mutig.",will:"–",sp:"",rol:"Erzählt, dass 7000 Landeskinder als Soldaten nach Amerika verkauft wurden, um die Edelsteine zu bezahlen – Schillers stärkste Kritik am Fürsten.",q:["Soldaten werden nach Amerika verkauft",32],eb:"Diamanten 💎 = mit Soldatenblut bezahlt."}];
+const REL=[["Ferdinand","❤️ lieben sich","Luise","love"],["Präsident","Vater von / will Heirat mit Lady","Ferdinand",""],["Miller","Vater von / verbietet die Liebe","Luise",""],["Lady Milford","❤️ liebt (einseitig)","Ferdinand","love"],["Wurm","will heiraten (einseitig)","Luise","love"],["Präsident + Wurm","🕸️ planen die Kabale gegen","Ferdinand & Luise","kab"],["Wurm","zwingt zum falschen Brief an Kalb","Luise","kab"],["Präsident","erpresst / kennt Verbrechen","Wurm",""],["Kalb","Werkzeug der Kabale für","Präsident","kab"],["Lady Milford","Geliebte des Fürsten","(Fürst)",""],["Luise","verzichtet vor ihr auf Ferdinand","Lady Milford",""]];
+function rFigs(){const card=f=>`<article class="card ${f.st}" id="c-${f.id}"><h4>${esc(f.n)}</h4><small>${f.st==="adel"?"🏰 Adel / Hof":"🏠 Bürgertum"} · ${esc(f.k)}</small><dl><dt>Charakter</dt><dd>${esc(f.ch)}</dd>${f.will&&f.will!=="–"?`<dt>Will</dt><dd>${esc(f.will)}</dd>`:""}${f.sp?`<dt>Sprache</dt><dd>${esc(f.sp)}</dd>`:""}<dt>Rolle</dt><dd>${esc(f.rol)}</dd></dl>${f.q[0]?`<div class="q">${esc(f.q[0])} <button data-p="${f.q[1]}">S. ${f.q[1]} lesen</button></div>`:""}${f.eb?`<div class="eb">💡 ${esc(f.eb)}</div>`:""}</article>`;
+  const chip=f=>`<button class="fig" data-c="${f.id}"><b>${esc(f.n)}</b><small>${esc(f.k.split(",")[0])}</small></button>`;
+  $("figBox").innerHTML=`<div class="fhead"><h2>👥 Figuren</h2><span class="sp"></span><button class="btn" id="figX">✕ Schliessen (Esc)</button></div>
+  <h3>Figurenkonstellation</h3><div class="konst"><div class="stand adel">🏰 Adel / Hof – Macht, Intrige, Geld, Schein</div>${F.filter(f=>f.st==="adel").map(chip).join("")}<div class="stand buerg">🏠 Bürgertum – Ehrlichkeit, Ehre, Familie, Religion</div>${F.filter(f=>f.st==="buerg").map(chip).join("")}</div>
+  <h3>Wer hängt wie zusammen?</h3><div class="rel">${REL.map(r=>`<span class="a">${esc(r[0])}</span><span class="m ${r[3]}">${esc(r[1])}</span><span class="b">${esc(r[2])}</span>`).join("")}</div>
+  <h3>Kurz erklärt: der Grundkonflikt</h3><p style="margin:0">Ferdinand (Adel) und Luise (Bürgertum) lieben sich. Weil die <b>Standesgrenze</b> das verbietet, zerstören der Präsident und Wurm die Liebe mit einer <b>Kabale</b> (Intrige): Luise muss einen falschen Liebesbrief an Kalb schreiben. Ferdinand glaubt ihn, vergiftet Luise und sich. Schiller zeigt so die Kritik des <b>Sturm und Drang</b> an der Ständegesellschaft und am Absolutismus – ein <b>bürgerliches Trauerspiel</b>.</p>
+  <h3>Alle Figuren</h3><div class="cards">${F.map(card).join("")}</div>
+  <p class="note">Seitenzahlen nach der Damnick-Ausgabe. Tipp: Klick auf «S. … lesen» springt direkt zur Stelle.</p>`;
+  $("figX").onclick=()=>$("figs").classList.remove("show")}
+$("figBtn").onclick=()=>{if(!$("figBox").innerHTML)rFigs();$("figs").classList.add("show");$("figBox").scrollTop=0};
+$("figs").addEventListener("click",e=>{if(e.target.id==="figs"){$("figs").classList.remove("show");return}const c=e.target.closest("[data-c]");if(c){$("c-"+c.dataset.c).scrollIntoView({behavior:"smooth",block:"start"});return}const p=e.target.closest("[data-p]");if(p){$("figs").classList.remove("show");go(+p.dataset.p)}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("figs").classList.remove("show")});
+if(location.hash==="#figuren")setTimeout(()=>$("figBtn").click(),300);
 
 // Suche
 const norm=s=>s.toLowerCase().replace(/ſ/g,"s");
