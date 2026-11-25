@@ -70,6 +70,7 @@ table.t td.fill{background:#fffbe6;cursor:pointer}table.t td.fill span{visibilit
   <main id="main"></main>
 </div>
 
+<script src="mathe-buch.js"></script>
 <script data-goatcounter="https://bm2hustle.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <script>
 const $=id=>document.getElementById(id);
@@ -171,6 +172,26 @@ const T=[
  {q:"Wartezeiten (Minuten): 4, 7, 2, 9, 7, 5, 8. Berechne den Interquartilsabstand IQR = Q3 − Q1 (wie der TI-30X).",a:4,unit:"min",t1:"Geordnet: 2, 4, 5, | 7 |, 7, 8, 9 – der Median teilt in zwei Hälften.",t2:"Q1 = Median der unteren Hälfte (2, 4, 5) · Q3 = Median der oberen Hälfte (7, 8, 9)",t3:"IQR = 8 − 4",steps:["Q1 = 4, Q3 = 8","IQR = 8 − 4 = 4"],probe:"TI-30X: Q1 = 4, Q3 = 8 ✓",check:a=>a===7?"7 ist die Spannweite R = max − min, nicht der IQR.":"Bestimme Q1 und Q3 getrennt.",err:"Spannweite (max − min) und IQR (Q3 − Q1) nicht verwechseln."},
  {q:"Wartezeiten (Minuten): 4, 7, 2, 9, 7, 5, 8. Berechne die Standardabweichung s der Stichprobe (auf 2 Stellen).",a:2.45,tol:.011,unit:"min",t1:"s = Stichprobe → durch n − 1 teilen. Am TI-30X heisst sie Sx.",t2:"Abweichungen von x̄ = 6: −2, 1, −4, 3, 1, −1, 2 → Quadrate summieren",t3:"s = √(36 : 6)",steps:["Quadrate: 4 + 1 + 16 + 9 + 1 + 1 + 4 = 36","s² = 36 : (7 − 1) = 6","s = √6 ≈ 2,45"],probe:"TI-30X: Sx = 2,449… ✓",check:a=>Math.abs(a-2.27)<.02?"Das ist σ (durch n). Für die Stichprobe durch n − 1 teilen (Sx).":Math.abs(a-6)<.01?"6 ist die Varianz s² – noch die Wurzel ziehen.":"Rechne die Quadrate der Abweichungen nach.",err:"Sx = Stichprobe (n − 1), σx = Grundgesamtheit (n)."}]}
 ];
+const HOW={
+ raetsel:{t:"Zahlenrätsel und Alter – ganz einfach",b:`<p>Eine Textaufgabe ist ein Rätsel in Worten. Du übersetzt die Worte in Mathe – wie ein Übersetzer.</p>
+  <ol class="steps"><li><b>Was wird gesucht?</b> Das nennst du <b>x</b>. Schreib es auf: «x = Alter der Tochter».</li><li><b>Übersetzen:</b> «das Doppelte» = 2 · x, «um 5 mehr» = + 5, «ergibt» = «=».</li><li><b>Gleichung lösen</b> wie immer: alles mit x auf eine Seite.</li><li><b>Probe:</b> deine Zahl in den Text einsetzen – stimmt die Geschichte?</li></ol>
+  <p class="book">Beispiel: «Eine Zahl plus 7 ergibt 20.» → x + 7 = 20 → x = 13. Probe: 13 + 7 = 20 ✓<br>Alter: Wenn Zeit vergeht, werden <b>alle</b> älter. Eine Tabelle hilft: Spalte «heute» und «in x Jahren».</p>`},
+ misch:{t:"Mischungsrechnen – ganz einfach",b:`<p>Stell dir einen Sirup vor: Du giesst Wasser dazu. Der Sirup wird <b>dünner</b>, aber <b>die Menge Sirup bleibt gleich</b>. Genau das rechnest du.</p>
+  <ol class="steps"><li>x = die Menge, die gesucht ist.</li><li>Tabelle: Menge · Anteil (oder Preis) für jede Sorte und für die Mischung.</li><li>Regel: <b>Sorte 1 + Sorte 2 = Mischung</b> → <span class="eq">m₁·c₁ + m₂·c₂ = (m₁ + m₂)·c</span></li><li>Wasser hat 0 %, reines Metall 100 %.</li></ol>
+  <p class="book">Beispiel: 10 L Sirup mit 20 % Zucker + x L Wasser = 10 % Zucker.<br>10 · 0,20 + x · 0 = (10 + x) · 0,10 → 2 = 1 + 0,1x → x = 10 L Wasser.<br>Faustregel: Liegt der Mischpreis nahe bei einer Sorte, braucht es von dieser Sorte mehr.</p>`},
+ arbeit:{t:"Arbeit und Leistung – ganz einfach",b:`<p>Wer ein Zimmer allein in <b>6 Stunden</b> streicht, schafft in <b>1 Stunde einen Sechstel</b> (1/6) des Zimmers.</p>
+  <ol class="steps"><li>x = die gesuchte Zeit.</li><li>Jede Person schafft in x Stunden: <b>x geteilt durch ihre Zeit allein</b>.</li><li>Alle Teile zusammen = <b>1</b> (das ganze Zimmer).</li><li>Wer gegen dich arbeitet (z. B. ein Abfluss), wird <b>abgezogen</b>.</li></ol>
+  <p class="book">Beispiel: Anna 6 h, Ben 3 h. Zusammen: x/6 + x/3 = 1 → mal 6: x + 2x = 6 → x = 2 h.<br>Check: Zu zweit muss es schneller gehen als der Schnellere allein (3 h) ✓</p>`},
+ zwei:{t:"Zwei Unbekannte – ganz einfach",b:`<p>Wenn zwei Dinge gesucht sind, brauchst du <b>zwei Gleichungen</b> – eine pro Information im Text.</p>
+  <ol class="steps"><li>x und y festlegen (z. B. x = Erwachsene, y = Kinder).</li><li>Jede Information wird eine Gleichung.</li><li>Eine Gleichung nach y umstellen und in die andere einsetzen.</li><li>Jetzt ist nur noch x drin → lösen → dann y ausrechnen.</li></ol>
+  <p class="book">Beispiel: x + y = 10 und x − y = 4 → zusammenzählen: 2x = 14 → x = 7, y = 3.</p>`},
+ quad:{t:"Quadratische Gleichungen – ganz einfach",b:`<p>Hier kommt <b>x²</b> vor. Fast immer gibt es <b>zwei Lösungen</b>.</p>
+  <ol class="steps"><li><b>Nur x² und eine Zahl?</b> → x² allein, dann Wurzel: x = ± …</li><li><b>Keine Zahl ohne x?</b> → x ausklammern: x · ( … ) = 0</li><li><b>Sonst</b> → alles auf eine Seite (… = 0) und abc-Formel.</li></ol>
+  <p class="book">abc-Formel: <span class="eq">x = (−b ± √(b² − 4ac)) / 2a</span><br>Unter der Wurzel negativ → keine Lösung. Genau 0 → eine Lösung.</p>`},
+ quadtext:{t:"Quadratische Textaufgaben – ganz einfach",b:`<p>Wie normale Textaufgaben – nur entsteht am Schluss ein <b>x²</b>. Dann löst du mit Faktorzerlegung oder abc-Formel.</p>
+  <ol class="steps"><li>x festlegen, Gleichung aufstellen.</li><li>Alles auf eine Seite: … = 0.</li><li>Lösen → oft 2 Lösungen.</li><li><b>Realitäts-Check:</b> Eine Länge, Zeit oder Geschwindigkeit kann nicht negativ sein → streichen.</li></ol>`},
+ daten:{t:"Datenanalyse – ganz einfach",b:`<p>Du bekommst eine Liste von Zahlen und beschreibst sie mit wenigen Werten.</p>
+  <ol class="steps"><li><b>Mittelwert x̄:</b> alles zusammenzählen, durch die Anzahl teilen.</li><li><b>Median:</b> der Grösse nach ordnen, die Mitte nehmen.</li><li><b>Spannweite:</b> grösster − kleinster Wert.</li><li><b>Q1, Q3:</b> die Mitte der unteren bzw. oberen Hälfte. IQR = Q3 − Q1.</li><li><b>Standardabweichung s:</b> wie stark die Werte im Schnitt vom Mittelwert abweichen. Am Taschenrechner: Sx.</li></ol>`}};
 const WARM=[["das Doppelte einer Zahl","2x",["x²","x + 2","x/2"]],["eine Zahl, um 5 vermindert","x − 5",["5 − x","5x","x/5"]],["5 weniger als das Dreifache einer Zahl","3x − 5",["5 − 3x","3(x − 5)","3x + 5"]],["ein Viertel einer Zahl","x/4",["4x","x − 4","x⁴"]],["die Summe aus einer Zahl und ihrem Quadrat","x + x²",["(x + x)²","2x²","x · x²"]],["das Quadrat der Summe von x und y","(x + y)²","x² + y²".split("|").concat(["2(x + y)","x + y²"])],["x ist um 3 grösser als y","x = y + 3",["y = x + 3","x + y = 3","3x = y"]],["Wer allein 8 Stunden braucht, schafft pro Stunde …","1/8 der Arbeit",["8 der Arbeit","1/16 der Arbeit","8/1 der Arbeit"]],["Wasser in einer Alkohol-Mischung hat einen Alkoholanteil von …","0 %",["100 %","50 %","gleich viel wie die Mischung"]],["In x Jahren ist eine heute 12-jährige Person …","12 + x",["12x","12 − x","x − 12"]]];
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const num=s=>{s=String(s).trim().replace(/\s/g,"").replace(/[’']/g,"").replace(",",".");if(!/^-?\d+(\.\d+)?$/.test(s))return NaN;return +s};
@@ -179,6 +200,7 @@ const fmtN=n=>String(n).replace(".",",");
 /* ---------- Ansicht ---------- */
 let cur=null,ti=0,stage=0,tries=0,streak=0,solved=LS.get("mathe-solved",{}),clean=LS.get("mathe-clean",{});
 const pick=a=>a[Math.floor(Math.random()*a.length)];
+(window.BUCH||[]).forEach(b=>T.push(Object.assign(b,{tasks:b.tasks.map(t=>Object.assign({q:`📘 Lies im Buch S. ${t.p}, Aufgabe ${t.n}. Gib hier ein: ${t.ask}.`,unit:t.unit||"",check:v=>t.alt&&t.alt[v]?t.alt[v]:"Prüf mit dem Text im Buch: Setz deine Zahl ein – stimmt die Geschichte?"},t))})));
 const GRP=[["alle","Ganzer Stoff"],["quad","📐 Quadratische Gleichungen"],["text","📝 Textaufgaben"],["daten","📊 Datenanalyse"]];
 let grp=(location.hash.slice(1)||LS.get("mathe-grp","alle"));if(!GRP.some(g=>g[0]===grp))grp="alle";
 function rNav(){$("grps").innerHTML=GRP.map(g=>`<button data-grp="${g[0]}" ${g[0]===grp?'aria-current="true"':""}>${g[1]}</button>`).join("");
@@ -188,14 +210,17 @@ rNav();
 document.querySelector("nav").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   if(b.dataset.grp){grp=b.dataset.grp;LS.set("mathe-grp",grp);history.replaceState(null,"","#"+grp);rNav();home();return}
   document.querySelectorAll("nav button").forEach(x=>x.removeAttribute("aria-current"));b.setAttribute("aria-current","true");
-  if(b.dataset.topic){cur=T.find(t=>t.id===b.dataset.topic);ti=0;warm()}else view(b.dataset.view);window.scrollTo(0,0)});
+  if(b.dataset.topic){cur=T.find(t=>t.id===b.dataset.topic);ti=0;intro()}else view(b.dataset.view);window.scrollTo(0,0)});
 
 function home(){const GT=GRP.find(g=>g[0]===grp)[1];$("main").innerHTML=`<section class="card"><h2>${grp==="alle"?"So funktioniert der Mathe-Coach":esc(GT)}</h2>${grp!=="alle"?`<p class="meta">Du lernst nur diesen Teil. Oben links kannst du wechseln.</p>`:""}
   <ol class="steps"><li>Thema links wählen.</li><li>Bei Textaufgaben kurz aufwärmen: 5 Fragen «Text → Mathe».</li><li>Aufgabe lesen und selbst lösen. Wenn du nicht weiterkommst: <b>Tipp 1 → 2 → 3</b> einzeln aufdecken.</li><li>Antwort eingeben. Bei falsch gibt es einen <b>Realitäts-Check</b> statt der Lösung. Die Lösung ist immer erreichbar, wenn du sie brauchst.</li><li>Bei richtig: <b>Probe</b> anschauen – genau so machst du sie an der Prüfung.</li></ol>
   <p class="book">Prüfung 3 · Mi 9.12. · Das sind eigene Übungsaufgaben im Stil des Lehrmittels. Die Aufgaben aus dem Buch übst du im Buch – die Seiten stehen bei jedem Thema.</p></section>
   <section class="card"><h3>Dein Stand</h3>${T.filter(t=>grp==="alle"||t.grp===grp).map(t=>{const d=t.tasks.filter((_,i)=>solved[t.id+i]).length;const c=t.tasks.filter((_,i)=>clean[t.id+i]).length;return `<p style="margin:2px 0">${esc(t.name)}: <b>${d} / ${t.tasks.length}</b> gelöst${c?` · ${c} ohne Hilfe`:""}</p>`}).join("")}</section>`}
 
-function warm(){if(cur.grp!=="text"){task();return}const qs=shuffle(WARM).slice(0,5);let i=0,ok=0;
+function intro(){const h=HOW[cur.how||cur.id];if(!h){warm();return}
+  $("main").innerHTML=`<section class="card"><p class="meta">${esc(cur.name)}</p><h2>${esc(h.t)}</h2>${h.b}<div class="row" style="margin-top:8px"><button class="btn go" id="go">Los geht's</button><button class="btn" id="skipI">Kenne ich schon – direkt zu den Aufgaben</button></div></section>`;
+  $("go").onclick=warm;$("skipI").onclick=()=>{ti=0;task()}}
+function warm(){if(cur.grp!=="text"||cur.id.startsWith("b")){task();return}const qs=shuffle(WARM).slice(0,5);let i=0,ok=0;
   const r=()=>{if(i>=qs.length){task();return}const w=qs[i],opts=shuffle([w[1],...w[2]]);
     $("main").innerHTML=`<section class="card mc"><p class="meta">${esc(cur.name)} · Aufwärmen ${i+1} / 5 · ${ok} richtig</p><h2>Text → Mathe</h2><div class="task">«${esc(w[0])}»</div><div class="opts">${opts.map(o=>`<button>${esc(o)}</button>`).join("")}</div><div id="wfb"></div><div class="row"><button class="btn" id="skip">Aufwärmen überspringen</button></div></section>`;
     $("skip").onclick=task;
