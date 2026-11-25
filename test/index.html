@@ -402,11 +402,12 @@ function rFach(id){
 
       ${e.subj==="SOZ"?`<p class="why">🎨 Zu Soziologie gibt es Comic-Lernkarten mit allen Lernzielen: <a class="btn go" href="soz.html">Soziologie-Comic öffnen</a></p>`:""}
       <p>So lernst du: <b>📖 Theorie</b> lesen → <b>🎮 Üben</b> bis es sitzt → <b>🏁 Probeprüfung</b> ohne Hilfe.</p>
-      <div class="gpick"><button data-jump="theorie">📖 Zur Theorie</button><button data-jump="ueben">🎮 Zum Üben</button><button data-jump="probe">🏁 Probeprüfung</button></div>`;
+      <div class="gpick"><button data-jump="theorie">📖 Zur Theorie</button>${(H.notebooks||{})[id]?`<button data-jump="theorie" id="nbJump">🎧 Podcast &amp; Video</button>`:""}<button data-jump="ueben">🎮 Zum Üben</button><button data-jump="probe">🏁 Probeprüfung</button></div>`;
     P.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{curTab=b.dataset.jump;rFach(id)});
   }else if(curTab==="theorie"){
     const vids=(H.videos||{})[id]||[];
-    P.innerHTML=(e.subj==="SOZ"?`<p><a class="btn go" href="soz.html">🎨 Soziologie-Comic: alle Begriffe als Comic-Karten</a></p>`:"")+
+    const nb=(H.notebooks||{})[id];
+    P.innerHTML=(nb?`<div class="gamebox" id="nbBox"><h3 style="margin:0">🎧 Podcast, Video &amp; Infografik (NotebookLM)</h3><ul style="margin:0;padding-left:20px">${nb.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p style="margin:0"><a class="btn go" href="${esc(nb.url)}" target="_blank" rel="noopener">▶ In NotebookLM öffnen</a></p><p style="margin:0;font-size:.9rem;opacity:.75">Öffnet NotebookLM von Google. Du brauchst ein Google-Konto. Unter «Studio» findest du Podcast, Video und Infografik.</p></div>`:"")+(e.subj==="SOZ"?`<p><a class="btn go" href="soz.html">🎨 Soziologie-Comic: alle Begriffe als Comic-Karten</a></p>`:"")+
       (vids.length?`<div class="gamebox"><h3 style="margin:0">🎬 Erklärvideos zum Einstieg</h3><div class="list">${vids.map(v=>`<a class="row" style="--ink2:${S(e.subj).ink}" href="${esc(v[2])}" target="_blank" rel="noopener"><span><strong>▶ ${esc(v[0])}</strong></span><small>${esc(v[1])}</small></a>`).join("")}</div><p style="margin:0;font-size:.9rem;opacity:.75">Öffnet sich in einem neuen Tab.</p></div>`:"")+
       (th.length?th.map(t=>`<div class="tafel"><h3>${esc(t.title)}</h3>${t.html}${t.source?`<p class="src">Quelle: ${esc(t.source)}</p>`:""}</div>`).join(""):`<p class="empty">Für diese Prüfung gibt es noch keine Theorie. Kommt, sobald Stoff da ist.</p>`)+
       `<div class="gpick">${th.length?`<button id="dlTh">⬇️ Zusammenfassung herunterladen</button>`:""}<button id="toUeben">🎮 Weiter zum Üben</button></div><div id="dlOut"></div>`;
@@ -728,7 +729,8 @@ const TOUR=[
  {id:"t1-meld",view:"start",sel:'.nav a[data-v="melden"]',t:"📣 Melden",x:"Fehlt eine Prüfung oder stimmt etwas nicht? Hier meldest du es."},
  {id:"t1-info",view:"fach",sel:".info",t:"📅 Wann, was, worüber",x:"Alles zur Prüfung auf einen Blick."},
  {id:"t3-games",view:"fach",sel:".tabs",t:"🆕 Spiele mit Rangliste",x:"Unter 🎮 Üben: Blitz 60 s, Überleben, Meteoriten, Zuordnen auf Zeit, Wahr oder falsch. Schlag deinen Rekord!"},
- {id:"t2-tabs",view:"fach",sel:".tabs",t:"🧭 So lernst du",x:"🆕 Mein Lernplan · 📖 Theorie & 🆕 Videos · 🎮 Üben · 🏁 Probeprüfung · ✍️ eigene Karten · ⬇️ Übungsblätter. Am Handy seitwärts wischen."}];
+ {id:"t4-notebook",view:"fach",sel:"#nbJump",t:"🎧 Neu: Podcast & Video",x:"Bei manchen Prüfungen gibt es jetzt einen Podcast, ein Erklärvideo und eine Infografik von NotebookLM – perfekt für unterwegs."},
+{id:"t2-tabs",view:"fach",sel:".tabs",t:"🧭 So lernst du",x:"🆕 Mein Lernplan · 📖 Theorie & 🆕 Videos · 🎮 Üben · 🏁 Probeprüfung · ✍️ eigene Karten · ⬇️ Übungsblätter. Am Handy seitwärts wischen."}];
 let tourQ=[],tourI=0;
 function tourSeen(){return LS.get("tour-seen",[])}
 function tourStart(view){if(!$("tour").hidden||!LS.get("nick",""))return;const seen=tourSeen();tourQ=TOUR.filter(t=>t.view===view&&!seen.includes(t.id)&&document.querySelector(t.sel));tourI=0;if(tourQ.length)tourShow()}
