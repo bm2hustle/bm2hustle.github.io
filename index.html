@@ -188,6 +188,8 @@ body.zoom .zoombox.on{position:fixed;z-index:41;top:3vh;left:50%;transform:trans
 body.zoom .zoombox.on .zclose{display:inline-block!important}
 body.zoom .zoombox.on .zopen{display:none}
 body.zoom .zoombox.on .tafel{font-size:1.12rem}
+body.zoom .zoombox.on.wide{width:min(1400px,98vw);top:1vh;max-height:98vh;padding:6px 14px 10px}
+body.zoom .zoombox.on.wide .gamebox{gap:6px}
 body.zoom .zoombox.on .zbar{position:sticky;top:-12px;z-index:2;background:var(--paper);padding:4px 0}
 /* Lern-Uhr */
 .clock{display:flex;align-items:center;gap:6px;position:relative;font-size:1rem}
@@ -464,13 +466,14 @@ function rFach(id){
     $("toUeben").onclick=()=>{curTab="ueben";rFach(id)};
   }else if(curTab==="ueben"){
     const games=[["mc","🎯 Multiple Choice",g.quiz],["match","🧩 Zuordnen",g.pairs],["cards","🃏 Karteikarten",g.decks],["cloze","✏️ Lückentext",g.cloze],["order","🔢 Reihenfolge",g.order]].filter(x=>x[2]&&x[2].length);
-    const prs=pairsOf(id),arc=[["blitz","⚡ Blitz 60 s",g.quiz],["survival","🔥 Überleben",g.quiz],["meteor","☄️ Meteoriten",g.quiz],["speedmatch","⏱️ Zuordnen auf Zeit",prs.length>=6?prs:null],["wf","✅❌ Wahr oder falsch",prs.length>=4?prs:null]].filter(x=>x[2]&&x[2].length);
+    const prs=pairsOf(id),arc=[["blitz","⚡ Blitz 60 s",g.quiz],["survival","🔥 Überleben",g.quiz],["meteor","☄️ Meteoriten",g.quiz],["speedmatch","⏱️ Zuordnen auf Zeit",prs.length>=6?prs:null],["wf","✅❌ Wahr oder falsch",prs.length>=4?prs:null],["billard","🎱 Billard",prs.length>=4?prs:null]].filter(x=>x[2]&&x[2].length);
     const wc=weakCount(id);
     P.innerHTML=(wc?`<div class="weakbox"><div><b>🎯 Deine Schwächen: ${wc} ${wc===1?"Frage/Begriff":"Fragen/Begriffe"}</b><small>Alles, was du in Spielen, Karteikarten oder der Probeprüfung falsch hattest. Nach 2× richtig in Folge ist es gemeistert.</small></div><div class="gpick"><button class="btn go" data-g="weak">🎯 Gezielt üben</button><button class="btn" id="weakList">📋 Liste ansehen</button></div></div>`:`<p class="empty" style="margin:0 0 6px">🎯 Fehler aus allen Spielen sammeln sich hier – dann kannst du genau deine Schwächen üben.</p>`)+(games.length?`<div class="gpick">${games.map(x=>`<button data-g="${x[0]}">${x[1]}</button>`).join("")}</div>
       <p class="empty" style="margin:4px 0 0">🏆 Nach jedem Spiel siehst du die Klassen-Rangliste. Ausnahmen: Karteikarten und das Schwächen-Training.</p>${arc.length?`<h3 class="wk" style="color:inherit">⚡ Arcade-Spiele</h3><div class="gpick">${arc.map(x=>`<button data-g="${x[0]}">${x[1]}${LS.get("best-"+x[0]+"-"+id,null)!=null?` <small>(Best: ${fmtScore(x[0],LS.get("best-"+x[0]+"-"+id))})</small>`:""}</button>`).join("")}</div>`:""}<div class="zoombox" id="gwrap"><div class="zbar"><button class="btn zclose" data-zclose>✕ Fokus beenden (Esc)</button></div><div id="game"></div></div>`:`<p class="empty">Noch keine Übungen für diese Prüfung. Kommen bald.</p>`);
     if($("weakList"))$("weakList").onclick=()=>{zoomOn($("gwrap"));weakList($("game"),id)};
     P.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{zoomOn($("gwrap"));startGame(b.dataset.g,id)});
     if(games.length)startGame(games[0][0],id);
+    setTimeout(()=>tourStart("fach"),500);
   }else{
     P.innerHTML=g.quiz&&g.quiz.length?`<p>15 Fragen wie in der Prüfung: <b>ohne Hilfe, ohne Rückmeldung</b> während dem Lösen. Am Schluss siehst du deine Punkte, eine geschätzte Note und alle Fehler mit Erklärung.</p><div class="gpick"><button class="btn go" id="pStart">🏁 Probeprüfung starten</button></div><div class="zoombox" id="gwrap"><div class="zbar"><button class="btn zclose" data-zclose>✕ Fokus beenden (Esc)</button></div><div id="game"></div></div>`:`<p class="empty">Probeprüfung folgt, sobald Fragen da sind.</p>`;
     if($("pStart"))$("pStart").onclick=()=>probe(id);
@@ -558,7 +561,7 @@ function weakOk(id,t,k){const w=weakGet(id),key=t+"|"+k;if(!w[key])return false;
 function weakCount(id){return Object.keys(weakGet(id)).length}
 function errAdd(id,q){weakAdd(id,"q",q)}
 function errDel(id,q){weakOk(id,"q",q)}
-function startGame(k,id){const g=H.games[id],G=$("game");
+function startGame(k,id){const g=H.games[id],G=$("game");$("gwrap").classList.remove("wide");
   if(k==="weak"||k==="fx"){weakTrain(G,id);return}
   if(k==="mc"||k==="fx"){let list=g.quiz;if(k==="fx"){const er=LS.get("err-"+id,[]);list=g.quiz.filter(q=>er.includes(q[0]))}mc(G,id,shuffle(list).slice(0,k==="fx"?99:12),k==="fx")}
   else if(k==="match")match(G,shuffle(g.pairs),id);
@@ -566,11 +569,11 @@ function startGame(k,id){const g=H.games[id],G=$("game");
   else if(k==="cloze")cloze(G,shuffle(g.cloze),id);
   else if(k==="order")order(G,shuffle(g.order),id);
   else if(k==="blitz")blitz(G,id);else if(k==="survival")survival(G,id);else if(k==="meteor")meteor(G,id);
-  else if(k==="speedmatch")speedmatch(G,id);else if(k==="wf")wahrfalsch(G,id);
+  else if(k==="speedmatch")speedmatch(G,id);else if(k==="wf")wahrfalsch(G,id);else if(k==="billard")billard(G,id);
 }
 
 /* ---------- Spiele mit Bestwert + Rangliste ---------- */
-const GAMEINFO={blitz:["⚡ Blitz","Punkte",1],survival:["🔥 Überleben","richtig in Folge",1],meteor:["☄️ Meteoriten","Punkte",1],speedmatch:["⏱️ Zuordnen auf Zeit","Sekunden",-1],wf:["✅❌ Wahr oder falsch","Punkte",1],mc:["🎯 Multiple Choice","richtig",1],match:["🧩 Zuordnen","Sekunden",-1],cloze:["✏️ Lückentext","Sekunden",-1],order:["🔢 Reihenfolge","Sekunden",-1]};
+const GAMEINFO={blitz:["⚡ Blitz","Punkte",1],survival:["🔥 Überleben","richtig in Folge",1],meteor:["☄️ Meteoriten","Punkte",1],speedmatch:["⏱️ Zuordnen auf Zeit","Sekunden",-1],wf:["✅❌ Wahr oder falsch","Punkte",1],mc:["🎯 Multiple Choice","richtig",1],match:["🧩 Zuordnen","Sekunden",-1],cloze:["✏️ Lückentext","Sekunden",-1],order:["🔢 Reihenfolge","Sekunden",-1],billard:["🎱 Billard","Punkte",1]};
 const tsec=(t0,err)=>Math.min(999,Math.round(((Date.now()-t0)/1000+2*err)*10)/10);
 function fmtScore(k,v){return GAMEINFO[k][2]<0?(+v).toFixed(1)+" s":String(v)}
 function pairsOf(id){const g=H.games[id]||{};const a=(g.pairs||[]).map(p=>[p[0],p[1]]).concat((g.decks||[]).map(c=>[c[0],c[1]]));const seen=new Set();return a.filter(p=>p&&p[0]&&p[1]&&String(p[1]).length<140&&!seen.has(p[0])&&seen.add(p[0]))}
@@ -604,6 +607,59 @@ function speedmatch(G,id){const p=shuffle(pairsOf(id)).slice(0,6),L=shuffle(p.ma
   G.querySelectorAll(".mt").forEach(b=>b.onclick=()=>{if(!sel||sel.dataset.s===b.dataset.s){if(sel)sel.classList.remove("sel");sel=b;b.classList.add("sel");return}
     if(sel.dataset.i===b.dataset.i){sel.classList.remove("sel");sel.classList.add("ok");b.classList.add("ok");sel=null;if(++done===p.length){clearInterval(tm);gameOver(G,"speedmatch",id,Math.round(((performance.now()-t0)/1000+pen)*10)/10)}}
     else{pen+=2;const Lb=sel.dataset.s==="L"?sel:b;weakAdd(id,"p",p[+Lb.dataset.i][0]);b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}})}
+/* ---------- 🎱 Billard: Erklärung lesen, die Kugel mit dem passenden Begriff versenken ---------- */
+function billard(G,id){$("gwrap").classList.add("wide");
+  const all=shuffle(pairsOf(id));let qi=0,pts=0,lives=3,shots=0,raf=null,over=false,msg="",msgT=0;
+  const W=1000,H=520,M=34,R0=15,PR=27,FR=0.985;
+  const pockets=[[M,M],[W/2,M-6],[W-M,M],[M,H-M],[W/2,H-M+6],[W-M,H-M]];
+  const COL=["#e74c3c","#2e86de","#f1c40f","#8e44ad","#16a085","#e67e22"];
+  G.innerHTML=`<div class="gamebox">${hud(G,[`<span>⭐ <b id="bP">0</b></span>`,`<span id="bL">❤️❤️❤️</span>`,`<span style="opacity:.75">Ziehen = zielen &amp; Stärke · Loslassen = Stoss</span>`])}
+    <p class="gq" id="bQ" style="background:#fff8d6;border:2px solid #1d1b18;border-radius:8px;padding:6px 10px;margin:0"></p>
+    <canvas id="bC" style="width:min(100%,calc((94vh - 230px) * ${W/H}));margin:0 auto;aspect-ratio:${W}/${H};display:block;border-radius:14px;touch-action:none;cursor:crosshair" aria-label="Billardtisch"></canvas>
+    <p class="empty" style="margin:0">Versenke die Kugel mit dem <b>passenden Begriff</b>. Richtig +1 · falsche Kugel oder weisse Kugel versenkt = ❤️ weg.</p></div>`;
+  const cv=$("bC"),cx=cv.getContext("2d");let balls=[],cue,aim=null,cur;
+  function size(){const r=cv.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2);cv.width=r.width*d;cv.height=r.width*H/W*d}
+  function setup(){if(qi>=all.length){end(`<p class="why">Alle ${all.length} Begriffe versenkt – stark! 🏆</p>`);return}
+    cur=all[qi];const wrong=shuffle(all.filter(p=>p!==cur)).slice(0,3);const labels=shuffle([cur,...wrong]);
+    $("bQ").innerHTML=`🎯 Versenke den Begriff zu: <b>${esc(cur[1])}</b>`;
+    cue=cue&&!cue.gone?cue:{x:W*0.25,y:H/2,vx:0,vy:0,c:"#fff",cue:true};cue.gone=false;
+    const spots=shuffle([[620,180],[620,340],[700,260],[780,150],[780,370],[860,260],[540,260]]);
+    balls=labels.map((p,i)=>({x:spots[i][0]+Math.random()*20-10,y:spots[i][1]+Math.random()*20-10,vx:0,vy:0,c:COL[i],t:p[0],ok:p===cur}));}
+  const moving=()=>[cue,...balls].some(b=>!b.gone&&(Math.abs(b.vx)>.05||Math.abs(b.vy)>.05));
+  function physics(){const arr=[cue,...balls].filter(b=>!b.gone);
+    for(let s=0;s<4;s++){arr.forEach(b=>{b.x+=b.vx/4;b.y+=b.vy/4;
+        if(b.x<M+R0){b.x=M+R0;b.vx=-b.vx*.9}if(b.x>W-M-R0){b.x=W-M-R0;b.vx=-b.vx*.9}if(b.y<M+R0){b.y=M+R0;b.vy=-b.vy*.9}if(b.y>H-M-R0){b.y=H-M-R0;b.vy=-b.vy*.9}
+        for(const p of pockets)if(Math.hypot(b.x-p[0],b.y-p[1])<PR){b.gone=true;b.vx=b.vy=0;potted(b);break}});
+      for(let i=0;i<arr.length;i++)for(let j=i+1;j<arr.length;j++){const a=arr[i],b=arr[j];if(a.gone||b.gone)continue;const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);
+        if(d>0&&d<2*R0){const nx=dx/d,ny=dy/d,ov=(2*R0-d)/2;a.x-=nx*ov;a.y-=ny*ov;b.x+=nx*ov;b.y+=ny*ov;const p=(a.vx-b.vx)*nx+(a.vy-b.vy)*ny;if(p>0){a.vx-=p*nx;a.vy-=p*ny;b.vx+=p*nx;b.vy+=p*ny}}}}
+    arr.forEach(b=>{b.vx*=FR;b.vy*=FR;if(Math.hypot(b.vx,b.vy)<.06)b.vx=b.vy=0})}
+  function say(t){msg=t;msgT=performance.now()}
+  function potted(b){if(b.cue){lives--;say("⚪ Weisse versenkt – ❤️ weg");weakAdd(id,"p",cur[0]);setTimeout(()=>{if(!over){cue={x:W*0.25,y:H/2,vx:0,vy:0,c:"#fff",cue:true}}},400)}
+    else if(b.ok){pts++;weakOk(id,"p",cur[0]);say("✅ Richtig: "+b.t);qi++;setTimeout(()=>{if(!over)setup()},900)}
+    else{lives--;weakAdd(id,"p",cur[0]);say("❌ Falsch: «"+b.t+"» – gesucht war «"+cur[0]+"»")}
+    $("bP").textContent=pts;$("bL").textContent="❤️".repeat(Math.max(0,lives))+"🤍".repeat(3-Math.max(0,lives));if(lives<=0)setTimeout(()=>end(),900)}
+  function end(extra){if(over)return;over=true;cancelAnimationFrame(raf);removeEventListener("resize",size);gameOver(G,"billard",id,pts,extra||`<p class="why">${shots} Stösse gespielt.</p>`)}
+  function draw(){const k=cv.width/W;cx.setTransform(k,0,0,k,0,0);
+    cx.fillStyle="#5a3a1e";cx.fillRect(0,0,W,H);cx.fillStyle="#1f7a4a";cx.fillRect(M-8,M-8,W-2*M+16,H-2*M+16);
+    cx.strokeStyle="rgba(255,255,255,.12)";cx.beginPath();cx.moveTo(W*0.25,M);cx.lineTo(W*0.25,H-M);cx.stroke();
+    pockets.forEach(p=>{cx.fillStyle="#111";cx.beginPath();cx.arc(p[0],p[1],PR,0,7);cx.fill()});
+    if(aim&&!moving()){const dx=aim.sx-aim.x,dy=aim.sy-aim.y,d=Math.min(220,Math.hypot(dx,dy));const a=Math.atan2(dy,dx);
+      cx.setLineDash([8,8]);cx.strokeStyle="rgba(255,255,255,.75)";cx.lineWidth=2;cx.beginPath();cx.moveTo(cue.x,cue.y);cx.lineTo(cue.x+Math.cos(a)*600,cue.y+Math.sin(a)*600);cx.stroke();cx.setLineDash([]);
+      cx.strokeStyle="#d9b26b";cx.lineWidth=7;cx.beginPath();cx.moveTo(cue.x-Math.cos(a)*(R0+6+d*.5),cue.y-Math.sin(a)*(R0+6+d*.5));cx.lineTo(cue.x-Math.cos(a)*(R0+226+d*.5),cue.y-Math.sin(a)*(R0+226+d*.5));cx.stroke();
+      cx.fillStyle="rgba(0,0,0,.5)";cx.fillRect(W/2-110,H-24,220,12);cx.fillStyle=d>170?"#e74c3c":d>90?"#f1c40f":"#2ecc71";cx.fillRect(W/2-110,H-24,220*d/220,12)}
+    [...balls,cue].forEach(b=>{if(!b||b.gone)return;cx.fillStyle=b.c;cx.beginPath();cx.arc(b.x,b.y,R0,0,7);cx.fill();cx.strokeStyle="rgba(0,0,0,.4)";cx.lineWidth=1.5;cx.stroke();
+      cx.fillStyle="rgba(255,255,255,.55)";cx.beginPath();cx.arc(b.x-5,b.y-5,4,0,7);cx.fill()});
+    cx.font="600 19px 'Patrick Hand',system-ui,sans-serif";cx.textAlign="center";cx.textBaseline="bottom";
+    balls.forEach(b=>{if(b.gone)return;const t=b.t.length>28?b.t.slice(0,27)+"…":b.t,w=cx.measureText(t).width+12;let y=b.y-R0-6;cx.fillStyle="rgba(255,253,246,.95)";cx.fillRect(b.x-w/2,y-23,w,25);cx.strokeStyle=b.c;cx.lineWidth=2;cx.strokeRect(b.x-w/2,y-23,w,25);cx.fillStyle="#1d1b18";cx.fillText(t,b.x,y)});
+    if(msg&&performance.now()-msgT<1800){cx.font="700 24px system-ui,sans-serif";cx.textBaseline="middle";const w=cx.measureText(msg).width+30;cx.fillStyle="rgba(0,0,0,.7)";cx.fillRect(W/2-w/2,H/2-22,w,44);cx.fillStyle="#fff";cx.fillText(msg,W/2,H/2)}}
+  function loop(){if(over||!document.body.contains(cv)){cancelAnimationFrame(raf);return}physics();draw();raf=requestAnimationFrame(loop)}
+  const pos=e=>{const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*W/r.width}};
+  cv.addEventListener("pointerdown",e=>{if(moving()||over||cue.gone)return;const p=pos(e);aim={sx:p.x,sy:p.y,x:p.x,y:p.y};
+    // Zielrichtung: von der Maus zur weissen Kugel (wie ein Queue von hinten)
+    aim.sx=cue.x;aim.sy=cue.y;cv.setPointerCapture(e.pointerId)});
+  cv.addEventListener("pointermove",e=>{if(!aim)return;const p=pos(e);aim.x=p.x;aim.y=p.y});
+  cv.addEventListener("pointerup",()=>{if(!aim)return;const dx=aim.sx-aim.x,dy=aim.sy-aim.y,d=Math.min(220,Math.hypot(dx,dy));if(d>8){const a=Math.atan2(dy,dx),v=d/220*26;cue.vx=Math.cos(a)*v;cue.vy=Math.sin(a)*v;shots++}aim=null});
+  size();addEventListener("resize",size);setup();loop()}
 function wahrfalsch(G,id){const p=pairsOf(id);let pts=0,end=Date.now()+45000,tm;
   const draw=()=>{const a=p[Math.floor(Math.random()*p.length)],truth=Math.random()<.5;let b=a;if(!truth){do{b=p[Math.floor(Math.random()*p.length)]}while(b===a)}
     const left=Math.max(0,Math.ceil((end-Date.now())/1000));
@@ -796,6 +852,8 @@ function myPlan(P,e){const id=e.id,K="plan-"+id;let cfg=LS.get(K,null);
 
 /* ---------- Führung: zeigt nur, was für diesen Browser neu ist ---------- */
 const TOUR=[
+{id:"t8-neu",view:"start",sel:".logo",t:"🆕 Das ist neu auf BM2 Hustle",x:"⏱ Lern-Uhr mit Timer und «heute gelernt» oben · 🔍 Spiele und Theorie gross im Fokus · 📖 «Kabale und Liebe» online lesen (bei Deutsch) mit 👥 Figuren · 🎧 Podcast & Video von NotebookLM · 🎯 Schwächen gezielt üben (unter Üben) · 🎱 Billard-Lernspiel · 🏆 Rangverkündigung nach jeder Prüfung. Die einzelnen Stellen zeige ich dir, wenn du dorthin kommst."},
+{id:"t8-billard",view:"fach",sel:"[data-g=\"billard\"]",t:"🎱 Neu: Billard",x:"Lies die Erklärung und versenke die Kugel mit dem passenden Begriff. Maus ziehen = zielen und Stärke, loslassen = Stoss."},
  {id:"t1-subj",view:"start",sel:"#subjbar",t:"📚 Deine Fächer",x:"Sortiert nach der nächsten Prüfung. Tippe ein Fach an: Du siehst sofort wann, was und worüber – und kannst direkt lernen."},
  {id:"t1-next",view:"start",sel:"#nextBox",t:"⏳ Nächste Prüfung",x:"Countdown bis zur nächsten Prüfung. «Jetzt dafür lernen» bringt dich direkt hin."},
  {id:"t1-week",view:"start",sel:"#week",t:"📌 Diese Woche",x:"Alle Prüfungen, Abgaben und Hausaufgaben bis Sonntag. Den ganzen Überblick hat der Kalender."},

@@ -473,6 +473,7 @@ function rFach(id){
     if($("weakList"))$("weakList").onclick=()=>{zoomOn($("gwrap"));weakList($("game"),id)};
     P.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{zoomOn($("gwrap"));startGame(b.dataset.g,id)});
     if(games.length)startGame(games[0][0],id);
+    setTimeout(()=>tourStart("fach"),500);
   }else{
     P.innerHTML=g.quiz&&g.quiz.length?`<p>15 Fragen wie in der Prüfung: <b>ohne Hilfe, ohne Rückmeldung</b> während dem Lösen. Am Schluss siehst du deine Punkte, eine geschätzte Note und alle Fehler mit Erklärung.</p><div class="gpick"><button class="btn go" id="pStart">🏁 Probeprüfung starten</button></div><div class="zoombox" id="gwrap"><div class="zbar"><button class="btn zclose" data-zclose>✕ Fokus beenden (Esc)</button></div><div id="game"></div></div>`:`<p class="empty">Probeprüfung folgt, sobald Fragen da sind.</p>`;
     if($("pStart"))$("pStart").onclick=()=>probe(id);
@@ -851,6 +852,8 @@ function myPlan(P,e){const id=e.id,K="plan-"+id;let cfg=LS.get(K,null);
 
 /* ---------- Führung: zeigt nur, was für diesen Browser neu ist ---------- */
 const TOUR=[
+{id:"t8-neu",view:"start",sel:".logo",t:"🆕 Das ist neu auf BM2 Hustle",x:"⏱ Lern-Uhr mit Timer und «heute gelernt» oben · 🔍 Spiele und Theorie gross im Fokus · 📖 «Kabale und Liebe» online lesen (bei Deutsch) mit 👥 Figuren · 🎧 Podcast & Video von NotebookLM · 🎯 Schwächen gezielt üben (unter Üben) · 🎱 Billard-Lernspiel · 🏆 Rangverkündigung nach jeder Prüfung. Die einzelnen Stellen zeige ich dir, wenn du dorthin kommst."},
+{id:"t8-billard",view:"fach",sel:"[data-g=\"billard\"]",t:"🎱 Neu: Billard",x:"Lies die Erklärung und versenke die Kugel mit dem passenden Begriff. Maus ziehen = zielen und Stärke, loslassen = Stoss."},
  {id:"t1-subj",view:"start",sel:"#subjbar",t:"📚 Deine Fächer",x:"Sortiert nach der nächsten Prüfung. Tippe ein Fach an: Du siehst sofort wann, was und worüber – und kannst direkt lernen."},
  {id:"t1-next",view:"start",sel:"#nextBox",t:"⏳ Nächste Prüfung",x:"Countdown bis zur nächsten Prüfung. «Jetzt dafür lernen» bringt dich direkt hin."},
  {id:"t1-week",view:"start",sel:"#week",t:"📌 Diese Woche",x:"Alle Prüfungen, Abgaben und Hausaufgaben bis Sonntag. Den ganzen Überblick hat der Kalender."},
