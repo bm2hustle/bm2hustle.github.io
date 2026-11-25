@@ -177,6 +177,33 @@ body.focus #fsBtn{background:var(--chipOn);color:var(--chipOnFg);border-style:so
 .bookbar{display:flex;align-items:center;gap:12px;margin:0 0 12px;padding:10px 14px;background:var(--paper);border:3px solid var(--ink2);border-left-width:10px;border-radius:8px;color:var(--ink);text-decoration:none;box-shadow:0 6px 12px -6px rgba(0,0,0,.35)}
 .bookbar:hover{background:var(--c)}.bookbar:focus-visible{outline:3px solid #e0782b;outline-offset:2px}
 .bookbar .bk{font-size:2rem;line-height:1}.bookbar small{display:block;color:var(--muted);font-size:.95rem}.bookbar .go{margin-left:auto;font-weight:bold;white-space:nowrap}
+/* Fokus-Ansicht für Spiele und Theorie */
+#fback{position:fixed;inset:0;background:rgba(20,18,15,.62);z-index:40;display:none}
+body.zoom #fback{display:block}
+body.zoom{overflow:hidden}
+.zoombox{position:relative}
+.zbar{display:flex;justify-content:flex-end;gap:6px;margin:0 0 4px}
+.zclose{display:none!important}
+body.zoom .zoombox.on{position:fixed;z-index:41;top:3vh;left:50%;transform:translateX(-50%);width:min(1050px,94vw);max-height:94vh;overflow:auto;background:var(--paper);color:var(--ink);border:3px solid var(--line);border-radius:10px;padding:12px 18px 20px;box-shadow:0 20px 50px rgba(0,0,0,.5);font-size:1.15em}
+body.zoom .zoombox.on .zclose{display:inline-block!important}
+body.zoom .zoombox.on .zopen{display:none}
+body.zoom .zoombox.on .tafel{font-size:1.12rem}
+body.zoom .zoombox.on .zbar{position:sticky;top:-12px;z-index:2;background:var(--paper);padding:4px 0}
+/* Lern-Uhr */
+.clock{display:flex;align-items:center;gap:6px;position:relative;font-size:1rem}
+.clock .now{font-family:var(--comic);letter-spacing:1px;font-size:1.25rem;color:var(--muted)}
+.clock button{font-family:var(--hand);font-size:1rem;border:2px solid var(--muted);background:var(--chip);color:inherit;border-radius:9px;padding:2px 10px;cursor:pointer}
+.clock button.run{background:var(--cap);color:#1d1b18;border-color:#1d1b18}
+.clock button.ring{animation:ring .5s infinite alternate;background:#ff8a7a;color:#1d1b18}
+@keyframes ring{to{transform:scale(1.08)}}
+.clock .today{font-size:.95rem;color:var(--muted);white-space:nowrap}
+.tpop{position:absolute;top:calc(100% + 6px);right:0;z-index:45;background:var(--cap);color:#1d1b18;border:3px solid #1d1b18;border-radius:8px;padding:10px 12px;box-shadow:0 10px 24px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:8px;width:250px}
+.tpop[hidden]{display:none}
+.tpop .row2{display:flex;flex-wrap:wrap;gap:6px}
+.tpop button{border-color:#1d1b18;background:#fff;color:#1d1b18}
+.tpop button.go{background:#1d1b18;color:#fff}
+.tpop input{width:4.2em;font-family:var(--hand);font-size:1rem;border:2px solid #1d1b18;border-radius:7px;padding:2px 6px}
+@media (prefers-reduced-motion:reduce){.clock button.ring{animation:none}}
 .tour{position:fixed;inset:0;z-index:60}
 .namebg{position:fixed;inset:0;z-index:70;background:rgba(20,18,15,.62);display:flex;align-items:center;justify-content:center;padding:16px}
 .namebg[hidden]{display:none}
@@ -208,6 +235,8 @@ tr.me,li.me{background:rgba(255,224,102,.55)}
       <a href="#suche" data-v="suche">🔍 Suchen</a>
       <a href="#melden" data-v="melden">📣 Melden</a>
     </nav>
+    <div class="clock" id="clock"><span class="now" id="clkNow" aria-label="Uhrzeit"></span><button id="tmrBtn" aria-haspopup="true" aria-expanded="false" title="Lern-Timer">⏱ Timer</button><span class="today" id="lernToday" title="So lange hast du heute auf BM2 Hustle gelernt (nur wenn die Seite offen ist und du aktiv bist)"></span>
+      <div class="tpop" id="tpop" hidden><b>⏱ Lern-Timer</b><div class="row2"><button data-m="15">15 Min.</button><button data-m="25">25 Min.</button><button data-m="45">45 Min.</button><button data-m="60">60 Min.</button></div><div class="row2" style="align-items:center"><input id="tmrMin" type="number" min="1" max="240" value="30" aria-label="Minuten"> Min. <button class="go" id="tmrGo">Start</button></div><div class="row2"><button id="tmrPause">⏸ Pause</button><button id="tmrStop">✕ Stopp</button></div><small id="tmrInfo">Tipp: 25 Min. lernen, 5 Min. Pause.</small></div></div>
     <button id="fsBtn" class="fsbtn" title="Vollbild: nur Lernen, keine Ablenkung">⛶ Vollbild</button></div>
   </header>
   <nav class="subjbar hideinfocus" id="subjbar" aria-label="Fächer"></nav>
@@ -285,6 +314,7 @@ tr.me,li.me{background:rgba(255,224,102,.55)}
   <p class="foot hideinfocus" id="foot"></p>
   <p class="foot"><button class="moreBtn" style="display:inline" id="tourAgain">🧭 Führung nochmals anzeigen</button> · <button class="moreBtn" style="display:inline" id="nameChg">👤 Name ändern</button></p>
   <div class="namebg" id="nameBg" hidden><form class="namebox" id="nameF" role="dialog" aria-labelledby="nameH"><h4 id="nameH">👋 Wie heisst du?</h4><p>Gib deinen Namen oder Spitznamen ein. Damit stehst du in den Klassen-Ranglisten.</p><p><b>Nimm immer den gleichen Namen</b>, auch am Handy und am Laptop. Dann zählen alle deine Punkte für dich und nicht für eine «neue Person».</p><input id="nameIn" maxlength="16" required autocomplete="nickname" placeholder="z. B. Fabian oder Schupli"><button type="submit">Los geht's ➜</button></form></div>
+  <div id="fback"></div>
   <div class="tour" id="tour" hidden><div class="thole" id="thole"></div><div class="tbox" id="tbox" role="dialog" aria-live="polite"></div></div>
 </div>
 
@@ -414,7 +444,7 @@ function rFach(id){
     const nb=(H.notebooks||{})[id];
     P.innerHTML=(nb?`<div class="gamebox" id="nbBox"><h3 style="margin:0">🎧 Podcast, Video &amp; Infografik (NotebookLM)</h3><ul style="margin:0;padding-left:20px">${nb.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p style="margin:0"><a class="btn go" href="${esc(nb.url)}" target="_blank" rel="noopener">▶ In NotebookLM öffnen</a></p><p style="margin:0;font-size:.9rem;opacity:.75">Öffnet NotebookLM von Google. Du brauchst ein Google-Konto. Unter «Studio» findest du Podcast, Video und Infografik.</p></div>`:"")+(e.subj==="SOZ"?`<p><a class="btn go" href="soz.html">🎨 Soziologie-Comic: alle Begriffe als Comic-Karten</a></p>`:"")+
       (vids.length?`<div class="gamebox"><h3 style="margin:0">🎬 Erklärvideos zum Einstieg</h3><div class="list">${vids.map(v=>`<a class="row" style="--ink2:${S(e.subj).ink}" href="${esc(v[2])}" target="_blank" rel="noopener"><span><strong>▶ ${esc(v[0])}</strong></span><small>${esc(v[1])}</small></a>`).join("")}</div><p style="margin:0;font-size:.9rem;opacity:.75">Öffnet sich in einem neuen Tab.</p></div>`:"")+
-      (th.length?th.map(t=>`<div class="tafel"><h3>${esc(t.title)}</h3>${t.html}${t.source?`<p class="src">Quelle: ${esc(t.source)}</p>`:""}</div>`).join(""):`<p class="empty">Für diese Prüfung gibt es noch keine Theorie. Kommt, sobald Stoff da ist.</p>`)+
+      (th.length?th.map(t=>`<div class="zoombox"><div class="zbar"><button class="btn zopen" data-zopen>🔍 Gross lesen</button><button class="btn zclose" data-zclose>✕ Schliessen (Esc)</button></div><div class="tafel"><h3>${esc(t.title)}</h3>${t.html}${t.source?`<p class="src">Quelle: ${esc(t.source)}</p>`:""}</div></div>`).join(""):`<p class="empty">Für diese Prüfung gibt es noch keine Theorie. Kommt, sobald Stoff da ist.</p>`)+
       `<div class="gpick">${th.length?`<button id="dlTh">⬇️ Zusammenfassung herunterladen</button>`:""}<button id="toUeben">🎮 Weiter zum Üben</button></div><div id="dlOut"></div>`;
     if($("dlTh"))$("dlTh").onclick=()=>dlTheory(e);
     $("toUeben").onclick=()=>{curTab="ueben";rFach(id)};
@@ -422,11 +452,11 @@ function rFach(id){
     const games=[["mc","🎯 Multiple Choice",g.quiz],["fx","🔁 Meine Fehler",(LS.get("err-"+id,[])).length?g.quiz:null],["match","🧩 Zuordnen",g.pairs],["cards","🃏 Karteikarten",g.decks],["cloze","✏️ Lückentext",g.cloze],["order","🔢 Reihenfolge",g.order]].filter(x=>x[2]&&x[2].length);
     const prs=pairsOf(id),arc=[["blitz","⚡ Blitz 60 s",g.quiz],["survival","🔥 Überleben",g.quiz],["meteor","☄️ Meteoriten",g.quiz],["speedmatch","⏱️ Zuordnen auf Zeit",prs.length>=6?prs:null],["wf","✅❌ Wahr oder falsch",prs.length>=4?prs:null]].filter(x=>x[2]&&x[2].length);
     P.innerHTML=games.length?`<div class="gpick">${games.map(x=>`<button data-g="${x[0]}">${x[1]}${x[0]==="fx"?" ("+LS.get("err-"+id,[]).length+")":""}</button>`).join("")}</div>
-      <p class="empty" style="margin:4px 0 0">🏆 Nach jedem Spiel siehst du die Klassen-Rangliste. Ausnahmen: Karteikarten und Meine Fehler.</p>${arc.length?`<h3 class="wk" style="color:inherit">⚡ Arcade-Spiele</h3><div class="gpick">${arc.map(x=>`<button data-g="${x[0]}">${x[1]}${LS.get("best-"+x[0]+"-"+id,null)!=null?` <small>(Best: ${fmtScore(x[0],LS.get("best-"+x[0]+"-"+id))})</small>`:""}</button>`).join("")}</div>`:""}<div id="game"></div>`:`<p class="empty">Noch keine Übungen für diese Prüfung. Kommen bald.</p>`;
-    P.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>startGame(b.dataset.g,id));
+      <p class="empty" style="margin:4px 0 0">🏆 Nach jedem Spiel siehst du die Klassen-Rangliste. Ausnahmen: Karteikarten und Meine Fehler.</p>${arc.length?`<h3 class="wk" style="color:inherit">⚡ Arcade-Spiele</h3><div class="gpick">${arc.map(x=>`<button data-g="${x[0]}">${x[1]}${LS.get("best-"+x[0]+"-"+id,null)!=null?` <small>(Best: ${fmtScore(x[0],LS.get("best-"+x[0]+"-"+id))})</small>`:""}</button>`).join("")}</div>`:""}<div class="zoombox" id="gwrap"><div class="zbar"><button class="btn zclose" data-zclose>✕ Fokus beenden (Esc)</button></div><div id="game"></div></div>`:`<p class="empty">Noch keine Übungen für diese Prüfung. Kommen bald.</p>`;
+    P.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{zoomOn($("gwrap"));startGame(b.dataset.g,id)});
     if(games.length)startGame(games[0][0],id);
   }else{
-    P.innerHTML=g.quiz&&g.quiz.length?`<p>15 Fragen wie in der Prüfung: <b>ohne Hilfe, ohne Rückmeldung</b> während dem Lösen. Am Schluss siehst du deine Punkte, eine geschätzte Note und alle Fehler mit Erklärung.</p><div class="gpick"><button class="btn go" id="pStart">🏁 Probeprüfung starten</button></div><div id="game"></div>`:`<p class="empty">Probeprüfung folgt, sobald Fragen da sind.</p>`;
+    P.innerHTML=g.quiz&&g.quiz.length?`<p>15 Fragen wie in der Prüfung: <b>ohne Hilfe, ohne Rückmeldung</b> während dem Lösen. Am Schluss siehst du deine Punkte, eine geschätzte Note und alle Fehler mit Erklärung.</p><div class="gpick"><button class="btn go" id="pStart">🏁 Probeprüfung starten</button></div><div class="zoombox" id="gwrap"><div class="zbar"><button class="btn zclose" data-zclose>✕ Fokus beenden (Esc)</button></div><div id="game"></div></div>`:`<p class="empty">Probeprüfung folgt, sobald Fragen da sind.</p>`;
     if($("pStart"))$("pStart").onclick=()=>probe(id);
   }
   if(curTab==="probe"){}
@@ -450,7 +480,7 @@ function myCards(P,e){const id=e.id,k="my-"+id;const list=LS.get(k,[]);
   <form class="meld gamebox" id="myF"><div class="two"><label>Vorderseite (Frage / Begriff)<input id="myQ" maxlength="200" required></label><label>Rückseite (Antwort)<input id="myA" maxlength="400" required></label></div><button class="btn go" type="submit">➕ Karte speichern</button></form>
   ${list.length?`<div class="gpick"><button class="btn go" id="myPlay">🃏 Meine ${list.length} Karten üben</button><button id="myDl">⬇️ Herunterladen</button></div>
   <div class="list">${list.map((c,i)=>`<div class="row" style="--ink2:${S(e.subj).ink}"><span><b style="font-family:inherit;font-size:1rem;min-width:0">${esc(c[0])}</b> → ${esc(c[1])}</span><button class="btn" data-del="${i}" aria-label="Karte löschen">🗑️</button></div>`).join("")}</div>`:`<p class="empty">Noch keine eigenen Karten.</p>`}
-  <div id="game"></div><div id="dlOut"></div>`;
+  <div class="zoombox" id="gwrap"><div class="zbar"><button class="btn zclose" data-zclose>✕ Fokus beenden (Esc)</button></div><div id="game"></div></div><div id="dlOut"></div>`;
   $("myF").onsubmit=ev=>{ev.preventDefault();list.push([$("myQ").value.trim(),$("myA").value.trim()]);LS.set(k,list);myCards(P,e);$("myQ").focus()};
   P.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{list.splice(+b.dataset.del,1);LS.set(k,list);myCards(P,e)});
   if($("myPlay"))$("myPlay").onclick=()=>cards($("game"),shuffle(list));if($("myDl"))$("myDl").onclick=()=>dlMine(e);
@@ -590,7 +620,7 @@ function order(G,list,id){let i=0,err=0;const t0=Date.now();
     const draw=()=>{G.innerHTML=`<div class="gamebox"><p class="gq">${esc(o.title)}: tippe in der richtigen Reihenfolge.</p><div class="opts">${mix.map(([x,j])=>`<button data-j="${j}" class="${j<k?"ok":""}" ${j<k?"disabled":""}>${j<k?(j+1)+". ":""}${esc(x)}</button>`).join("")}</div>${k>=items.length?`<div class="gpick"><button id="nx">Weiter ▶</button></div>`:""}</div>`;
       G.querySelectorAll("[data-j]").forEach(b=>b.onclick=()=>{if(+b.dataset.j===k){k++;draw()}else{err++;b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}});
       if($("nx"))$("nx").onclick=()=>{i++;r()}};draw()};r()}
-function probe(id){const G=$("game"),q=shuffle(H.games[id].quiz).slice(0,15),ans=[];let i=0;const t0=Date.now();
+function probe(id){zoomOn($("gwrap"));const G=$("game"),q=shuffle(H.games[id].quiz).slice(0,15),ans=[];let i=0;const t0=Date.now();
   const r=()=>{if(i>=q.length){const ok=ans.filter((a,j)=>a===q[j][1]).length,note=Math.round((1+5*ok/q.length)*4)/4,min=Math.round((Date.now()-t0)/60000);
       q.forEach((x,j)=>{if(ans[j]!==x[1])errAdd(id,x[0]);else errDel(id,x[0])});
       G.innerHTML=`<div class="gamebox"><h3 style="font-family:var(--comic);font-weight:400;font-size:1.8rem;margin:0">${ok} / ${q.length} Punkte · Note ca. ${note.toFixed(2).replace(/0$/,"")}</h3><p>Zeit: ${min} Min. Die Fehler kommen in «🔁 Meine Fehler» unter Üben.</p>
@@ -734,7 +764,8 @@ const TOUR=[
  {id:"t1-meld",view:"start",sel:'.nav a[data-v="melden"]',t:"📣 Melden",x:"Fehlt eine Prüfung oder stimmt etwas nicht? Hier meldest du es."},
  {id:"t1-info",view:"fach",sel:".info",t:"📅 Wann, was, worüber",x:"Alles zur Prüfung auf einen Blick."},
  {id:"t3-games",view:"fach",sel:".tabs",t:"🆕 Spiele mit Rangliste",x:"Unter 🎮 Üben: Blitz 60 s, Überleben, Meteoriten, Zuordnen auf Zeit, Wahr oder falsch. Schlag deinen Rekord!"},
- {id:"t4-lektuere",view:"fach",sel:"#bookBar",t:"📖 Neu: Buch online lesen",x:"Bei Deutsch kannst du «Kabale und Liebe» direkt auf der Seite lesen – mit Suche, Inhaltsverzeichnis und den gleichen Seitenzahlen wie im Buch. Die Seite merkt sich, wo du warst."},
+ {id:"t5-timer",view:"start",sel:"#clock",t:"⏱ Neu: Lern-Uhr",x:"Oben siehst du die Uhrzeit, kannst einen Lern-Timer stellen (z. B. 25 Min.) und siehst, wie lange du heute schon gelernt hast. Spiele und Theorie öffnen sich jetzt gross im Fokus – mit Esc wieder zu."},
+{id:"t4-lektuere",view:"fach",sel:"#bookBar",t:"📖 Neu: Buch online lesen",x:"Bei Deutsch kannst du «Kabale und Liebe» direkt auf der Seite lesen – mit Suche, Inhaltsverzeichnis und den gleichen Seitenzahlen wie im Buch. Die Seite merkt sich, wo du warst."},
 {id:"t4-notebook",view:"fach",sel:"#nbJump",t:"🎧 Neu: Podcast & Video",x:"Bei manchen Prüfungen gibt es jetzt einen Podcast, ein Erklärvideo und eine Infografik von NotebookLM – perfekt für unterwegs."},
 {id:"t2-tabs",view:"fach",sel:".tabs",t:"🧭 So lernst du",x:"🆕 Mein Lernplan · 📖 Theorie & 🆕 Videos · 🎮 Üben · 🏁 Probeprüfung · ✍️ eigene Karten · ⬇️ Übungsblätter. Am Handy seitwärts wischen."}];
 let tourQ=[],tourI=0;
@@ -753,6 +784,41 @@ function tourNext(){tourMark([tourQ[tourI].id]);tourI++;if(tourI<tourQ.length)to
 function tourEnd(){$("tour").hidden=true;tourQ=[];window.scrollTo(0,0)}
 document.addEventListener("keydown",e=>{if(!$("tour").hidden&&e.key==="Escape"){tourMark(tourQ.map(t=>t.id));tourEnd()}});
 $("tourAgain").onclick=()=>{LS.set("tour-seen",[]);location.hash="start";setTimeout(()=>tourStart("start"),300)};
+
+/* ---------- Fokus-Ansicht ---------- */
+function zoomOn(box){if(!box)return;document.querySelectorAll(".zoombox.on").forEach(b=>b.classList.remove("on"));box.classList.add("on");document.body.classList.add("zoom");box.scrollTop=0}
+function zoomOff(){document.querySelectorAll(".zoombox.on").forEach(b=>b.classList.remove("on"));document.body.classList.remove("zoom")}
+document.addEventListener("click",e=>{if(e.target.closest("[data-zclose]"))zoomOff();else if(e.target.closest("[data-zopen]"))zoomOn(e.target.closest(".zoombox"));else if(e.target.id==="fback")zoomOff()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.body.classList.contains("zoom")&&$("tour").hidden)zoomOff()});
+addEventListener("hashchange",zoomOff);
+
+/* ---------- Lern-Uhr: Uhrzeit, Timer, heute gelernt ---------- */
+const dayKey=()=>{const d=new Date();return "lern-"+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+let lastAct=Date.now();["pointerdown","keydown","scroll","pointermove"].forEach(ev=>addEventListener(ev,()=>{lastAct=Date.now()},{passive:true}));
+const mmss=s=>{s=Math.max(0,Math.round(s));const m=Math.floor(s/60);return (m<10?"0":"")+m+":"+String(s%60).padStart(2,"0")};
+function tmrState(){return LS.get("timer",null)}
+function tmrLeft(t){return t?(t.paused!=null?t.paused:(t.end-Date.now())/1000):0}
+let ringing=false;
+function beep(){try{const A=new (window.AudioContext||window.webkitAudioContext)();[0,.35,.7].forEach(d=>{const o=A.createOscillator(),g=A.createGain();o.frequency.value=880;o.connect(g);g.connect(A.destination);g.gain.setValueAtTime(.2,A.currentTime+d);g.gain.exponentialRampToValueAtTime(.001,A.currentTime+d+.3);o.start(A.currentTime+d);o.stop(A.currentTime+d+.32)})}catch(e){}}
+function clockTick(){const d=new Date();$("clkNow").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+  if(!document.hidden&&Date.now()-lastAct<180000){const k=dayKey();LS.set(k,LS.get(k,0)+1)}
+  const m=Math.floor(LS.get(dayKey(),0)/60);$("lernToday").textContent="📚 heute "+(m<60?m+" Min.":Math.floor(m/60)+" h "+(m%60)+" Min.");
+  const t=tmrState(),b=$("tmrBtn");
+  if(!t){if(!ringing){b.textContent="⏱ Timer";b.className=""}return}
+  const left=tmrLeft(t);
+  if(left<=0&&t.paused==null){LS.set("timer",null);ringing=true;b.textContent="⏰ Zeit um! Pause machen";b.className="ring";document.title="⏰ Zeit um! · BM2 Hustle";beep();
+    try{goatcounter.count&&goatcounter.count({path:"timer/fertig/"+t.min,title:"Timer fertig",event:true})}catch(e){}return}
+  b.textContent=(t.paused!=null?"⏸ ":"⏱ ")+mmss(left);b.className="run"}
+function tmrStart(min){min=Math.max(1,Math.min(240,+min||25));LS.set("timer",{end:Date.now()+min*60000,min});ringing=false;document.title="BM2 Hustle";$("tpop").hidden=true;$("tmrBtn").setAttribute("aria-expanded","false");clockTick()}
+$("tmrBtn").onclick=e=>{e.stopPropagation();if(ringing){ringing=false;document.title="BM2 Hustle";clockTick();return}const p=$("tpop");p.hidden=!p.hidden;$("tmrBtn").setAttribute("aria-expanded",String(!p.hidden));
+  const t=tmrState();$("tmrPause").textContent=t&&t.paused!=null?"▶ Weiter":"⏸ Pause";$("tmrPause").disabled=!t;$("tmrStop").disabled=!t};
+$("tpop").addEventListener("click",e=>{e.stopPropagation();const m=e.target.closest("[data-m]");if(m)tmrStart(m.dataset.m)});
+$("tmrGo").onclick=()=>tmrStart($("tmrMin").value);
+$("tmrMin").addEventListener("keydown",e=>{if(e.key==="Enter")tmrStart($("tmrMin").value)});
+$("tmrPause").onclick=()=>{const t=tmrState();if(!t)return;if(t.paused!=null){t.end=Date.now()+t.paused*1000;t.paused=null}else{t.paused=tmrLeft(t)}LS.set("timer",t);$("tpop").hidden=true;clockTick()};
+$("tmrStop").onclick=()=>{LS.set("timer",null);ringing=false;$("tpop").hidden=true;clockTick()};
+document.addEventListener("click",()=>{if(!$("tpop").hidden){$("tpop").hidden=true;$("tmrBtn").setAttribute("aria-expanded","false")}});
+clockTick();setInterval(clockTick,1000);
 
 /* ---------- Name (einmal pro Browser) ---------- */
 function askName(force){const cur=LS.get("nick","");if(cur&&!force)return;$("nameIn").value=cur;$("nameBg").hidden=false;setTimeout(()=>$("nameIn").focus(),50)}
