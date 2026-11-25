@@ -609,7 +609,7 @@ function speedmatch(G,id){const p=shuffle(pairsOf(id)).slice(0,6),L=shuffle(p.ma
     else{pen+=2;const Lb=sel.dataset.s==="L"?sel:b;weakAdd(id,"p",p[+Lb.dataset.i][0]);b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}})}
 /* ---------- 🎱 Billard: Erklärung lesen, die Kugel mit dem passenden Begriff versenken ---------- */
 function billard(G,id){$("gwrap").classList.add("wide");
-  const all=shuffle(pairsOf(id));let qi=0,pts=0,lives=3,shots=0,qShots=0,raf=null,over=false,msg="",msgT=0;
+  const all=shuffle(pairsOf(id));let qi=0,pts=0,lives=3,shots=0,qShots=0,raf=null,over=false,msg="",msgT=0,shot=null;
   const lvl=()=>1+Math.floor(qi/3),NB=()=>Math.min(6,3+lvl()),AIM=()=>[0,600,320,160,0][Math.min(4,lvl())],MAXS=()=>lvl()>=2?4-Math.min(2,Math.floor(lvl()/2)):99;
   const W=1000,H=520,M=34,R0=15,PR=27,FR=0.985;
   const pockets=[[M,M],[W/2,M-6],[W-M,M],[M,H-M],[W/2,H-M+6],[W-M,H-M]];
@@ -617,7 +617,7 @@ function billard(G,id){$("gwrap").classList.add("wide");
   G.innerHTML=`<div class="gamebox">${hud(G,[`<span>⭐ <b id="bP">0</b></span>`,`<span id="bL">❤️❤️❤️</span>`,`<span>Level <b id="bLv">1</b></span>`,`<span id="bS"></span>`,`<span style="opacity:.75">Ziehen = zielen &amp; Stärke · Loslassen = Stoss</span>`])}
     <p class="gq" id="bQ" style="background:#fff8d6;border:2px solid #1d1b18;border-radius:8px;padding:6px 10px;margin:0"></p>
     <canvas id="bC" style="width:min(100%,calc((94vh - 230px) * ${W/H}));margin:0 auto;aspect-ratio:${W}/${H};display:block;border-radius:14px;touch-action:none;cursor:crosshair" aria-label="Billardtisch"></canvas>
-    <p class="empty" style="margin:0">Versenke die Kugel mit dem <b>passenden Begriff</b>. Beim 1. Stoss = +2, sonst +1 · falsche oder weisse Kugel = ❤️ weg. Alle 3 Begriffe steigt das Level: mehr Kugeln, kürzere Ziellinie, weniger Stösse.</p></div>`;
+    <p class="empty" style="margin:0">Versenke die Kugel mit dem <b>passenden Begriff</b>. Beim 1. Stoss = +2, sonst +1 · ❤️ weg bei: falsche oder weisse Kugel versenkt, keine Kugel getroffen oder zuerst eine falsche Kugel getroffen. Alle 3 Begriffe steigt das Level: mehr Kugeln, kürzere Ziellinie, weniger Stösse.</p></div>`;
   const cv=$("bC"),cx=cv.getContext("2d");let balls=[],cue,aim=null,cur;
   function size(){const r=cv.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2);cv.width=r.width*d;cv.height=r.width*H/W*d}
   function setup(){if(qi>=all.length){end(`<p class="why">Alle ${all.length} Begriffe versenkt – stark! 🏆</p>`);return}
@@ -632,10 +632,16 @@ function billard(G,id){$("gwrap").classList.add("wide");
         if(b.x<M+R0){b.x=M+R0;b.vx=-b.vx*.9}if(b.x>W-M-R0){b.x=W-M-R0;b.vx=-b.vx*.9}if(b.y<M+R0){b.y=M+R0;b.vy=-b.vy*.9}if(b.y>H-M-R0){b.y=H-M-R0;b.vy=-b.vy*.9}
         for(const p of pockets)if(Math.hypot(b.x-p[0],b.y-p[1])<PR){b.gone=true;b.vx=b.vy=0;potted(b);break}});
       for(let i=0;i<arr.length;i++)for(let j=i+1;j<arr.length;j++){const a=arr[i],b=arr[j];if(a.gone||b.gone)continue;const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);
-        if(d>0&&d<2*R0){const nx=dx/d,ny=dy/d,ov=(2*R0-d)/2;a.x-=nx*ov;a.y-=ny*ov;b.x+=nx*ov;b.y+=ny*ov;const p=(a.vx-b.vx)*nx+(a.vy-b.vy)*ny;if(p>0){a.vx-=p*nx;a.vy-=p*ny;b.vx+=p*nx;b.vy+=p*ny}}}}
+        if(d>0&&d<2*R0){if(shot&&!shot.first&&(a.cue||b.cue))shot.first=a.cue?b:a;const nx=dx/d,ny=dy/d,ov=(2*R0-d)/2;a.x-=nx*ov;a.y-=ny*ov;b.x+=nx*ov;b.y+=ny*ov;const p=(a.vx-b.vx)*nx+(a.vy-b.vy)*ny;if(p>0){a.vx-=p*nx;a.vy-=p*ny;b.vx+=p*nx;b.vy+=p*ny}}}}
     arr.forEach(b=>{b.vx*=FR;b.vy*=FR;if(Math.hypot(b.vx,b.vy)<.06)b.vx=b.vy=0})}
   function say(t){msg=t;msgT=performance.now()}
-  function potted(b){if(b.cue){lives--;say("⚪ Weisse versenkt – ❤️ weg");weakAdd(id,"p",cur[0]);setTimeout(()=>{if(!over){cue={x:W*0.25,y:H/2,vx:0,vy:0,c:"#fff",cue:true}}},400)}
+  function hearts(){$("bL").textContent="❤️".repeat(Math.max(0,lives))+"🤍".repeat(3-Math.max(0,lives))}
+  function afterShot(){const s=shot;shot=null;if(over||s.done)return;let lost=s.lost;
+    if(!lost&&!s.first){lives--;lost=true;weakAdd(id,"p",cur[0]);say("❌ Foul: keine Kugel getroffen")}
+    else if(!lost&&!s.first.ok){lives--;lost=true;weakAdd(id,"p",cur[0]);say("❌ Foul: zuerst «"+s.first.t+"» getroffen")}
+    hearts();if(lives<=0){setTimeout(()=>end(),900);return}
+    if(qShots>=MAXS()){if(!lost){lives--;weakAdd(id,"p",cur[0]);hearts();if(lives<=0){setTimeout(()=>end(),900);return}}say("⏳ Keine Stösse mehr – gesucht war «"+cur[0]+"»");qi++;setTimeout(()=>{if(!over)setup()},1300)}}
+  function potted(b){if(shot&&(b.cue||!b.ok))shot.lost=true;if(shot&&b.ok)shot.done=true;if(b.cue){lives--;say("⚪ Weisse versenkt – ❤️ weg");weakAdd(id,"p",cur[0]);setTimeout(()=>{if(!over){cue={x:W*0.25,y:H/2,vx:0,vy:0,c:"#fff",cue:true}}},400)}
     else if(b.ok){const bonus=qShots<=1?2:1;pts+=bonus;weakOk(id,"p",cur[0]);say((bonus>1?"🎯 Erster Stoss! +2 · ":"✅ ")+b.t);qi++;setTimeout(()=>{if(!over)setup()},900)}
     else{lives--;weakAdd(id,"p",cur[0]);say("❌ Falsch: «"+b.t+"» – gesucht war «"+cur[0]+"»")}
     $("bP").textContent=pts;$("bL").textContent="❤️".repeat(Math.max(0,lives))+"🤍".repeat(3-Math.max(0,lives));if(lives<=0)setTimeout(()=>end(),900)}
@@ -653,14 +659,13 @@ function billard(G,id){$("gwrap").classList.add("wide");
     cx.font="600 19px 'Patrick Hand',system-ui,sans-serif";cx.textAlign="center";cx.textBaseline="bottom";
     balls.forEach(b=>{if(b.gone)return;const t=b.t.length>28?b.t.slice(0,27)+"…":b.t,w=cx.measureText(t).width+12;let y=b.y-R0-6;cx.fillStyle="rgba(255,253,246,.95)";cx.fillRect(b.x-w/2,y-23,w,25);cx.strokeStyle=b.c;cx.lineWidth=2;cx.strokeRect(b.x-w/2,y-23,w,25);cx.fillStyle="#1d1b18";cx.fillText(t,b.x,y)});
     if(msg&&performance.now()-msgT<1800){cx.font="700 24px system-ui,sans-serif";cx.textBaseline="middle";const w=cx.measureText(msg).width+30;cx.fillStyle="rgba(0,0,0,.7)";cx.fillRect(W/2-w/2,H/2-22,w,44);cx.fillStyle="#fff";cx.fillText(msg,W/2,H/2)}}
-  function loop(){if(over||!document.body.contains(cv)){cancelAnimationFrame(raf);return}physics();draw();raf=requestAnimationFrame(loop)}
+  function loop(){if(over||!document.body.contains(cv)){cancelAnimationFrame(raf);return}physics();if(shot&&!moving())afterShot();draw();raf=requestAnimationFrame(loop)}
   const pos=e=>{const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*W/r.width}};
   cv.addEventListener("pointerdown",e=>{if(moving()||over||cue.gone)return;const p=pos(e);aim={sx:p.x,sy:p.y,x:p.x,y:p.y};
     // Zielrichtung: von der Maus zur weissen Kugel (wie ein Queue von hinten)
     aim.sx=cue.x;aim.sy=cue.y;cv.setPointerCapture(e.pointerId)});
   cv.addEventListener("pointermove",e=>{if(!aim)return;const p=pos(e);aim.x=p.x;aim.y=p.y});
-  cv.addEventListener("pointerup",()=>{if(!aim)return;const dx=aim.sx-aim.x,dy=aim.sy-aim.y,d=Math.min(220,Math.hypot(dx,dy));if(d>8){const a=Math.atan2(dy,dx)+(lvl()>=4?(Math.random()-.5)*0.05:0),v=d/220*26;cue.vx=Math.cos(a)*v;cue.vy=Math.sin(a)*v;shots++;qShots++;info();
-      if(qShots>=MAXS()){const q0=qi;const chk=()=>{if(over||qi!==q0)return;if(moving()){setTimeout(chk,200);return}lives--;weakAdd(id,"p",cur[0]);say("⏳ Keine Stösse mehr – gesucht war «"+cur[0]+"»");$("bL").textContent="❤️".repeat(Math.max(0,lives))+"🤍".repeat(3-Math.max(0,lives));if(lives<=0){setTimeout(()=>end(),900)}else{qi++;setTimeout(()=>{if(!over)setup()},1200)}};setTimeout(chk,300)}}aim=null});
+  cv.addEventListener("pointerup",()=>{if(!aim)return;const dx=aim.sx-aim.x,dy=aim.sy-aim.y,d=Math.min(220,Math.hypot(dx,dy));if(d>8){const a=Math.atan2(dy,dx)+(lvl()>=4?(Math.random()-.5)*0.05:0),v=d/220*26;cue.vx=Math.cos(a)*v;cue.vy=Math.sin(a)*v;shots++;qShots++;info();shot={first:null,lost:false,done:false}}aim=null});
   function info(){const m=MAXS();$("bS").textContent=m<99?`🎱 Stösse: ${m-qShots} übrig`:"";}
   size();addEventListener("resize",size);setup();loop()}
 function wahrfalsch(G,id){const p=pairsOf(id);let pts=0,end=Date.now()+45000,tm;
