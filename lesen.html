@@ -44,6 +44,15 @@ mark{background:var(--cap);padding:0 1px}
 .pg .no{position:absolute;left:-46px;top:6px;font-size:.9rem;color:var(--muted);width:38px;text-align:right}
 #figs{position:fixed;inset:0;z-index:20;background:rgba(20,18,15,.62);display:none;padding:2vh 16px}
 #figs.show{display:block}
+#akte{position:fixed;inset:0;z-index:20;background:rgba(20,18,15,.62);display:none;padding:2vh 16px}#akte.show{display:block}
+#akte .box{max-width:980px;height:96vh;margin:0 auto;overflow:auto;background:var(--paper);border:3px solid var(--line);border-radius:10px;padding:14px 22px 30px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+#akte h2{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:2rem;margin:0}
+.akc{background:#fff;border:2px solid var(--line);border-left:10px solid var(--deu);border-radius:8px;padding:8px 14px;margin:12px 0}
+.akc h3{font-family:var(--comic);font-weight:400;letter-spacing:.8px;font-size:1.5rem;margin:0}
+.akc .kern{background:#fff8d6;border-radius:6px;padding:4px 8px;margin:6px 0}
+.akc ul{margin:4px 0;padding-left:20px;line-height:1.35}
+.akc li button{all:unset;cursor:pointer;color:var(--deu);text-decoration:underline;font-size:.9rem}
+.akc .wende{border-top:2px dashed #ccc;padding-top:4px;margin-top:4px}
 #figs .box{max-width:1150px;height:96vh;margin:0 auto;overflow:auto;background:var(--paper);border:3px solid var(--line);border-radius:10px;padding:14px 20px 30px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
 #figs h2{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:2rem;margin:0}
 #figs h3{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:1.4rem;margin:18px 0 6px}
@@ -88,6 +97,7 @@ mark{background:var(--cap);padding:0 1px}
     <button class="btn" id="zout" title="Kleiner">−</button><button class="btn" id="zfit" title="Seite einpassen">↔ Breite</button><button class="btn" id="zin" title="Grösser">+</button>
   </div>
   <button class="btn go" id="figBtn">👥 Figuren</button>
+  <button class="btn go" id="aktBtn">📑 Akte kurz</button>
   <button class="btn" id="fs">⛶ Vollbild</button>
   <a class="btn" id="dl" download>⬇️ PDF</a>
 </header>
@@ -104,6 +114,7 @@ mark{background:var(--cap);padding:0 1px}
   <div id="view" tabindex="-1"></div>
 </main>
 <div id="figs" role="dialog" aria-label="Figuren in Kabale und Liebe"><div class="box" id="figBox"></div></div>
+<div id="akte" class="ovl" role="dialog" aria-label="Akte kurz zusammengefasst"><div class="box" id="aktBox"></div></div>
 <div id="res" role="status"><span id="resT"></span><button class="btn go" id="resGo">Weiterlesen</button><button class="btn" id="resX" aria-label="Schliessen">✕</button></div>
 
 <script src="buecher/kabale/data.js"></script>
@@ -170,6 +181,42 @@ $("figBtn").onclick=()=>{if(!$("figBox").innerHTML)rFigs();$("figs").classList.a
 $("figs").addEventListener("click",e=>{if(e.target.id==="figs"){$("figs").classList.remove("show");return}const c=e.target.closest("[data-c]");if(c){$("c-"+c.dataset.c).scrollIntoView({behavior:"smooth",block:"start"});return}const p=e.target.closest("[data-p]");if(p){$("figs").classList.remove("show");go(+p.dataset.p)}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("figs").classList.remove("show")});
 if(location.hash==="#figuren")setTimeout(()=>$("figBtn").click(),300);
+
+// Akte kurz
+const AKTE=[
+ {a:"1. Akt – Exposition",p:5,kern:"Ferdinand (Adel) und Luise (Bürgertum) lieben sich – aber alle sind dagegen.",s:[
+  ["I,1","Miller will die Beziehung beenden, Frau Miller hofft auf den Aufstieg der Tochter.",5],
+  ["I,2","Wurm wirbt um Luise; Miller sagt, Luise solle selbst entscheiden.",8],
+  ["I,3–4","Luise ist hin- und hergerissen; Ferdinand schwört ewige Liebe, Luise ahnt: «Man trennt uns!»",12],
+  ["I,5","Wurm verrät dem Präsidenten die Beziehung. Der Präsident will Ferdinand mit Lady Milford verheiraten – für seine Macht am Hof.",17],
+  ["I,6–7","Kalb soll die Heirat verbreiten. Ferdinand weigert sich, die Lady zu heiraten.",20]],w:"Wendepunkt: Der Vater-Sohn-Konflikt ist offen – Ferdinand will Luise, der Präsident die Lady."},
+ {a:"2. Akt – Steigende Handlung",p:29,kern:"Ferdinand weist Lady Milford ab und kämpft gegen seinen Vater.",s:[
+  ["II,1–2","Lady Milford wartet auf Ferdinand. Der Kammerdiener bringt Edelsteine: bezahlt mit Soldaten, die nach Amerika verkauft wurden.",29],
+  ["II,3","Ferdinand will die Lady beleidigen – sie erzählt ihre Lebensgeschichte (Johanna von Norfolk) und liebt ihn wirklich. Ferdinand gesteht, dass er Luise liebt.",35],
+  ["II,4–5","Ferdinand bei Luise; Miller wehrt sich gegen den Präsidenten.",43],
+  ["II,6–7","Der Präsident will Luise an den Pranger stellen und die Eltern verhaften lassen. Ferdinand droht, die Verbrechen seines Vaters zu verraten – der Präsident gibt nach.",47]],w:"Wendepunkt: Mit Gewalt kommt der Präsident nicht weiter – er braucht eine List."},
+ {a:"3. Akt – Höhepunkt: die Kabale",p:55,kern:"Präsident und Wurm planen die Intrige – Luise muss einen falschen Liebesbrief schreiben.",s:[
+  ["III,1–2","Wurms Plan: Millers verhaften, Luise schreibt dafür einen Liebesbrief an Kalb, den Ferdinand finden soll. Kalb macht aus Angst mit.",55],
+  ["III,3–4","Ferdinand will mit Luise fliehen. Luise lehnt ab (Pflicht gegenüber dem Vater) – Ferdinand glaubt, sie liebe einen anderen.",64],
+  ["III,5–6","Wurm erpresst Luise: Der Vater kommt nur frei, wenn sie den Brief schreibt und schwört, ihn freiwillig geschrieben zu haben.",68]],w:"Wendepunkt: Der Brief ist geschrieben, der Eid geschworen – die Falle ist gestellt."},
+ {a:"4. Akt – Fallende Handlung",p:77,kern:"Die Kabale wirkt: Ferdinand glaubt an Luises Verrat. Lady Milford erkennt ihre Schuld und flieht.",s:[
+  ["IV,1–4","Ferdinand liest den Brief, ist ausser sich. Er bedroht Kalb mit zwei Pistolen; Kalb sagt die Wahrheit («Ich kenne sie nicht»), Ferdinand hält es für eine Lüge. Er will Luise und sich töten: «Ich einst ihr Gott, jetzt ihr Teufel!»",77],
+  ["IV,5","Der Präsident heuchelt und tut, als würde er die Heirat mit Luise nun erlauben – für Ferdinand nur noch ein Beweis, wie verloren alles ist.",83],
+  ["IV,6–7","Lady Milford will Luise demütigen und bietet ihr eine Stelle als Kammerjungfer an. Luise bleibt stolz – wegen ihres Eids verzichtet sie aber auf Ferdinand und warnt: zwischen sie und Ferdinand werde «das Gespenst einer Selbstmörderin» treten.",84],
+  ["IV,8–9","Lady Milford ist beschämt, schreibt dem Fürsten einen Abschiedsbrief, verteilt ihr Vermögen an die Diener und verlässt das Land als Johanna von Norfolk.",92]],w:"Wendepunkt: Die bürgerliche Moral siegt innerlich (Lady geht), aber die Intrige hat Ferdinand und Luise getrennt."},
+ {a:"5. Akt – Katastrophe",p:99,kern:"Ferdinand vergiftet Luise und sich. Sterbend sagt Luise die Wahrheit.",s:[
+  ["V,1","Luise will sterben, um frei zu sein; Miller überredet sie, mit ihm zu fliehen. Sie zerreisst den Selbstmord-Brief.",99],
+  ["V,2–6","Ferdinand bezahlt Miller übertrieben und schickt ihn weg. Er schüttet Gift in die Limonade.",105],
+  ["V,7","Beide trinken. Als Luise merkt, dass sie stirbt, ist der Eid aufgehoben – sie sagt die Wahrheit über den Brief und stirbt.",115],
+  ["Letzte Szene","Der Präsident und Wurm kommen. Wurm will den Präsidenten mit in den Abgrund reissen und wird abgeführt. Ferdinand vergibt sterbend seinem Vater; der Präsident stellt sich der Justiz.",122]],w:"Ende: Tragödie – die Liebe scheitert an der Ständegesellschaft."}];
+function rAkte(){$("aktBox").innerHTML=`<div class="fhead"><h2>📑 Akte kurz</h2><span class="sp"></span><button class="btn" id="aktX">✕ Schliessen (Esc)</button></div>
+  <p class="note">Aufbau wie ein klassisches Drama: Exposition → steigende Handlung → Höhepunkt → fallende Handlung → Katastrophe. Klick auf «S. …» springt zur Stelle.</p>
+  ${AKTE.map(a=>`<section class="akc"><h3>${esc(a.a)}</h3><div class="kern">💡 ${esc(a.kern)}</div><ul>${a.s.map(x=>`<li><b>${esc(x[0])}:</b> ${esc(x[1])} <button data-p="${x[2]}">S. ${x[2]}</button></li>`).join("")}</ul><div class="wende">➡️ ${esc(a.w)}</div></section>`).join("")}`;
+  $("aktX").onclick=()=>$("akte").classList.remove("show")}
+$("aktBtn").onclick=()=>{if(!$("aktBox").innerHTML)rAkte();$("akte").classList.add("show");$("aktBox").scrollTop=0};
+$("akte").addEventListener("click",e=>{if(e.target.id==="akte"){$("akte").classList.remove("show");return}const p=e.target.closest("[data-p]");if(p){$("akte").classList.remove("show");go(+p.dataset.p)}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("akte").classList.remove("show")});
+if(location.hash==="#akte")setTimeout(()=>$("aktBtn").click(),300);
 
 // Suche
 const norm=s=>s.toLowerCase().replace(/ſ/g,"s");

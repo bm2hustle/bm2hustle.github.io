@@ -651,7 +651,13 @@ function billard(G,id){$("gwrap").classList.add("wide");
     cx.strokeStyle="rgba(255,255,255,.12)";cx.beginPath();cx.moveTo(W*0.25,M);cx.lineTo(W*0.25,H-M);cx.stroke();
     pockets.forEach(p=>{cx.fillStyle="#111";cx.beginPath();cx.arc(p[0],p[1],PR,0,7);cx.fill()});
     if(aim&&!moving()){const dx=aim.sx-aim.x,dy=aim.sy-aim.y,d=Math.min(220,Math.hypot(dx,dy));const a=Math.atan2(dy,dx);
-      if(AIM()){cx.setLineDash([8,8]);cx.strokeStyle="rgba(255,255,255,.75)";cx.lineWidth=2;cx.beginPath();cx.moveTo(cue.x,cue.y);cx.lineTo(cue.x+Math.cos(a)*AIM(),cue.y+Math.sin(a)*AIM());cx.stroke();cx.setLineDash([])}
+      if(AIM()){const ux=Math.cos(a),uy=Math.sin(a);let hit=null,ht=1e9;
+        balls.forEach(bb=>{if(bb.gone)return;const fx=bb.x-cue.x,fy=bb.y-cue.y,t=fx*ux+fy*uy;if(t<=0)return;const d2=fx*fx+fy*fy-t*t,r2=4*R0*R0;if(d2>r2)return;const tc=t-Math.sqrt(r2-d2);if(tc<ht){ht=tc;hit=bb}});
+        const len=hit?Math.min(ht,AIM()*1.5):AIM();
+        cx.setLineDash([8,8]);cx.strokeStyle="rgba(255,255,255,.75)";cx.lineWidth=2;cx.beginPath();cx.moveTo(cue.x,cue.y);cx.lineTo(cue.x+ux*len,cue.y+uy*len);cx.stroke();cx.setLineDash([]);
+        if(hit&&ht<=AIM()*1.5){const gx=cue.x+ux*ht,gy=cue.y+uy*ht;cx.strokeStyle="rgba(255,255,255,.8)";cx.lineWidth=2;cx.beginPath();cx.arc(gx,gy,R0,0,7);cx.stroke();
+          const nx=(hit.x-gx)/(2*R0),ny=(hit.y-gy)/(2*R0),L=Math.min(150,AIM()*.6);cx.strokeStyle=hit.c;cx.lineWidth=4;cx.beginPath();cx.moveTo(hit.x,hit.y);cx.lineTo(hit.x+nx*L,hit.y+ny*L);cx.stroke();
+          const ex=hit.x+nx*L,ey=hit.y+ny*L,an=Math.atan2(ny,nx);cx.fillStyle=hit.c;cx.beginPath();cx.moveTo(ex+Math.cos(an)*10,ey+Math.sin(an)*10);cx.lineTo(ex+Math.cos(an+2.5)*10,ey+Math.sin(an+2.5)*10);cx.lineTo(ex+Math.cos(an-2.5)*10,ey+Math.sin(an-2.5)*10);cx.fill()}}
       cx.strokeStyle="#d9b26b";cx.lineWidth=7;cx.beginPath();cx.moveTo(cue.x-Math.cos(a)*(R0+6+d*.5),cue.y-Math.sin(a)*(R0+6+d*.5));cx.lineTo(cue.x-Math.cos(a)*(R0+226+d*.5),cue.y-Math.sin(a)*(R0+226+d*.5));cx.stroke();
       cx.fillStyle="rgba(0,0,0,.5)";cx.fillRect(W/2-110,H-24,220,12);cx.fillStyle=d>170?"#e74c3c":d>90?"#f1c40f":"#2ecc71";cx.fillRect(W/2-110,H-24,220*d/220,12)}
     [...balls,cue].forEach(b=>{if(!b||b.gone)return;cx.fillStyle=b.c;cx.beginPath();cx.arc(b.x,b.y,R0,0,7);cx.fill();cx.strokeStyle="rgba(0,0,0,.4)";cx.lineWidth=1.5;cx.stroke();
