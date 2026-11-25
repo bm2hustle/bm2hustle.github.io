@@ -204,6 +204,19 @@ body.zoom .zoombox.on .zbar{position:sticky;top:-12px;z-index:2;background:var(-
 .tpop button.go{background:#1d1b18;color:#fff}
 .tpop input{width:4.2em;font-family:var(--hand);font-size:1rem;border:2px solid #1d1b18;border-radius:7px;padding:2px 6px}
 @media (prefers-reduced-motion:reduce){.clock button.ring{animation:none}}
+.rank{background:linear-gradient(135deg,#fff3b0,#ffd86b);border:3px solid #1d1b18;border-radius:10px;padding:12px 16px;margin:0 0 14px;color:#1d1b18;box-shadow:0 10px 18px -8px rgba(0,0,0,.4)}
+.rank h3{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:1.6rem;margin:0}
+.rank .champ{font-size:1.15rem;margin:4px 0 8px}
+.rank .games{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.rank .g{background:#fff;border:2px solid #1d1b18;border-radius:8px;padding:6px 10px}
+.rank .g b{display:block;margin-bottom:2px}
+.rank ol{list-style:none;margin:0;padding:0}
+.rank li{display:flex;justify-content:space-between;gap:8px}
+.rank li.me{background:rgba(255,224,102,.7);border-radius:4px}
+.rank .more{all:unset;cursor:pointer;text-decoration:underline;font-size:.95rem}
+.weakbox{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;background:#ffe3e0;border:3px solid #c44;border-radius:10px;padding:10px 14px;margin:0 0 10px;color:#1d1b18}
+.weakbox small{display:block;font-size:.92rem;opacity:.8}
+.wtab{width:100%;border-collapse:collapse;font-size:.98rem}.wtab th,.wtab td{border-bottom:1px solid #ccc;padding:4px 6px;text-align:left;vertical-align:top}
 .tour{position:fixed;inset:0;z-index:60}
 .namebg{position:fixed;inset:0;z-index:70;background:rgba(20,18,15,.62);display:flex;align-items:center;justify-content:center;padding:16px}
 .namebg[hidden]{display:none}
@@ -243,6 +256,7 @@ tr.me,li.me{background:rgba(255,224,102,.55)}
 
   <section class="view" id="v-start" hidden>
     <div class="calm">
+      <div id="ranks"></div>
       <div id="nextBox"></div>
       <div class="note flat" style="--c:#fffdf6"><h3>📌 Diese Woche</h3><div id="week" class="list"></div><p style="margin:0"><a href="#kalender" style="color:inherit">→ Alle Termine im Kalender</a></p></div>
       <div class="pills" role="group" aria-label="Mehr">
@@ -449,10 +463,12 @@ function rFach(id){
     if($("dlTh"))$("dlTh").onclick=()=>dlTheory(e);
     $("toUeben").onclick=()=>{curTab="ueben";rFach(id)};
   }else if(curTab==="ueben"){
-    const games=[["mc","🎯 Multiple Choice",g.quiz],["fx","🔁 Meine Fehler",(LS.get("err-"+id,[])).length?g.quiz:null],["match","🧩 Zuordnen",g.pairs],["cards","🃏 Karteikarten",g.decks],["cloze","✏️ Lückentext",g.cloze],["order","🔢 Reihenfolge",g.order]].filter(x=>x[2]&&x[2].length);
+    const games=[["mc","🎯 Multiple Choice",g.quiz],["match","🧩 Zuordnen",g.pairs],["cards","🃏 Karteikarten",g.decks],["cloze","✏️ Lückentext",g.cloze],["order","🔢 Reihenfolge",g.order]].filter(x=>x[2]&&x[2].length);
     const prs=pairsOf(id),arc=[["blitz","⚡ Blitz 60 s",g.quiz],["survival","🔥 Überleben",g.quiz],["meteor","☄️ Meteoriten",g.quiz],["speedmatch","⏱️ Zuordnen auf Zeit",prs.length>=6?prs:null],["wf","✅❌ Wahr oder falsch",prs.length>=4?prs:null]].filter(x=>x[2]&&x[2].length);
-    P.innerHTML=games.length?`<div class="gpick">${games.map(x=>`<button data-g="${x[0]}">${x[1]}${x[0]==="fx"?" ("+LS.get("err-"+id,[]).length+")":""}</button>`).join("")}</div>
-      <p class="empty" style="margin:4px 0 0">🏆 Nach jedem Spiel siehst du die Klassen-Rangliste. Ausnahmen: Karteikarten und Meine Fehler.</p>${arc.length?`<h3 class="wk" style="color:inherit">⚡ Arcade-Spiele</h3><div class="gpick">${arc.map(x=>`<button data-g="${x[0]}">${x[1]}${LS.get("best-"+x[0]+"-"+id,null)!=null?` <small>(Best: ${fmtScore(x[0],LS.get("best-"+x[0]+"-"+id))})</small>`:""}</button>`).join("")}</div>`:""}<div class="zoombox" id="gwrap"><div class="zbar"><button class="btn zclose" data-zclose>✕ Fokus beenden (Esc)</button></div><div id="game"></div></div>`:`<p class="empty">Noch keine Übungen für diese Prüfung. Kommen bald.</p>`;
+    const wc=weakCount(id);
+    P.innerHTML=(wc?`<div class="weakbox"><div><b>🎯 Deine Schwächen: ${wc} ${wc===1?"Frage/Begriff":"Fragen/Begriffe"}</b><small>Alles, was du in Spielen, Karteikarten oder der Probeprüfung falsch hattest. Nach 2× richtig in Folge ist es gemeistert.</small></div><div class="gpick"><button class="btn go" data-g="weak">🎯 Gezielt üben</button><button class="btn" id="weakList">📋 Liste ansehen</button></div></div>`:`<p class="empty" style="margin:0 0 6px">🎯 Fehler aus allen Spielen sammeln sich hier – dann kannst du genau deine Schwächen üben.</p>`)+(games.length?`<div class="gpick">${games.map(x=>`<button data-g="${x[0]}">${x[1]}</button>`).join("")}</div>
+      <p class="empty" style="margin:4px 0 0">🏆 Nach jedem Spiel siehst du die Klassen-Rangliste. Ausnahmen: Karteikarten und das Schwächen-Training.</p>${arc.length?`<h3 class="wk" style="color:inherit">⚡ Arcade-Spiele</h3><div class="gpick">${arc.map(x=>`<button data-g="${x[0]}">${x[1]}${LS.get("best-"+x[0]+"-"+id,null)!=null?` <small>(Best: ${fmtScore(x[0],LS.get("best-"+x[0]+"-"+id))})</small>`:""}</button>`).join("")}</div>`:""}<div class="zoombox" id="gwrap"><div class="zbar"><button class="btn zclose" data-zclose>✕ Fokus beenden (Esc)</button></div><div id="game"></div></div>`:`<p class="empty">Noch keine Übungen für diese Prüfung. Kommen bald.</p>`);
+    if($("weakList"))$("weakList").onclick=()=>{zoomOn($("gwrap"));weakList($("game"),id)};
     P.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{zoomOn($("gwrap"));startGame(b.dataset.g,id)});
     if(games.length)startGame(games[0][0],id);
   }else{
@@ -517,12 +533,36 @@ function dlMine(e){const l=LS.get("my-"+e.id,[]);
   save(`Meine_Karten_${slug(S(e.subj).name)}.html`,docWrap("Meine Karten "+e.title,`<h1>Meine Lernkarten: ${esc(e.title)}</h1><table><tr><th>Vorderseite</th><th>Rückseite</th></tr>${l.map(c=>`<tr><td>${esc(c[0])}</td><td>${esc(c[1])}</td></tr>`).join("")}</table>`))}
 
 /* ---------- Spiele ---------- */
-function errAdd(id,q){const a=LS.get("err-"+id,[]);if(!a.includes(q))a.push(q);LS.set("err-"+id,a)}
-function errDel(id,q){LS.set("err-"+id,LS.get("err-"+id,[]).filter(x=>x!==q))}
+/* ---------- Schwächen: alle Fehler aus allen Spielen ---------- */
+function weakItems(id){const g=H.games[id]||{},prs=pairsOf(id),w=weakGet(id);
+  return Object.values(w).sort((a,b)=>b.n-a.n).map(x=>{if(x.t==="q"){const q=(g.quiz||[]).find(q=>q&&q[0]===x.k);return q?{x,q:x.k,a:q[1],opts:[q[1],...q[2]],why:q[3]||""}:null}
+    const pr=prs.find(p=>p[0]===x.k);if(!pr)return null;const others=shuffle(prs.filter(p=>p!==pr)).slice(0,3).map(p=>p[1]);return {x,q:`Was passt zu «${pr[0]}»?`,a:pr[1],opts:[pr[1],...others],why:""}}).filter(Boolean)}
+function weakTrain(G,id){const items=weakItems(id);let i=0,ok=0,mastered=0;
+  if(!items.length){G.innerHTML=`<div class="gamebox"><h3>🎉 Keine Schwächen offen!</h3><p>Spiel weiter – sobald du etwas falsch hast, landet es hier.</p></div>`;return}
+  const r=()=>{if(i>=items.length){const left=weakCount(id);G.innerHTML=`<div class="gamebox"><h3 style="font-family:var(--comic);font-weight:400;font-size:1.8rem;margin:0">🎯 ${ok} / ${items.length} richtig</h3><p style="margin:0">${mastered?`✅ ${mastered} gemeistert (2× richtig in Folge). `:""}${left?`Noch offen: <b>${left}</b>.`:"Alles gemeistert! 🎉"}</p><div class="gpick">${left?`<button class="btn go" id="again">🎯 Nochmal üben</button>`:""}<button class="btn" id="wl">📋 Liste ansehen</button></div></div>`;
+      if($("again"))$("again").onclick=()=>weakTrain(G,id);$("wl").onclick=()=>weakList(G,id);return}
+    const it=items[i],opts=shuffle(it.opts.slice(0,4));
+    G.innerHTML=`<div class="gamebox"><div class="stat"><span>🎯 ${i+1} / ${items.length}</span><span>✅ ${ok}</span><span style="opacity:.7">schon ${it.x.n}× falsch${it.x.s?` · 1× richtig`:""}</span></div><p class="gq">${esc(it.q)}</p><div class="opts">${opts.map(o=>`<button>${esc(o)}</button>`).join("")}</div><div id="w"></div><div class="gpick"><button id="nx" hidden>Weiter ▶</button></div></div>`;
+    G.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>{const right=b.textContent===it.a;G.querySelectorAll(".opts button").forEach(x=>{x.disabled=true;if(x.textContent===it.a)x.classList.add("ok")});
+      if(right){ok++;if(weakOk(id,it.x.t,it.x.k))mastered++}else{b.classList.add("bad");weakAdd(id,it.x.t,it.x.k)}
+      $("w").innerHTML=`<p class="why">${right?"✅ Richtig!":"❌ Richtig wäre: <b>"+esc(it.a)+"</b>"}${it.why?"<br>"+esc(it.why):""}</p>`;$("nx").hidden=false;$("nx").focus()});
+    $("nx").onclick=()=>{i++;r()}};r()}
+function weakList(G,id){const items=weakItems(id);
+  G.innerHTML=`<div class="gamebox"><h3 style="margin:0">📋 Meine Schwächen (${items.length})</h3>${items.length?`<p class="empty" style="margin:0">Sortiert nach Anzahl Fehler. Lies sie einmal durch und übe sie dann gezielt.</p><table class="wtab"><tr><th>Frage / Begriff</th><th>Richtig</th><th>Fehler</th></tr>${items.map(it=>`<tr><td>${esc(it.x.t==="p"?it.x.k:it.q)}</td><td><b>${esc(it.a)}</b>${it.why?`<br><small>${esc(it.why)}</small>`:""}</td><td style="text-align:center">${it.x.n}×</td></tr>`).join("")}</table>
+    <div class="gpick"><button class="btn go" id="wt">🎯 Jetzt gezielt üben</button><button class="btn" id="wclr">🗑️ Liste leeren</button></div>`:`<p>Keine Schwächen offen. 🎉</p>`}</div>`;
+  if($("wt"))$("wt").onclick=()=>weakTrain(G,id);if($("wclr"))$("wclr").onclick=()=>{if(confirm("Alle gespeicherten Fehler für diese Prüfung löschen?")){LS.set("weak-"+id,{});weakList(G,id)}}}
+// weak-<id> = {"q|Frage":{t:"q",k:Frage,n:Fehler,s:richtig-in-Folge}, "p|Begriff":{t:"p",...}} – nach 2× richtig in Folge gilt es als gemeistert
+function weakGet(id){let w=LS.get("weak-"+id,null);if(!w){w={};LS.get("err-"+id,[]).forEach(q=>{w["q|"+q]={t:"q",k:q,n:1,s:0}});LS.set("weak-"+id,w)}return w}
+function weakAdd(id,t,k){if(!k)return;const w=weakGet(id),key=t+"|"+k;w[key]=w[key]||{t,k,n:0,s:0};w[key].n++;w[key].s=0;LS.set("weak-"+id,w)}
+function weakOk(id,t,k){const w=weakGet(id),key=t+"|"+k;if(!w[key])return false;w[key].s++;let done=false;if(w[key].s>=2){delete w[key];done=true}LS.set("weak-"+id,w);return done}
+function weakCount(id){return Object.keys(weakGet(id)).length}
+function errAdd(id,q){weakAdd(id,"q",q)}
+function errDel(id,q){weakOk(id,"q",q)}
 function startGame(k,id){const g=H.games[id],G=$("game");
+  if(k==="weak"||k==="fx"){weakTrain(G,id);return}
   if(k==="mc"||k==="fx"){let list=g.quiz;if(k==="fx"){const er=LS.get("err-"+id,[]);list=g.quiz.filter(q=>er.includes(q[0]))}mc(G,id,shuffle(list).slice(0,k==="fx"?99:12),k==="fx")}
   else if(k==="match")match(G,shuffle(g.pairs),id);
-  else if(k==="cards")cards(G,shuffle(g.decks));
+  else if(k==="cards")cards(G,shuffle(g.decks),id);
   else if(k==="cloze")cloze(G,shuffle(g.cloze),id);
   else if(k==="order")order(G,shuffle(g.order),id);
   else if(k==="blitz")blitz(G,id);else if(k==="survival")survival(G,id);else if(k==="meteor")meteor(G,id);
@@ -542,13 +582,13 @@ function gameOver(G,k,id,score,extra){const{better,best}=bestSave(k,id,score),gi
   try{goatcounter.count&&goatcounter.count({path:"spiel/"+k+"/"+id,title:GAMEINFO[k][0],event:true})}catch(e){}
   $("again").onclick=()=>startGame(k,id);LB.render($("lbBox"),k,id,score)}
 function hud(G,parts){return `<div class="stat" style="font-family:var(--comic);font-size:1.25rem;letter-spacing:.5px">${parts.join("")}</div>`}
-function qBox(q,cb){const opts=shuffle([q[1],...q[2]]).slice(0,4);return{html:`<p class="gq">${esc(q[0])}</p><div class="opts">${opts.map(o=>`<button>${esc(o)}</button>`).join("")}</div>`,bind:G=>G.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>cb(b.textContent===q[1],b))}}
+function qBox(q,cb,id){const opts=shuffle([q[1],...q[2]]).slice(0,4);return{html:`<p class="gq">${esc(q[0])}</p><div class="opts">${opts.map(o=>`<button>${esc(o)}</button>`).join("")}</div>`,bind:G=>G.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>{const ok=b.textContent===q[1];if(id){if(ok)weakOk(id,"q",q[0]);else weakAdd(id,"q",q[0])}cb(ok,b)})}}
 function blitz(G,id){const qs=shuffle(H.games[id].quiz);let i=0,pts=0,end=Date.now()+60000,tm;
-  const draw=()=>{const left=Math.max(0,Math.ceil((end-Date.now())/1000));const x=qBox(qs[i%qs.length],(ok,b)=>{if(ok)pts++;else b.classList.add("bad");i++;draw()});
+  const draw=()=>{const left=Math.max(0,Math.ceil((end-Date.now())/1000));const x=qBox(qs[i%qs.length],(ok,b)=>{if(ok)pts++;else b.classList.add("bad");i++;draw()},id);
     G.innerHTML=`<div class="gamebox">${hud(G,[`<span>⏱️ <b id="bl">${left}</b> s</span>`,`<span>⭐ ${pts}</span>`])}${x.html}</div>`;x.bind(G)};
   draw();tm=setInterval(()=>{const l=Math.max(0,Math.ceil((end-Date.now())/1000));if($("bl"))$("bl").textContent=l;if(l<=0){clearInterval(tm);gameOver(G,"blitz",id,pts)}},250)}
 function survival(G,id){const qs=shuffle(H.games[id].quiz);let i=0;
-  const draw=()=>{if(i>=qs.length){gameOver(G,"survival",id,i,`<p class="why">Alle ${i} Fragen richtig – unschlagbar! 🏆</p>`);return}const q=qs[i];const x=qBox(q,(ok,b)=>{if(ok){i++;draw()}else{gameOver(G,"survival",id,i,`<p class="why">❌ ${esc(q[0])}<br>Richtig: <b>${esc(q[1])}</b></p>`)}});
+  const draw=()=>{if(i>=qs.length){gameOver(G,"survival",id,i,`<p class="why">Alle ${i} Fragen richtig – unschlagbar! 🏆</p>`);return}const q=qs[i];const x=qBox(q,(ok,b)=>{if(ok){i++;draw()}else{gameOver(G,"survival",id,i,`<p class="why">❌ ${esc(q[0])}<br>Richtig: <b>${esc(q[1])}</b></p>`)}},id);
     G.innerHTML=`<div class="gamebox">${hud(G,[`<span>🔥 ${i} in Folge</span>`,`<span>Ein Fehler = vorbei</span>`])}${x.html}</div>`;x.bind(G)};draw()}
 function meteor(G,id){const qs=shuffle(H.games[id].quiz);let i=0,pts=0,lives=3,speed=11000,raf,t0;
   const next=()=>{if(lives<=0){cancelAnimationFrame(raf);gameOver(G,"meteor",id,pts);return}const q=qs[i++%qs.length];const opts=shuffle([q[1],...shuffle(q[2]).slice(0,2)]);
@@ -556,20 +596,20 @@ function meteor(G,id){const qs=shuffle(H.games[id].quiz);let i=0,pts=0,lives=3,s
       <div id="sky" style="position:relative;height:min(240px,30vh);background:linear-gradient(#1d2b4a,#3a4f7a);border-radius:10px;overflow:hidden"><div id="met" style="position:absolute;left:8px;right:8px;top:0;background:#ffe066;color:#1d1b18;border:2px solid #1d1b18;border-radius:12px;padding:6px 10px;font-size:1.02rem;line-height:1.2">☄️ ${esc(q[0])}</div><div style="position:absolute;bottom:0;left:0;right:0;height:10px;background:#e0782b"></div></div>
       <div class="opts">${opts.map(o=>`<button>${esc(o)}</button>`).join("")}</div></div>`;
     const sky=$("sky"),met=$("met");t0=performance.now();let done=false;
-    const step=t=>{if(done)return;const f=(t-t0)/speed;met.style.top=Math.min(1,f)*(sky.clientHeight-met.offsetHeight-10)+"px";if(f>=1){done=true;lives--;setTimeout(next,350);return}raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step);
-    G.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>{if(done)return;done=true;cancelAnimationFrame(raf);if(b.textContent===q[1]){pts++;speed=Math.max(4000,speed*0.93);met.textContent="💥";setTimeout(next,250)}else{b.classList.add("bad");lives--;setTimeout(next,500)}})};next()}
+    const step=t=>{if(done)return;const f=(t-t0)/speed;met.style.top=Math.min(1,f)*(sky.clientHeight-met.offsetHeight-10)+"px";if(f>=1){done=true;lives--;weakAdd(id,"q",q[0]);setTimeout(next,350);return}raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step);
+    G.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>{if(done)return;done=true;cancelAnimationFrame(raf);if(b.textContent===q[1]){weakOk(id,"q",q[0]);pts++;speed=Math.max(4000,speed*0.93);met.textContent="💥";setTimeout(next,250)}else{weakAdd(id,"q",q[0]);b.classList.add("bad");lives--;setTimeout(next,500)}})};next()}
 function speedmatch(G,id){const p=shuffle(pairsOf(id)).slice(0,6),L=shuffle(p.map((x,i)=>[x[0],i])),R=shuffle(p.map((x,i)=>[x[1],i]));let sel=null,done=0,pen=0;const t0=performance.now();let tm;
   G.innerHTML=`<div class="gamebox">${hud(G,[`<span>⏱️ <b id="smT">0.0</b> s</span>`,`<span>Fehler = +2 s</span>`])}<div class="mgame"><div class="mcol">${L.map(x=>`<button class="mt" data-s="L" data-i="${x[1]}">${esc(x[0])}</button>`).join("")}</div><div class="mcol">${R.map(x=>`<button class="mt" data-s="R" data-i="${x[1]}">${esc(x[0])}</button>`).join("")}</div></div></div>`;
   tm=setInterval(()=>{if($("smT"))$("smT").textContent=((performance.now()-t0)/1000+pen).toFixed(1)},100);
   G.querySelectorAll(".mt").forEach(b=>b.onclick=()=>{if(!sel||sel.dataset.s===b.dataset.s){if(sel)sel.classList.remove("sel");sel=b;b.classList.add("sel");return}
     if(sel.dataset.i===b.dataset.i){sel.classList.remove("sel");sel.classList.add("ok");b.classList.add("ok");sel=null;if(++done===p.length){clearInterval(tm);gameOver(G,"speedmatch",id,Math.round(((performance.now()-t0)/1000+pen)*10)/10)}}
-    else{pen+=2;b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}})}
+    else{pen+=2;const Lb=sel.dataset.s==="L"?sel:b;weakAdd(id,"p",p[+Lb.dataset.i][0]);b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}})}
 function wahrfalsch(G,id){const p=pairsOf(id);let pts=0,end=Date.now()+45000,tm;
   const draw=()=>{const a=p[Math.floor(Math.random()*p.length)],truth=Math.random()<.5;let b=a;if(!truth){do{b=p[Math.floor(Math.random()*p.length)]}while(b===a)}
     const left=Math.max(0,Math.ceil((end-Date.now())/1000));
     G.innerHTML=`<div class="gamebox">${hud(G,[`<span>⏱️ <b id="wl">${left}</b> s</span>`,`<span>⭐ ${pts}</span>`])}<p class="gq"><b>${esc(a[0])}</b></p><p class="gq" style="font-size:1.05rem">= ${esc(b[1])}</p>
       <div class="gpick" style="justify-content:center"><button class="btn" id="wfT" style="font-size:1.3rem;padding:10px 26px;background:var(--ok)">✅ Wahr</button><button class="btn" id="wfF" style="font-size:1.3rem;padding:10px 26px;background:var(--bad)">❌ Falsch</button></div><p class="empty" style="margin:0">Richtig +1, falsch −1</p></div>`;
-    const ans=v=>{pts+=(v===truth)?1:-1;draw()};$("wfT").onclick=()=>ans(true);$("wfF").onclick=()=>ans(false)};
+    const ans=v=>{if(v===truth){pts++;weakOk(id,"p",a[0])}else{pts--;weakAdd(id,"p",a[0])}draw()};$("wfT").onclick=()=>ans(true);$("wfF").onclick=()=>ans(false)};
   draw();tm=setInterval(()=>{const l=Math.max(0,Math.ceil((end-Date.now())/1000));if($("wl"))$("wl").textContent=l;if(l<=0){clearInterval(tm);gameOver(G,"wf",id,Math.max(0,pts))}},250)}
 
 /* ---------- Klassen-Rangliste (Supabase). Ohne Zugangsdaten: nur persönlicher Rekord ---------- */
@@ -598,14 +638,14 @@ function match(G,pairs,id){let set=0,err=0;const t0=Date.now();
     G.innerHTML=`<div class="gamebox"><p class="gq">Tippe links einen Begriff, dann rechts die passende Erklärung. (Runde ${set+1}/${Math.ceil(pairs.length/5)})</p><div class="mgame"><div class="mcol">${L.map(x=>`<button class="mt" data-s="L" data-i="${x[1]}">${esc(x[0])}</button>`).join("")}</div><div class="mcol">${R.map(x=>`<button class="mt" data-s="R" data-i="${x[1]}">${esc(x[0])}</button>`).join("")}</div></div></div>`;
     G.querySelectorAll(".mt").forEach(b=>b.onclick=()=>{if(!sel||sel.dataset.s===b.dataset.s){if(sel)sel.classList.remove("sel");sel=b;b.classList.add("sel");return}
       if(sel.dataset.i===b.dataset.i){sel.classList.remove("sel");sel.classList.add("ok");b.classList.add("ok");sel=null;if(++done===p.length){set++;setTimeout(r,500)}}
-      else{err++;b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}})};r()}
-function cards(G,deck){let i=0,back=false,no=[];
+      else{err++;if(id){const Lb=sel.dataset.s==="L"?sel:b;weakAdd(id,"p",p[+Lb.dataset.i][0])}b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),400)}})};r()}
+function cards(G,deck,id){let i=0,back=false,no=[];
   const r=()=>{if(i>=deck.length){G.innerHTML=`<div class="gamebox"><h3>Durch! ${deck.length-no.length}/${deck.length} gewusst</h3><div class="gpick">${no.length?`<button id="wr">🔁 Nur die ${no.length} nochmal</button>`:""}<button id="again">↺ Alle nochmal</button></div></div>`;
-      if($("wr"))$("wr").onclick=()=>cards(G,shuffle(no));$("again").onclick=()=>cards(G,shuffle(deck));return}
+      if($("wr"))$("wr").onclick=()=>cards(G,shuffle(no),id);$("again").onclick=()=>cards(G,shuffle(deck),id);return}
     const c=deck[i];G.innerHTML=`<div class="gamebox"><div class="stat"><span>${i+1} / ${deck.length}</span></div><div class="fc" id="fc" tabindex="0" role="button" aria-label="Karte umdrehen"><span class="q">${esc(c[0])}</span>${back?`<span class="a">${esc(c[1])}</span>`:`<span style="opacity:.6">Tippen zum Umdrehen</span>`}</div>
       <div class="gpick"><button id="nn">🔁 Nochmal</button><button id="yy">✅ Weiss ich</button></div></div>`;
     $("fc").onclick=()=>{back=!back;r()};$("fc").onkeydown=ev=>{if(ev.key===" "||ev.key==="Enter"){ev.preventDefault();back=!back;r()}};
-    $("nn").onclick=()=>{no.push(c);i++;back=false;r()};$("yy").onclick=()=>{i++;back=false;r()}};r()}
+    $("nn").onclick=()=>{no.push(c);if(id)weakAdd(id,"p",c[0]);i++;back=false;r()};$("yy").onclick=()=>{if(id)weakOk(id,"p",c[0]);i++;back=false;r()}};r()}
 function cloze(G,list,id){let i=0,err=0;const t0=Date.now();
   const r=()=>{if(i>=list.length){if(id){gameOver(G,"cloze",id,tsec(t0,err),`<p class="why" style="margin:0">Alle Lücken gefüllt. ${err} Fehler (je +2 s).</p>`);return}G.innerHTML=`<div class="gamebox"><h3>Alle Lücken gefüllt 🎉</h3><div class="gpick"><button id="again">↺ Nochmal</button></div></div>`;$("again").onclick=()=>cloze(G,shuffle(list));return}
     const[t,extra]=list[i];const ans=[...t.matchAll(/\{([^}]+)\}/g)].map(m=>m[1]);let k=0;
@@ -764,7 +804,9 @@ const TOUR=[
  {id:"t1-meld",view:"start",sel:'.nav a[data-v="melden"]',t:"📣 Melden",x:"Fehlt eine Prüfung oder stimmt etwas nicht? Hier meldest du es."},
  {id:"t1-info",view:"fach",sel:".info",t:"📅 Wann, was, worüber",x:"Alles zur Prüfung auf einen Blick."},
  {id:"t3-games",view:"fach",sel:".tabs",t:"🆕 Spiele mit Rangliste",x:"Unter 🎮 Üben: Blitz 60 s, Überleben, Meteoriten, Zuordnen auf Zeit, Wahr oder falsch. Schlag deinen Rekord!"},
- {id:"t5-timer",view:"start",sel:"#clock",t:"⏱ Neu: Lern-Uhr",x:"Oben siehst du die Uhrzeit, kannst einen Lern-Timer stellen (z. B. 25 Min.) und siehst, wie lange du heute schon gelernt hast. Spiele und Theorie öffnen sich jetzt gross im Fokus – mit Esc wieder zu."},
+ {id:"t7-schwaechen",view:"fach",sel:".weakbox",t:"🎯 Neu: Schwächen gezielt üben",x:"Alles, was du in Spielen, Karteikarten oder der Probeprüfung falsch hattest, sammelt sich hier. «Gezielt üben» fragt genau das ab – nach 2× richtig in Folge ist es gemeistert."},
+{id:"t6-rang",view:"start",sel:".rank",t:"🏆 Rangverkündigung",x:"Nach jeder Prüfung siehst du hier eine Woche lang die Besten aus den Spielen – mit Podest pro Spiel und Gesamtsieger*in."},
+{id:"t5-timer",view:"start",sel:"#clock",t:"⏱ Neu: Lern-Uhr",x:"Oben siehst du die Uhrzeit, kannst einen Lern-Timer stellen (z. B. 25 Min.) und siehst, wie lange du heute schon gelernt hast. Spiele und Theorie öffnen sich jetzt gross im Fokus – mit Esc wieder zu."},
 {id:"t4-lektuere",view:"fach",sel:"#bookBar",t:"📖 Neu: Buch online lesen",x:"Bei Deutsch kannst du «Kabale und Liebe» direkt auf der Seite lesen – mit Suche, Inhaltsverzeichnis und den gleichen Seitenzahlen wie im Buch. Die Seite merkt sich, wo du warst."},
 {id:"t4-notebook",view:"fach",sel:"#nbJump",t:"🎧 Neu: Podcast & Video",x:"Bei manchen Prüfungen gibt es jetzt einen Podcast, ein Erklärvideo und eine Infografik von NotebookLM – perfekt für unterwegs."},
 {id:"t2-tabs",view:"fach",sel:".tabs",t:"🧭 So lernst du",x:"🆕 Mein Lernplan · 📖 Theorie & 🆕 Videos · 🎮 Üben · 🏁 Probeprüfung · ✍️ eigene Karten · ⬇️ Übungsblätter. Am Handy seitwärts wischen."}];
@@ -785,9 +827,24 @@ function tourEnd(){$("tour").hidden=true;tourQ=[];window.scrollTo(0,0)}
 document.addEventListener("keydown",e=>{if(!$("tour").hidden&&e.key==="Escape"){tourMark(tourQ.map(t=>t.id));tourEnd()}});
 $("tourAgain").onclick=()=>{LS.set("tour-seen",[]);location.hash="start";setTimeout(()=>tourStart("start"),300)};
 
+/* ---------- Rangverkündigung nach der Prüfung ---------- */
+async function rRanks(){const box=$("ranks");if(!box||!LB.ok())return;const now=parse(TODAY);
+  const list=(H.past||[]).filter(p=>{const d=(now-parse(p.date))/864e5;return d>0&&d<=7}).sort((a,b)=>b.date.localeCompare(a.date));
+  if(!list.length){box.innerHTML="";return}
+  const me=LS.get("nick","").trim().toLowerCase();let html="";
+  for(const p of list){let rows=[];try{const r=await fetch(`${LB.url}/rest/v1/scores?select=game,nick,score,created_at&exam=eq.${encodeURIComponent(p.id)}&order=created_at.asc&limit=2000`,{headers:{apikey:LB.key}});if(r.ok)rows=await r.json()}catch(e){}
+    if(!rows.length)continue;const byG={};rows.forEach(x=>{(byG[x.game]=byG[x.game]||[]).push(x)});const pts={};
+    const games=Object.keys(byG).filter(g=>GAMEINFO[g]).map(g=>{const asc=GAMEINFO[g][2]<0;const best={};byG[g].forEach(x=>{const n=x.nick.trim(),k=n.toLowerCase();if(!best[k]||(asc?x.score<best[k].score:x.score>best[k].score))best[k]={nick:best[k]?best[k].nick:n,score:+x.score}});
+      const top=Object.values(best).sort((a,b)=>asc?a.score-b.score:b.score-a.score).slice(0,3);top.forEach((t,i)=>{const k=t.nick.toLowerCase();pts[k]=pts[k]||{nick:t.nick,p:0};pts[k].p+=3-i});return [g,top,Object.keys(best).length]});
+    const champ=Object.values(pts).sort((a,b)=>b.p-a.p)[0];const medal=["🥇","🥈","🥉"];
+    html+=`<div class="rank"><h3>🏆 Rangverkündigung: ${esc(S(p.subj).name)}</h3><p style="margin:0">${esc(p.title)} · Prüfung vom ${fmt(p.date)} · ${new Set(rows.map(x=>x.nick.trim().toLowerCase())).size} Spieler*innen</p>
+      ${champ?`<p class="champ">👑 Gesamtsieger*in: <b>${esc(champ.nick)}</b> <small>(${champ.p} Podest-Punkte: 1. Platz = 3, 2. = 2, 3. = 1)</small></p>`:""}
+      <div class="games">${games.map(([g,top,n])=>`<div class="g"><b>${GAMEINFO[g][0]}</b><ol>${top.map((t,i)=>`<li class="${t.nick.toLowerCase()===me?"me":""}"><span>${medal[i]} ${esc(t.nick)}</span><span>${fmtScore(g,t.score)}</span></li>`).join("")}</ol><small style="opacity:.7">${n} im Spiel</small></div>`).join("")}</div></div>`}
+  box.innerHTML=html}
+
 /* ---------- Fokus-Ansicht ---------- */
 function zoomOn(box){if(!box)return;document.querySelectorAll(".zoombox.on").forEach(b=>b.classList.remove("on"));box.classList.add("on");document.body.classList.add("zoom");box.scrollTop=0}
-function zoomOff(){document.querySelectorAll(".zoombox.on").forEach(b=>b.classList.remove("on"));document.body.classList.remove("zoom")}
+function zoomOff(){const was=document.body.classList.contains("zoom");document.querySelectorAll(".zoombox.on").forEach(b=>b.classList.remove("on"));document.body.classList.remove("zoom");if(was&&curExam&&curTab==="ueben"&&location.hash.startsWith("#fach-"))rFach(curExam)}
 document.addEventListener("click",e=>{if(e.target.closest("[data-zclose]"))zoomOff();else if(e.target.closest("[data-zopen]"))zoomOn(e.target.closest(".zoombox"));else if(e.target.id==="fback")zoomOff()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.body.classList.contains("zoom")&&$("tour").hidden)zoomOff()});
 addEventListener("hashchange",zoomOff);
@@ -835,7 +892,7 @@ function route(){let h=(location.hash||"#start").slice(1);let v=h.startsWith("fa
   document.querySelectorAll(".nav a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.v===v||(v==="fach"&&a.dataset.v==="faecher")));
   document.querySelectorAll(".nav a[aria-current]").forEach(a=>a.setAttribute("aria-current","page"));
   if(v!=="fach")rSubjbar(null);
-  if(v==="start"){rStart();rWeek();rHeute();rFdt();rApp()}else if(v==="kalender"){rCal();rStart()}else if(v==="faecher")rFaecher();else if(v==="suche")rSuche();else if(v==="fach")rFach(h.slice(5));
+  if(v==="start"){rRanks();rStart();rWeek();rHeute();rFdt();rApp()}else if(v==="kalender"){rCal();rStart()}else if(v==="faecher")rFaecher();else if(v==="suche")rSuche();else if(v==="fach")rFach(h.slice(5));
   if(v!=="fach")window.scrollTo(0,0);
   clearTimeout(route.tt);route.tt=setTimeout(()=>tourStart(v),600)}
 window.addEventListener("hashchange",()=>{route();try{goatcounter.count&&goatcounter.count()}catch(e){}});route();
