@@ -177,7 +177,8 @@ const num=s=>{s=String(s).trim().replace(/\s/g,"").replace(/[’']/g,"").replace
 const fmtN=n=>String(n).replace(".",",");
 
 /* ---------- Ansicht ---------- */
-let cur=null,ti=0,stage=0,solved=LS.get("mathe-solved",{});
+let cur=null,ti=0,stage=0,tries=0,streak=0,solved=LS.get("mathe-solved",{}),clean=LS.get("mathe-clean",{});
+const pick=a=>a[Math.floor(Math.random()*a.length)];
 const GRP=[["alle","Ganzer Stoff"],["quad","📐 Quadratische Gleichungen"],["text","📝 Textaufgaben"],["daten","📊 Datenanalyse"]];
 let grp=(location.hash.slice(1)||LS.get("mathe-grp","alle"));if(!GRP.some(g=>g[0]===grp))grp="alle";
 function rNav(){$("grps").innerHTML=GRP.map(g=>`<button data-grp="${g[0]}" ${g[0]===grp?'aria-current="true"':""}>${g[1]}</button>`).join("");
@@ -192,7 +193,7 @@ document.querySelector("nav").addEventListener("click",e=>{const b=e.target.clos
 function home(){const GT=GRP.find(g=>g[0]===grp)[1];$("main").innerHTML=`<section class="card"><h2>${grp==="alle"?"So funktioniert der Mathe-Coach":esc(GT)}</h2>${grp!=="alle"?`<p class="meta">Du lernst nur diesen Teil. Oben links kannst du wechseln.</p>`:""}
   <ol class="steps"><li>Thema links wählen.</li><li>Bei Textaufgaben kurz aufwärmen: 5 Fragen «Text → Mathe».</li><li>Aufgabe lesen und selbst lösen. Wenn du nicht weiterkommst: <b>Tipp 1 → 2 → 3</b> einzeln aufdecken.</li><li>Antwort eingeben. Bei falsch gibt es einen <b>Realitäts-Check</b> statt der Lösung. Die Lösung ist immer erreichbar, wenn du sie brauchst.</li><li>Bei richtig: <b>Probe</b> anschauen – genau so machst du sie an der Prüfung.</li></ol>
   <p class="book">Prüfung 3 · Mi 9.12. · Das sind eigene Übungsaufgaben im Stil des Lehrmittels. Die Aufgaben aus dem Buch übst du im Buch – die Seiten stehen bei jedem Thema.</p></section>
-  <section class="card"><h3>Dein Stand</h3>${T.filter(t=>grp==="alle"||t.grp===grp).map(t=>{const d=t.tasks.filter((_,i)=>solved[t.id+i]).length;return `<p style="margin:2px 0">${esc(t.name)}: <b>${d} / ${t.tasks.length}</b> gelöst</p>`}).join("")}</section>`}
+  <section class="card"><h3>Dein Stand</h3>${T.filter(t=>grp==="alle"||t.grp===grp).map(t=>{const d=t.tasks.filter((_,i)=>solved[t.id+i]).length;const c=t.tasks.filter((_,i)=>clean[t.id+i]).length;return `<p style="margin:2px 0">${esc(t.name)}: <b>${d} / ${t.tasks.length}</b> gelöst${c?` · ${c} ohne Hilfe`:""}</p>`}).join("")}</section>`}
 
 function warm(){if(cur.grp!=="text"){task();return}const qs=shuffle(WARM).slice(0,5);let i=0,ok=0;
   const r=()=>{if(i>=qs.length){task();return}const w=qs[i],opts=shuffle([w[1],...w[2]]);
@@ -201,11 +202,11 @@ function warm(){if(cur.grp!=="text"){task();return}const qs=shuffle(WARM).slice(
     document.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>{const right=b.textContent===w[1];document.querySelectorAll(".opts button").forEach(x=>{x.disabled=true;if(x.textContent===w[1])x.classList.add("ok")});if(right)ok++;else b.classList.add("bad");
       $("wfb").innerHTML=`<div class="fb ${right?"ok":"bad"}">${right?"Richtig.":"Richtig ist: <b>"+esc(w[1])+"</b>"}</div><button class="btn go" id="nx">Weiter</button>`;$("nx").focus();$("nx").onclick=()=>{i++;r()}})};r()}
 
-function task(){const t=cur.tasks[ti];stage=0;
+function task(){const t=cur.tasks[ti];stage=0;tries=0;
   $("main").innerHTML=`<section class="card"><div class="progress">${cur.tasks.map((_,i)=>`<span class="${i===ti?"cur":solved[cur.id+i]?"done":""}"></span>`).join("")}</div>
     <p class="meta">${esc(cur.name)} · Aufgabe ${ti+1} von ${cur.tasks.length}</p>
     <div class="task">${esc(t.q)}</div>
-    <div class="row ans"><label for="ans">Deine Antwort:</label><input id="ans" inputmode="decimal" autocomplete="off"> ${esc(t.unit||"")}<button class="btn go" id="chk">Prüfen</button><button class="btn" id="tipB">Tipp 1</button></div>
+    <div class="row ans"><label for="ans">Deine Antwort:</label><input id="ans" inputmode="decimal" autocomplete="off"> ${esc(t.unit||"")}<button class="btn go" id="chk">Prüfen</button><button class="btn" id="tipB" title="Nur wenn du nicht weiterkommst">Tipp 1</button></div><p class="meta" style="margin:4px 0 0">Zuerst selbst probieren – Tipps gibt es jederzeit, wenn du sie brauchst.</p>
     <div id="tips"></div><div id="fb"></div>
     <div class="row" style="margin-top:8px"><button class="btn" id="prev" ${ti?"":"disabled"}>◀ Vorherige</button><button class="btn" id="next">${ti<cur.tasks.length-1?"Nächste Aufgabe ▶":"Thema fertig ▶"}</button></div>
     <p class="book">Im Buch üben: ${esc(cur.book)} · Lösungen stehen unten auf den Buchseiten.</p></section>`;
@@ -221,14 +222,17 @@ function tip(){const t=cur.tasks[ti];stage++;const box=$("tips");
 function check(){const t=cur.tasks[ti],v=num($("ans").value);
   if(isNaN(v)){$("fb").innerHTML=`<div class="fb bad">Bitte nur eine Zahl eingeben (z. B. 2,5).</div>`;return}
   const ok=Math.abs(v-t.a)<=(t.tol||Math.max(.001,Math.abs(t.a)*1e-6));
-  if(ok){solved[cur.id+ti]=1;LS.set("mathe-solved",solved);
-    $("fb").innerHTML=`<div class="fb ok"><b>Richtig: ${fmtN(t.a)} ${esc(t.unit||"")}</b><br>Probe mit dem Text: <span class="eq">${esc(t.probe)}</span><br><small>Antwortsatz nicht vergessen.</small></div>`;
+  if(ok){solved[cur.id+ti]=1;LS.set("mathe-solved",solved);streak++;if(stage===0&&tries===0){clean[cur.id+ti]=1;LS.set("mathe-clean",clean)}
+    const lob=stage===0&&tries===0?pick(["Stark – ganz ohne Hilfe gelöst.","Sauber gelöst, ohne Tipp. Genau so an der Prüfung.","Ohne Tipp richtig – das sitzt."]):stage===0?pick(["Richtig – und selbst korrigiert. Das ist echtes Lernen.","Geschafft. Den Fehler hast du selbst gefunden."]):stage<3?pick(["Gut gemacht – mit wenig Hilfe.","Richtig. Beim nächsten Mal klappt's vielleicht schon ohne Tipp."]):pick(["Geschafft. Probier die nächste Aufgabe mit einem Tipp weniger.","Richtig. Schau dir den Lösungsweg nochmals an – dann sitzt er."]);
+    const st=streak>=3?` · ${streak} richtig in Folge`:"";
+    $("fb").innerHTML=`<div class="fb ok"><b>${esc(lob)}</b>${st}<br><b>Richtig: ${fmtN(t.a)} ${esc(t.unit||"")}</b><br>Probe mit dem Text: <span class="eq">${esc(t.probe)}</span><br><small>Antwortsatz nicht vergessen.</small></div>`;
     document.querySelectorAll(".progress span")[ti].className="done";$("next").classList.add("go");$("next").focus()}
-  else{const c=typeof t.check==="function"?t.check(v):"";
-    $("fb").innerHTML=`<div class="fb bad"><b>Noch nicht.</b> ${esc(c)}<br><small>Häufiger Fehler: ${esc(t.err)}</small></div>`}
+  else{tries++;streak=0;const c=typeof t.check==="function"?t.check(v):"";
+    const mut=tries===1?"Noch nicht – kein Problem, hier lernst du am meisten.":tries===2?"Fast dran? Vielleicht hilft jetzt Tipp "+Math.min(3,stage+1)+".":"Dranbleiben. Ein Tipp oder der Lösungsweg ist völlig okay.";
+    $("fb").innerHTML=`<div class="fb bad"><b>${esc(mut)}</b><br>${esc(c)}<br><small>Häufiger Fehler: ${esc(t.err)}</small></div>`}
   try{goatcounter.count&&goatcounter.count({path:"mathe/"+cur.id+"/"+(ok?"richtig":"falsch"),title:"Mathe-Coach",event:true})}catch(e){}}
-function done(){const d=cur.tasks.filter((_,i)=>solved[cur.id+i]).length;
-  $("main").innerHTML=`<section class="card"><h2>${esc(cur.name)}: ${d} von ${cur.tasks.length} gelöst</h2><p>${d===cur.tasks.length?"Sauber. Jetzt die Aufgaben im Buch lösen – dort ist die Prüfungsform.":"Die offenen Aufgaben lohnen sich: nochmals mit Tipp 1 starten, nicht gleich mit dem Lösungsweg."}</p><p class="book">Im Buch üben: ${esc(cur.book)}</p><div class="row"><button class="btn go" id="again">Nochmals von vorne</button></div></section>`;
+function done(){const d=cur.tasks.filter((_,i)=>solved[cur.id+i]).length,c=cur.tasks.filter((_,i)=>clean[cur.id+i]).length;
+  $("main").innerHTML=`<section class="card"><h2>${esc(cur.name)}: ${d} von ${cur.tasks.length} gelöst</h2>${c?`<p style="margin:0"><b>${c}× ganz ohne Hilfe.</b> ${c===cur.tasks.length?"Bereit für die Prüfung in diesem Thema.":"Du wirst sicherer."}</p>`:""}<p>${d===cur.tasks.length?"Sauber. Jetzt die Aufgaben im Buch lösen – dort ist die Prüfungsform.":"Die offenen Aufgaben lohnen sich: nochmals mit Tipp 1 starten, nicht gleich mit dem Lösungsweg."}</p><p class="book">Im Buch üben: ${esc(cur.book)}</p><div class="row"><button class="btn go" id="again">Nochmals von vorne</button></div></section>`;
   $("again").onclick=()=>{ti=0;task()}}
 
 function view(v){
