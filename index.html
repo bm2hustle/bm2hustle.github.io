@@ -219,6 +219,10 @@ body.zoom .zoombox.on .zbar{position:sticky;top:-12px;z-index:2;background:var(-
 .weakbox{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;background:#ffe3e0;border:3px solid #c44;border-radius:10px;padding:10px 14px;margin:0 0 10px;color:#1d1b18}
 .weakbox small{display:block;font-size:.92rem;opacity:.8}
 .wtab{width:100%;border-collapse:collapse;font-size:.98rem}.wtab th,.wtab td{border-bottom:1px solid #ccc;padding:4px 6px;text-align:left;vertical-align:top}
+.parts{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.parts a{font-family:var(--hand);font-size:1.05rem;border:2px solid var(--ink2);background:var(--paper);color:var(--ink);border-radius:999px;padding:3px 12px;text-decoration:none}
+.parts a[aria-current]{background:var(--ink2);color:#fff}
+.parts a:hover{background:var(--c)}
 .tour{position:fixed;inset:0;z-index:60}
 .namebg{position:fixed;inset:0;z-index:70;background:rgba(20,18,15,.62);display:flex;align-items:center;justify-content:center;padding:16px}
 .namebg[hidden]{display:none}
@@ -354,6 +358,12 @@ const ic=e=>ICON[e.type]||"📝";
 const isTest=e=>e.type!=="Hausaufgabe"&&e.type!=="Abgabe";
 const ex=H.exams.filter(e=>e.date>=TODAY).sort((a,b)=>(a.date+(a.time||"")).localeCompare(b.date+(b.time||"")));
 const exById=Object.fromEntries(H.exams.map(e=>[e.id,e]));
+// Teilbereiche (z. B. Mathe: Quadratische Gleichungen / Textaufgaben / Datenanalyse) als eigene Lern-Abschnitte
+Object.entries(H.parts||{}).forEach(([pid,list])=>{const e=exById[pid],g=H.games[pid]||{},th=H.theory[pid]||[];if(!e)return;
+  const cut=(arr,r)=>r&&arr?arr.slice(r[0],r[1]+1):[];
+  list.forEach(p=>{const id=pid+"-"+p.k;H.games[id]={quiz:cut(g.quiz,p.quiz),decks:cut(g.decks,p.decks),pairs:cut(g.pairs,p.pairs),cloze:cut(g.cloze,p.cloze),order:cut(g.order,p.order)};
+    H.theory[id]=cut(th,p.theory);exById[id]=Object.assign({},e,{id,parent:pid,part:p,title:e.title.replace(/:.*$/,"")+": "+p.name,topics:p.topics?p.topics.map(i=>e.topics[i]).filter(Boolean):e.topics})})});
+const partsOf=id=>{const e=exById[id];const pid=e&&e.parent||id;return (H.parts||{})[pid]?{pid,list:H.parts[pid]}:null};
 const rot=i=>((i*37)%7-3)*0.5;
 const LS={get(k,d){try{const v=localStorage.getItem("hustle-"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("hustle-"+k,JSON.stringify(v))}catch(e){}}};
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -422,8 +432,8 @@ function rSubjbar(cur){
   const a=$("subjbar").querySelector("[aria-current]");if(a)a.scrollIntoView({block:"nearest",inline:"nearest"})}
 
 /* ---------- Fach-Abschnitt ---------- */
-const BOOKS={DEU:[["Kabale und Liebe","Friedrich Schiller","lesen.html"]]};
-const bookBar=k=>(BOOKS[k]||[]).map(b=>`<a class="bookbar" id="bookBar" href="${b[2]}" style="--c:${S(k).c};--ink2:${S(k).ink}"><span class="bk">📖</span><span><b>Klassenlektüre: ${esc(b[0])}</b><small>${esc(b[1])} · online lesen, suchen, Seitenzahlen wie im Buch</small></span><span class="go">Lesen ▶</span></a>`).join("");
+const BOOKS={DEU:[["Kabale und Liebe","Friedrich Schiller · online lesen, suchen, Seitenzahlen wie im Buch","lesen.html","📖","Klassenlektüre: "]],MAT:[["Mathe-Coach Prüfung 3","Textaufgaben Schritt für Schritt: Tipps statt Lösungen, Realitäts-Check, Probe · Formeln · TI-30X","mathe.html","🧮",""]]};
+const bookBar=(k,hash)=>(BOOKS[k]||[]).map(b=>`<a class="bookbar" id="bookBar" href="${b[2]}${hash&&b[2]==="mathe.html"?"#"+hash:""}" style="--c:${S(k).c};--ink2:${S(k).ink}"><span class="bk">${b[3]}</span><span><b>${esc(b[4]+b[0])}</b><small>${esc(b[1])}</small></span><span class="go">Öffnen ▶</span></a>`).join("");
 let curExam=null,curTab="ziele";
 function rFach(id){
   const V=$("v-fach");const SK=id.toUpperCase();
@@ -431,11 +441,12 @@ function rFach(id){
   const e=exById[id];if(!e){V.innerHTML=`<p>Diese Prüfung gibt es nicht mehr. <a href="#faecher">Zu den Fächern</a></p>`;return}
   rSubjbar(e.subj);
   const sib=ex.filter(x=>x.subj===e.subj);
-  if(curExam!==id){curExam=id;curTab="ziele"}
+  if(curExam!==id){const fam=x=>x&&((exById[x]||{}).parent||x);if(fam(curExam)!==fam(id))curTab="ziele";curExam=id}
   const g=H.games[id]||{},th=H.theory[id]||[];
   const tabs=[["ziele","🧭 So lernst du"],["plan","🗓️ Mein Lernplan"],["theorie","📖 Theorie & Videos"],["ueben","🎮 Üben"],["probe","🏁 Probeprüfung"],["meine","✍️ Meine Karten"],["dl","⬇️ Downloads"]];
-  V.innerHTML=bookBar(e.subj)+`<div class="note flat" style="${sv(e)}"><div class="fhead"><span class="tag s">${esc(S(e.subj).name)}</span><span class="tag">${ic(e)} ${esc(e.type)}</span></div>
+  V.innerHTML=bookBar(e.subj,e.part&&e.part.coach)+`<div class="note flat" style="${sv(e)}"><div class="fhead"><span class="tag s">${esc(S(e.subj).name)}</span><span class="tag">${ic(e)} ${esc(e.type)}</span></div>
     <h3 style="font-size:1.7rem">${esc(e.title)}</h3>
+    ${(()=>{const P=partsOf(id);return P?`<div class="parts" role="group" aria-label="Teilbereiche"><a href="#fach-${P.pid}" ${id===P.pid?'aria-current="true"':""}>Ganzer Stoff</a>${P.list.map(p=>`<a href="#fach-${P.pid}-${p.k}" ${id===P.pid+"-"+p.k?'aria-current="true"':""}>${p.icon} ${esc(p.name)}</a>`).join("")}</div>`:""})()}
     ${sib.length>1?`<div class="exsw hideinfocus" aria-label="Termine in ${esc(S(e.subj).name)}">${sib.map(x=>`<a href="#fach-${esc(x.id)}" ${x.id===e.id?'aria-current="true"':""}>${isTest(x)?"📝":"🏠"} ${fmt(x.date)} ${esc(isTest(x)?"Prüfung":x.type)}</a>`).join("")}</div>`:""}
     <dl class="info">
       <dt>📅 Wann?</dt><dd><b>${WDL[parse(e.date).getDay()]}, ${parse(e.date).getDate()}. ${MON[parse(e.date).getMonth()]}</b>${e.time?" · "+esc(e.time)+" Uhr":""} · <b>${when(e.date)}</b></dd>
@@ -867,6 +878,8 @@ function myPlan(P,e){const id=e.id,K="plan-"+id;let cfg=LS.get(K,null);
 /* ---------- Führung: zeigt nur, was für diesen Browser neu ist ---------- */
 const TOUR=[
 {id:"t8-neu",view:"start",sel:".logo",t:"🆕 Das ist neu auf BM2 Hustle",x:"⏱ Lern-Uhr mit Timer und «heute gelernt» oben · 🔍 Spiele und Theorie gross im Fokus · 📖 «Kabale und Liebe» online lesen (bei Deutsch) mit 👥 Figuren · 🎧 Podcast & Video von NotebookLM · 🎯 Schwächen gezielt üben (unter Üben) · 🎱 Billard-Lernspiel · 🏆 Rangverkündigung nach jeder Prüfung. Die einzelnen Stellen zeige ich dir, wenn du dorthin kommst."},
+{id:"t9-parts",view:"fach",sel:".parts",t:"🧩 Neu: Stoff in Teilen lernen",x:"Bei Mathe kannst du jedes Thema einzeln lernen: Quadratische Gleichungen, Textaufgaben oder Datenanalyse – mit eigener Theorie, eigenen Spielen, eigener Probeprüfung und eigenen Schwächen."},
+{id:"t9-mathe",view:"fach",sel:"#bookBar[href=\"mathe.html\"]",t:"🧮 Neu: Mathe-Coach",x:"Textaufgaben Schritt für Schritt wie in der Nachhilfe: zuerst selbst probieren, dann Tipp 1–3, bei falsch ein Realitäts-Check, bei richtig die Probe. Dazu Formeln, Eselsbrücken und der TI-30X."},
 {id:"t8-billard",view:"fach",sel:"[data-g=\"billard\"]",t:"🎱 Neu: Billard",x:"Lies die Erklärung und versenke die Kugel mit dem passenden Begriff. Maus ziehen = zielen und Stärke, loslassen = Stoss."},
  {id:"t1-subj",view:"start",sel:"#subjbar",t:"📚 Deine Fächer",x:"Sortiert nach der nächsten Prüfung. Tippe ein Fach an: Du siehst sofort wann, was und worüber – und kannst direkt lernen."},
  {id:"t1-next",view:"start",sel:"#nextBox",t:"⏳ Nächste Prüfung",x:"Countdown bis zur nächsten Prüfung. «Jetzt dafür lernen» bringt dich direkt hin."},
@@ -904,7 +917,7 @@ async function rRanks(){const box=$("ranks");if(!box||!LB.ok())return;const now=
   const list=(H.past||[]).filter(p=>{const d=(now-parse(p.date))/864e5;return d>0&&d<=7}).sort((a,b)=>b.date.localeCompare(a.date));
   if(!list.length){box.innerHTML="";return}
   const me=LS.get("nick","").trim().toLowerCase();let html="";
-  for(const p of list){let rows=[];try{const r=await fetch(`${LB.url}/rest/v1/scores?select=game,nick,score,created_at&exam=eq.${encodeURIComponent(p.id)}&order=created_at.asc&limit=2000`,{headers:{apikey:LB.key}});if(r.ok)rows=await r.json()}catch(e){}
+  for(const p of list){let rows=[];try{const r=await fetch(`${LB.url}/rest/v1/scores?select=game,nick,score,created_at&exam=like.${encodeURIComponent(p.id)}*&order=created_at.asc&limit=2000`,{headers:{apikey:LB.key}});if(r.ok)rows=await r.json()}catch(e){}
     if(!rows.length)continue;const byG={};rows.forEach(x=>{(byG[x.game]=byG[x.game]||[]).push(x)});const pts={};
     const games=Object.keys(byG).filter(g=>GAMEINFO[g]).map(g=>{const asc=GAMEINFO[g][2]<0;const best={};byG[g].forEach(x=>{const n=x.nick.trim(),k=n.toLowerCase();if(!best[k]||(asc?x.score<best[k].score:x.score>best[k].score))best[k]={nick:best[k]?best[k].nick:n,score:+x.score}});
       const top=Object.values(best).sort((a,b)=>asc?a.score-b.score:b.score-a.score).slice(0,3);top.forEach((t,i)=>{const k=t.nick.toLowerCase();pts[k]=pts[k]||{nick:t.nick,p:0};pts[k].p+=3-i});return [g,top,Object.keys(best).length]});

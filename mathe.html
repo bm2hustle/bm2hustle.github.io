@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mathe-Coach · BM2 Hustle</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap">
+<style>
+:root{--bg:#e9ece6;--grid:#cfd8e3;--ink:#1d1b18;--muted:#5f584e;--line:#1d1b18;--paper:#fffdf6;--mat:#d9730d;--matc:#ffcf99;--ok:#2e7d32;--okc:#e3f4e1;--bad:#b23b2e;--badc:#fde7e4;
+  --hand:"Patrick Hand","Comic Sans MS","Segoe Print",cursive;--text:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px;font-family:var(--text);font-size:17px;color:var(--ink);line-height:1.45}
+.wrap{max-width:1100px;margin:0 auto;padding:16px 16px 60px;display:grid;grid-template-columns:260px 1fr;gap:18px}
+header{grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--paper);border:2px solid var(--line);border-left:10px solid var(--mat);border-radius:8px;padding:10px 14px}
+header h1{margin:0;font-family:var(--hand);font-size:1.9rem;font-weight:400}
+header p{margin:0;color:var(--muted)}
+.btn{font-family:var(--hand);font-size:1.05rem;border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:3px 12px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.btn:hover{background:var(--matc)}.btn.go{background:var(--ink);color:#fff}.btn.go:hover{background:#3a362f}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #e0782b;outline-offset:2px}
+.btn[disabled]{opacity:.45;cursor:default}
+nav{display:flex;flex-direction:column;gap:6px;position:sticky;top:12px;align-self:start}
+.grps{display:flex;flex-direction:column;gap:4px;margin-bottom:4px}.grps button{font-family:var(--hand)!important;font-size:1.05rem!important;padding:3px 10px!important;border-radius:999px!important}
+nav h3{font-family:var(--hand);font-weight:400;font-size:1.15rem;margin:8px 0 0;color:var(--mat)}
+nav h2{font-family:var(--hand);font-weight:400;font-size:1.25rem;margin:6px 0 0}
+nav button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:6px 10px;line-height:1.25}
+nav button small{display:block;color:var(--muted);font-size:.85rem}
+nav button[aria-current="true"]{background:var(--matc);border-color:var(--mat)}
+nav button:hover,nav button:focus-visible{background:#fff1de}
+main{min-width:0;display:flex;flex-direction:column;gap:14px}
+.card{background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:14px 18px}
+.card h2{font-family:var(--hand);font-weight:400;font-size:1.6rem;margin:0 0 4px}
+.card h3{font-family:var(--hand);font-weight:400;font-size:1.3rem;margin:10px 0 4px}
+.meta{color:var(--muted);font-size:.95rem;margin:0}
+.task{font-size:1.15rem;background:#fff;border:2px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ans input{font-family:var(--text);font-size:1.1rem;width:9em;padding:5px 8px;border:2px solid var(--line);border-radius:8px}
+.tip{background:#fff8d6;border:2px solid #d8b84a;border-radius:8px;padding:8px 12px;margin:6px 0}
+.tip b{font-family:var(--hand);font-size:1.1rem}
+.fb{border-radius:8px;padding:8px 12px;margin:6px 0}
+.fb.ok{background:var(--okc);border:2px solid var(--ok)}.fb.bad{background:var(--badc);border:2px solid var(--bad)}
+.eq{font-family:ui-monospace,Consolas,monospace;font-size:1.05rem;background:#fff;border:1px solid #ccc;border-radius:6px;padding:2px 8px;display:inline-block;margin:2px 0}
+ol.steps{margin:4px 0;padding-left:22px}ol.steps li{margin:2px 0}
+table.t{border-collapse:collapse;margin:6px 0;background:#fff}table.t th,table.t td{border:1px solid #999;padding:4px 10px;text-align:center;min-width:70px}table.t th{background:#f3eee4}
+table.t td.fill{background:#fffbe6;cursor:pointer}table.t td.fill span{visibility:hidden}table.t td.fill::after{content:"?";color:#b49a3a;font-weight:bold}table.t td.fill.show span{visibility:visible}table.t td.fill.show::after{content:""}table.t td.fill.show{color:#6b5a1a;font-style:italic}
+.progress{display:flex;gap:4px;flex-wrap:wrap}.progress span{width:26px;height:8px;border-radius:4px;background:#ddd}.progress span.done{background:var(--ok)}.progress span.cur{background:var(--mat)}
+.mc .opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:8px 0}
+.mc .opts button{font-family:var(--text);font-size:1.05rem;border:2px solid var(--line);background:#fff;border-radius:8px;padding:8px;cursor:pointer}
+.mc .opts button.ok{background:var(--okc);border-color:var(--ok)}.mc .opts button.bad{background:var(--badc);border-color:var(--bad)}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.tools .card{padding:10px 14px}
+.tools ul{margin:4px 0;padding-left:20px}
+.book{background:#f6f1e6;border-left:5px solid var(--mat);padding:6px 10px;border-radius:4px;margin:6px 0}
+@media (max-width:820px){.wrap{grid-template-columns:1fr}nav{position:static}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="btn" href="index.html#fach-mat3">◀ BM2 Hustle</a>
+    <div><h1>Mathe-Coach · Prüfung 3</h1><p>Eine Aufgabe nach der anderen. Tipps statt Lösungen. Am Schluss immer die Probe.</p></div>
+  </header>
+  <nav aria-label="Themen">
+    <div class="grps" id="grps" role="group" aria-label="Teilbereich"></div>
+    <div id="topics"></div>
+    <h2>Werkzeuge</h2>
+    <button data-view="tools">Formeln &amp; Eselsbrücken<small>alles auf einen Blick</small></button>
+    <button data-view="ti">Taschenrechner TI-30X<small>Statistik in 6 Schritten</small></button>
+    <button data-view="fehler">Typische Fehler<small>vorher lesen spart Punkte</small></button>
+  </nav>
+  <main id="main"></main>
+</div>
+
+<script src="mathe-buch.js"></script>
+<script data-goatcounter="https://bm2hustle.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const LS={get(k,d){try{const v=localStorage.getItem("hustle-"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("hustle-"+k,JSON.stringify(v))}catch(e){}}};
+const tbl=(head,rows)=>`<table class="t"><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map((c,i)=>i===0?`<th>${c}</th>`:(String(c).startsWith("?")?`<td class="fill" tabindex="0" title="Klicken zum Vergleichen"><span>${String(c).slice(1)}</span></td>`:`<td>${c}</td>`)).join("")}</tr>`).join("")}</table>`;
+
+/* ---------- Aufgaben (eigene Aufgaben im Stil des Lehrmittels; die Buchaufgaben übst du im Buch) ---------- */
+const T=[
+{id:"raetsel",grp:"text",name:"Zahlenrätsel, Alter, Brüche",kap:"5.6",book:"S. 39–40 lesen · S. 40 Nr. 1–12",tasks:[
+ {q:"Das Dreifache einer Zahl, vermindert um 7, ergibt 38. Wie heisst die Zahl?",a:15,unit:"",
+  t1:"x = die gesuchte Zahl.",t2:"«Das Dreifache» = 3x · «vermindert um 7» = − 7 · «ergibt» = «=»",t3:"3x − 7 = 38",
+  steps:["3x − 7 = 38   | + 7","3x = 45   | : 3","x = 15"],probe:"3 · 15 − 7 = 45 − 7 = 38 ✓",
+  check:a=>a===31.67||Math.abs(a-31.67)<.01?"Du hast 3x = 38 + 7 gerechnet, aber dann nicht durch 3 geteilt? Prüf: 3 · x − 7 muss genau 38 geben.":"Setz deine Zahl in den Satz ein: Ergibt «das Dreifache minus 7» wirklich 38?",err:"«vermindert um 7» heisst − 7, nicht «7 − 3x»."},
+ {q:"Ein Vater ist 40 Jahre alt, sein Sohn 12. In wie vielen Jahren ist der Vater genau doppelt so alt wie sein Sohn?",a:16,unit:"Jahren",
+  t1:"x = Anzahl Jahre, bis es so weit ist.",t2:tbl(["","heute","in x Jahren"],[["Vater","40","?40 + x"],["Sohn","12","?12 + x"]]),t3:"40 + x = 2 · (12 + x)",
+  steps:["40 + x = 24 + 2x   | − x","40 = 24 + x   | − 24","x = 16"],probe:"In 16 Jahren: Vater 56, Sohn 28 → 56 = 2 · 28 ✓",
+  check:a=>a===28?"28 ist das Alter des Sohnes – gefragt sind die Jahre bis dahin. Was hast du als x definiert?":"Rechne nach: Wie alt sind beide in deiner Anzahl Jahre? Ist der Vater dann doppelt so alt?",err:"Beide Personen werden älter – auch der Vater bekommt + x."},
+ {q:"Addiert man zum Zähler und zum Nenner des Bruchs 3/7 dieselbe Zahl, erhält man 2/3. Welche Zahl wurde addiert?",a:5,unit:"",
+  t1:"x = die Zahl, die oben UND unten addiert wird.",t2:"Neuer Bruch: (3 + x) / (7 + x)",t3:"(3 + x) / (7 + x) = 2/3",
+  steps:["Über Kreuz multiplizieren: 3 · (3 + x) = 2 · (7 + x)","9 + 3x = 14 + 2x   | − 2x − 9","x = 5"],probe:"(3 + 5) / (7 + 5) = 8/12 = 2/3 ✓",
+  check:a=>"Setz deine Zahl oben und unten ein und kürze den Bruch. Kommt 2/3 heraus?",err:"x nicht zum ganzen Bruch addieren (3/7 + x), sondern zu Zähler UND Nenner."},
+ {q:"Eine Mutter ist heute 4-mal so alt wie ihre Tochter. In 6 Jahren ist sie nur noch 2,5-mal so alt. Wie alt ist die Tochter heute?",a:6,unit:"Jahre",
+  t1:"x = Alter der Tochter heute (der Zeitpunkt, den man am besten kennt).",t2:tbl(["","heute","in 6 Jahren"],[["Tochter","x","?x + 6"],["Mutter","?4x","?4x + 6"]]),t3:"4x + 6 = 2,5 · (x + 6)",
+  steps:["4x + 6 = 2,5x + 15   | − 2,5x − 6","1,5x = 9   | : 1,5","x = 6"],probe:"Heute 6 und 24 (4-mal). In 6 Jahren 12 und 30 → 30 : 12 = 2,5 ✓",
+  check:a=>a===24?"24 ist die Mutter – gefragt ist die Tochter.":"Prüf mit der Tabelle: Ist die Mutter heute 4-mal so alt? Und in 6 Jahren 2,5-mal?",err:"Klammer vergessen: 2,5 · (x + 6), nicht 2,5x + 6."}]},
+{id:"misch",grp:"text",name:"Mischungsrechnen",kap:"5.6",book:"S. 45–46 lesen · S. 47–48 Nr. 1–16",tasks:[
+ {q:"Wie viele Liter Wasser muss man zu 12 Liter 30-prozentigem Alkohol geben, damit 20-prozentiger Alkohol entsteht?",a:6,unit:"Liter",
+  t1:"x = Liter Wasser. Wasser hat 0 % Alkohol.",t2:tbl(["","Menge","Anteil"],[["Alkohol 30 %","12","0,30"],["Wasser","x","?0"],["Mischung","?12 + x","0,20"]]),t3:"12 · 0,30 + x · 0 = (12 + x) · 0,20",
+  steps:["3,6 = 2,4 + 0,2x   | − 2,4","1,2 = 0,2x   | : 0,2","x = 6"],probe:"Reiner Alkohol: 3,6 L. Mischung: 18 L · 0,20 = 3,6 L ✓",
+  check:a=>a>12?"Realitäts-Check: Von 30 % auf 20 % ist nur ein Drittel weniger – braucht es da mehr Wasser, als Alkohol da ist?":"Prüf: Ist der reine Alkohol vorher und nachher gleich viel?",err:"Der reine Alkohol bleibt gleich – nur Wasser kommt dazu. Klammer um die Gesamtmenge (12 + x)."},
+ {q:"Kaffee zu 18 Fr./kg und Kaffee zu 26 Fr./kg werden zu 40 kg Mischung zu 21 Fr./kg gemischt. Wie viele kg der billigeren Sorte braucht es?",a:25,unit:"kg",
+  t1:"x = kg der billigen Sorte. Dann ist die teure Sorte 40 − x.",t2:tbl(["","Menge","Preis","Wert"],[["billig","x","18","?18x"],["teuer","?40 − x","26","?26 · (40 − x)"],["Mischung","40","21","?840"]]),t3:"18x + 26 · (40 − x) = 21 · 40",
+  steps:["18x + 1040 − 26x = 840","−8x = −200   | : (−8)","x = 25"],probe:"25 · 18 = 450, 15 · 26 = 390 → 840 Fr. = 40 · 21 ✓",
+  check:a=>a<20?"Realitäts-Check: 21 Fr. liegt viel näher bei 18 als bei 26. Braucht es dann mehr oder weniger von der billigen Sorte?":"Prüf den Wert: billige kg · 18 + teure kg · 26 muss 840 ergeben.",err:"Am Schluss zurückschauen: Hast du x als billige oder teure Sorte definiert?"},
+ {q:"Wie viele kg reines Kupfer muss man zu 30 kg einer Legierung mit 60 % Kupfer schmelzen, damit die neue Legierung 75 % Kupfer enthält?",a:18,unit:"kg",
+  t1:"x = kg reines Kupfer (100 %).",t2:tbl(["","Menge","Kupferanteil"],[["Legierung","30","0,60"],["reines Kupfer","x","?1"],["neu","?30 + x","0,75"]]),t3:"30 · 0,6 + x · 1 = (30 + x) · 0,75",
+  steps:["18 + x = 22,5 + 0,75x   | − 0,75x − 18","0,25x = 4,5   | : 0,25","x = 18"],probe:"Kupfer: 18 + 18 = 36 kg von 48 kg → 36 : 48 = 0,75 ✓",
+  check:a=>"Prüf: Kupfer total (18 + x) geteilt durch Gesamtmenge (30 + x) – gibt das 0,75?",err:"Reines Metall = 100 % = 1, nicht 0."},
+ {q:"600 Liter Milch mit 4 % Fett werden mit Magermilch (0,5 % Fett) gemischt. Die Mischung soll 2,5 % Fett haben. Wie viele Liter Magermilch braucht es?",a:450,unit:"Liter",
+  t1:"x = Liter Magermilch.",t2:tbl(["","Menge","Fett %"],[["Vollmilch","600","4"],["Magermilch","x","0,5"],["Mischung","?600 + x","2,5"]]),t3:"600 · 4 + x · 0,5 = (600 + x) · 2,5",
+  steps:["2400 + 0,5x = 1500 + 2,5x   | − 0,5x − 1500","900 = 2x   | : 2","x = 450"],probe:"Fett: 2400 + 225 = 2625. Mischung: 1050 · 2,5 = 2625 ✓",
+  check:a=>a>3000?"Realitäts-Check: 2,5 % liegt etwa in der Mitte von 4 % und 0,5 % – braucht es dann viel mehr Magermilch als Vollmilch?":"Prüf mit der Probe: Fett vorher = Fett nachher?",err:"Nicht «4 + x» als neuen Prozentsatz schreiben – der Prozentsatz der Mischung ist gegeben (2,5)."}]},
+{id:"arbeit",grp:"text",name:"Arbeit und Leistung",kap:"5.6",book:"S. 49–50 lesen · S. 51–52 Nr. 1–15",tasks:[
+ {q:"Ein Maler braucht für ein Zimmer allein 6 Stunden, sein Kollege 3 Stunden. Wie lange brauchen sie zusammen?",a:2,unit:"h",
+  t1:"x = Stunden zusammen. Die ganze Arbeit = 1.",t2:tbl(["","allein","pro Stunde","in x Stunden"],[["Maler A","6 h","1/6","?x/6"],["Maler B","3 h","1/3","?x/3"]]),t3:"x/6 + x/3 = 1",
+  steps:["Mal 6: x + 2x = 6","3x = 6","x = 2"],probe:"In 2 h: A schafft 2/6 = 1/3, B schafft 2/3 → zusammen 1 ✓",
+  check:a=>a>=3?"Realitäts-Check: Zu zweit muss es schneller gehen als der schnellere allein (3 h).":"Prüf: x/6 + x/3 muss genau 1 ergeben.",err:"Leistungen addieren (1/6 + 1/3), nicht die Zeiten (6 + 3)."},
+ {q:"Zwei Röhren füllen ein Becken. Die erste allein braucht 10 Stunden, beide zusammen 6 Stunden. Wie lange bräuchte die zweite allein?",a:15,unit:"h",
+  t1:"x = Stunden der zweiten Röhre allein.",t2:"In 6 Stunden schafft Röhre 1: 6/10 · Röhre 2: 6/x",t3:"6/10 + 6/x = 1",
+  steps:["6/x = 1 − 0,6 = 0,4","x = 6 : 0,4","x = 15"],probe:"6/10 + 6/15 = 0,6 + 0,4 = 1 ✓",
+  check:a=>a<=6?"Realitäts-Check: Allein muss die zweite Röhre länger brauchen als beide zusammen (6 h).":"Prüf: 6/10 + 6/x = 1?",err:"Wenn vor x eine 6 steht: durch genau diese Grösse teilen – sauber nach x auflösen."},
+ {q:"A braucht für eine Arbeit 12 Tage, B 18 Tage. Sie arbeiten 3 Tage zusammen, dann macht A allein fertig. Wie viele Tage arbeitet A noch allein?",a:7,unit:"Tage",
+  t1:"x = Tage, die A am Schluss allein arbeitet.",t2:tbl(["","Tage","Anteil"],[["A zusammen","3","?3/12"],["B zusammen","3","?3/18"],["A allein","x","?x/12"]]),t3:"3/12 + 3/18 + x/12 = 1",
+  steps:["Mal 36: 9 + 6 + 3x = 36","3x = 21","x = 7"],probe:"3/12 + 3/18 + 7/12 = 0,25 + 0,167 + 0,583 = 1 ✓",
+  check:a=>"Prüf: Ergeben alle Teile zusammen genau 1 (die ganze Arbeit)?",err:"Beim Multiplizieren mit 36 jedes Glied mal nehmen – auch die 1 rechts (→ 36)."},
+ {q:"Ein Zufluss füllt ein Becken in 4 Stunden, ein Abfluss leert es in 6 Stunden. Beide sind offen. Nach wie vielen Stunden ist das leere Becken voll?",a:12,unit:"h",
+  t1:"x = Stunden, bis das Becken voll ist.",t2:"Zufluss pro Stunde: + 1/4 · Abfluss pro Stunde: − 1/6",t3:"x/4 − x/6 = 1",
+  steps:["Mal 12: 3x − 2x = 12","x = 12"],probe:"12/4 − 12/6 = 3 − 2 = 1 ✓",
+  check:a=>a<4?"Realitäts-Check: Mit offenem Abfluss dauert es länger als mit dem Zufluss allein (4 h).":"Prüf: x/4 − x/6 = 1?",err:"Der Abfluss arbeitet gegen den Zufluss – Leistung abziehen, nicht addieren."}]},
+{id:"zwei",grp:"text",name:"Textaufgaben mit 2 Unbekannten",kap:"9.4",book:"S. 91–102 · S. 92 Nr. 1–14, S. 96 Nr. 1–7, S. 102 Nr. 1–4",tasks:[
+ {q:"Die Summe zweier Zahlen ist 53, ihre Differenz 17. Wie heisst die grössere Zahl?",a:35,unit:"",
+  t1:"x = grössere Zahl, y = kleinere Zahl.",t2:"Zwei Aussagen → zwei Gleichungen.",t3:"x + y = 53 und x − y = 17",
+  steps:["Addieren: 2x = 70","x = 35","y = 53 − 35 = 18"],probe:"35 + 18 = 53 ✓ und 35 − 18 = 17 ✓",
+  check:a=>a===18?"18 ist die kleinere Zahl – gefragt ist die grössere.":"Prüf beide Bedingungen: Summe 53 UND Differenz 17?",err:"Am Schluss zurückschauen: Welche Unbekannte ist gefragt?"},
+ {q:"Ins Kino gehen 120 Personen. Erwachsene zahlen 15 Fr., Jugendliche 9 Fr. Die Einnahmen sind 1416 Fr. Wie viele Erwachsene waren dabei?",a:56,unit:"",
+  t1:"x = Erwachsene, y = Jugendliche.",t2:tbl(["","Anzahl","Preis","Einnahmen"],[["Erwachsene","x","15","?15x"],["Jugendliche","y","9","?9y"],["total","120","","1416"]]),t3:"x + y = 120 und 15x + 9y = 1416",
+  steps:["y = 120 − x einsetzen: 15x + 9 · (120 − x) = 1416","15x + 1080 − 9x = 1416","6x = 336 → x = 56"],probe:"56 + 64 = 120 ✓ · 56 · 15 + 64 · 9 = 840 + 576 = 1416 ✓",
+  check:a=>a===64?"64 sind die Jugendlichen.":"Prüf: Stimmen Anzahl (120) UND Einnahmen (1416)?",err:"Klammer setzen: 9 · (120 − x), sonst wird nur die 120 mal 9 genommen."},
+ {q:"In einem Stall sind Hühner und Kaninchen. Zusammen haben sie 35 Köpfe und 94 Beine. Wie viele Kaninchen sind es?",a:12,unit:"",
+  t1:"h = Hühner, k = Kaninchen.",t2:"Köpfe: je 1 · Beine: Huhn 2, Kaninchen 4",t3:"h + k = 35 und 2h + 4k = 94",
+  steps:["h = 35 − k einsetzen: 2 · (35 − k) + 4k = 94","70 + 2k = 94","k = 12 (h = 23)"],probe:"23 + 12 = 35 ✓ · 46 + 48 = 94 ✓",
+  check:a=>a===23?"23 sind die Hühner.":"Prüf: Köpfe 35 und Beine 94?",err:"Nicht Köpfe und Beine in einer Gleichung mischen – zwei Gleichungen aufstellen."},
+ {q:"2 kg Äpfel und 3 kg Birnen kosten 13.50 Fr. 3 kg Äpfel und 1 kg Birnen kosten 10.10 Fr. Wie viel kostet 1 kg Birnen?",a:2.9,unit:"Fr.",
+  t1:"a = Preis pro kg Äpfel, b = Preis pro kg Birnen.",t2:"Einkauf 1: 2a + 3b · Einkauf 2: 3a + b",t3:"2a + 3b = 13,50 und 3a + b = 10,10",
+  steps:["b = 10,10 − 3a einsetzen: 2a + 3 · (10,10 − 3a) = 13,50","2a + 30,30 − 9a = 13,50 → −7a = −16,80","a = 2,40 → b = 10,10 − 7,20 = 2,90"],probe:"2 · 2,40 + 3 · 2,90 = 4,80 + 8,70 = 13,50 ✓ · 3 · 2,40 + 2,90 = 10,10 ✓",
+  check:a=>Math.abs(a-2.4)<.01?"2.40 ist der Apfelpreis – gefragt sind die Birnen.":"Prüf beide Einkäufe mit deinen Preisen.",err:"Vorzeichen beim Auflösen: −7a = −16,80 → a = +2,40."}]},
+{id:"quad",grp:"quad",name:"Quadratische Gleichungen",kap:"10",book:"S. 107–111 · S. 108 Nr. 1–4, S. 111 Nr. 1–7 + 9 (nicht 10.2.3, 10.2.4, 10.3)",tasks:[
+ {q:"Löse x² − 49 = 0. Gib die positive Lösung ein.",a:7,unit:"",t1:"Rein-quadratisch: kein x-Glied, nur x² und eine Zahl.",t2:"x² allein auf eine Seite bringen.",t3:"x² = 49",
+  steps:["x² = 49","x = ± √49","x₁ = 7, x₂ = −7"],probe:"7² − 49 = 0 ✓ und (−7)² − 49 = 0 ✓",check:a=>a===49?"49 ist x² – du musst noch die Wurzel ziehen.":"Setz deine Zahl ein: x² − 49 = 0?",err:"Nicht vergessen: Es gibt zwei Lösungen (±)."},
+ {q:"Löse x² − 5x = 0. Gib die Lösung ein, die nicht 0 ist.",a:5,unit:"",t1:"Kein konstantes Glied → x ausklammern (Faktorzerlegung).",t2:"x · ( … ) = 0",t3:"x · (x − 5) = 0",
+  steps:["x · (x − 5) = 0","Ein Produkt ist 0, wenn ein Faktor 0 ist:","x₁ = 0, x₂ = 5"],probe:"5² − 5 · 5 = 25 − 25 = 0 ✓",check:a=>a===-5?"Vorzeichen: x − 5 = 0 → x = +5.":"Setz ein: x² − 5x = 0?",err:"Nicht durch x teilen – sonst geht die Lösung x = 0 verloren."},
+ {q:"Löse x² + x − 12 = 0. Gib die grössere Lösung ein.",a:3,unit:"",t1:"Zwei Zahlen suchen: Produkt −12, Summe +1.",t2:"Kandidaten: 4 und −3",t3:"(x + 4) · (x − 3) = 0",
+  steps:["(x + 4)(x − 3) = 0","x₁ = −4, x₂ = 3","grössere Lösung: 3"],probe:"3² + 3 − 12 = 0 ✓",check:a=>a===-4?"−4 ist die kleinere Lösung.":a===4?"Vorzeichen: x + 4 = 0 → x = −4, x − 3 = 0 → x = 3.":"Setz ein: x² + x − 12 = 0?",err:"Vorzeichenfehler beim Ablesen aus den Klammern."},
+ {q:"Löse 2x² − 3x − 5 = 0 mit der abc-Formel. Gib die grössere Lösung ein.",a:2.5,unit:"",t1:"a = 2, b = −3, c = −5 (Vorzeichen mitnehmen!).",t2:"Diskriminante D = b² − 4ac",t3:"x = (3 ± √49) / 4",
+  steps:["D = (−3)² − 4 · 2 · (−5) = 9 + 40 = 49","x = (3 ± 7) / 4","x₁ = 2,5 · x₂ = −1"],probe:"2 · 2,5² − 3 · 2,5 − 5 = 12,5 − 7,5 − 5 = 0 ✓",check:a=>Math.abs(a-5)<.01?"Durch 2a = 4 teilen, nicht durch 2.":"Prüf die Diskriminante: (−3)² = +9, − 4 · 2 · (−5) = +40.",err:"−b ist hier +3, weil b = −3."}]},
+{id:"quadtext",grp:"quad",name:"Textaufgaben quadratisch",kap:"10.4",book:"S. 117–122 · S. 117–118 Nr. 1–27, S. 121–122 Nr. 1–14 (nicht S. 119–120)",tasks:[
+ {q:"Ein Rechteck ist 3 cm länger als breit. Seine Fläche ist 70 cm². Wie breit ist es?",a:7,unit:"cm",t1:"x = Breite, dann Länge = x + 3.",t2:"Fläche = Breite · Länge",t3:"x · (x + 3) = 70",
+  steps:["x² + 3x − 70 = 0","(x + 10)(x − 7) = 0","x = 7 (x = −10 ist keine Länge)"],probe:"7 · 10 = 70 ✓",check:a=>a<0?"Realitäts-Check: Eine Breite kann nicht negativ sein.":a===10?"10 cm ist die Länge.":"Prüf: Breite · (Breite + 3) = 70?",err:"Negative Lösungen bei Längen wegstreichen."},
+ {q:"Das Produkt zweier aufeinanderfolgender natürlicher Zahlen ist 156. Wie heisst die kleinere Zahl?",a:12,unit:"",t1:"x = kleinere Zahl, die nächste ist x + 1.",t2:"Produkt = x · (x + 1)",t3:"x² + x − 156 = 0",
+  steps:["(x + 13)(x − 12) = 0","x = 12 (−13 ist keine natürliche Zahl)"],probe:"12 · 13 = 156 ✓",check:a=>a===13?"13 ist die grössere Zahl.":"Prüf: x · (x + 1) = 156?",err:"«Aufeinanderfolgend» heisst x und x + 1, nicht x und 2x."},
+ {q:"Verlängert man jede Seite eines Quadrats um 4 cm, wird die Fläche 4-mal so gross. Wie lang ist die Seite des ursprünglichen Quadrats?",a:4,unit:"cm",t1:"x = ursprüngliche Seitenlänge.",t2:"Neue Fläche: (x + 4)² · alte Fläche: x²",t3:"(x + 4)² = 4x²",
+  steps:["Wurzel (beide Seiten positiv): x + 4 = 2x","x = 4","oder: x² + 8x + 16 = 4x² → 3x² − 8x − 16 = 0 → x = 4"],probe:"Alt 4 · 4 = 16, neu 8 · 8 = 64 = 4 · 16 ✓",check:a=>"Prüf: (x + 4)² geteilt durch x² muss 4 ergeben.",err:"(x + 4)² ist nicht x² + 16 – binomische Formel: x² + 8x + 16."},
+ {q:"Ein Velofahrer fährt 60 km. Wäre er 5 km/h schneller, bräuchte er eine Stunde weniger. Wie schnell fährt er?",a:15,unit:"km/h",t1:"x = Geschwindigkeit in km/h. Zeit = Weg : Geschwindigkeit.",t2:tbl(["","Geschwindigkeit","Zeit"],[["wirklich","x","?60/x"],["schneller","?x + 5","?60/(x + 5)"]]),t3:"60/x − 60/(x + 5) = 1",
+  steps:["Mal x(x + 5): 60(x + 5) − 60x = x(x + 5)","300 = x² + 5x → x² + 5x − 300 = 0","x = (−5 ± 35) / 2 → x = 15"],probe:"60 : 15 = 4 h, 60 : 20 = 3 h → 1 h weniger ✓",check:a=>a<0?"Realitäts-Check: Geschwindigkeit kann nicht negativ sein.":"Prüf: Zeit bei x minus Zeit bei x + 5 = 1 h?",err:"Beim Multiplizieren mit x(x + 5) jedes Glied mal nehmen – auch die 1."}]},
+{id:"daten",grp:"daten",name:"Datenanalyse",kap:"16",book:"S. 168–206 · Aufgaben 8–29 (Lösungen selbst prüfen)",intro:"Wartezeiten an einem Schalter (Minuten): 4, 7, 2, 9, 7, 5, 8",tasks:[
+ {q:"Wartezeiten (Minuten): 4, 7, 2, 9, 7, 5, 8. Berechne den Mittelwert x̄.",a:6,unit:"min",t1:"x̄ = Summe aller Werte : Anzahl Werte.",t2:"Summe = 4 + 7 + 2 + 9 + 7 + 5 + 8",t3:"x̄ = 42 : 7",steps:["Summe = 42, n = 7","x̄ = 42 : 7 = 6"],probe:"Mit dem TI-30X: 1-Var Stats → x̄ = 6 ✓",check:a=>a===7?"7 ist der Median, nicht der Mittelwert.":"Zähl nach: Hast du alle 7 Werte addiert?",err:"Durch die Anzahl Werte teilen (7), nicht durch die Anzahl verschiedener Werte."},
+ {q:"Wartezeiten (Minuten): 4, 7, 2, 9, 7, 5, 8. Bestimme den Median.",a:7,unit:"min",t1:"Zuerst der Grösse nach ordnen!",t2:"Geordnet: 2, 4, 5, 7, 7, 8, 9",t3:"Median = Wert in der Mitte (4. von 7)",steps:["2, 4, 5, 7, 7, 8, 9","Mitte = 4. Wert = 7"],probe:"Links 3 Werte, rechts 3 Werte ✓",check:a=>a===9?"Du hast nicht geordnet – der 4. Wert der ungeordneten Liste ist 9.":"Ordne die Werte zuerst.",err:"Median immer aus der GEORDNETEN Liste."},
+ {q:"Wartezeiten (Minuten): 4, 7, 2, 9, 7, 5, 8. Berechne den Interquartilsabstand IQR = Q3 − Q1 (wie der TI-30X).",a:4,unit:"min",t1:"Geordnet: 2, 4, 5, | 7 |, 7, 8, 9 – der Median teilt in zwei Hälften.",t2:"Q1 = Median der unteren Hälfte (2, 4, 5) · Q3 = Median der oberen Hälfte (7, 8, 9)",t3:"IQR = 8 − 4",steps:["Q1 = 4, Q3 = 8","IQR = 8 − 4 = 4"],probe:"TI-30X: Q1 = 4, Q3 = 8 ✓",check:a=>a===7?"7 ist die Spannweite R = max − min, nicht der IQR.":"Bestimme Q1 und Q3 getrennt.",err:"Spannweite (max − min) und IQR (Q3 − Q1) nicht verwechseln."},
+ {q:"Wartezeiten (Minuten): 4, 7, 2, 9, 7, 5, 8. Berechne die Standardabweichung s der Stichprobe (auf 2 Stellen).",a:2.45,tol:.011,unit:"min",t1:"s = Stichprobe → durch n − 1 teilen. Am TI-30X heisst sie Sx.",t2:"Abweichungen von x̄ = 6: −2, 1, −4, 3, 1, −1, 2 → Quadrate summieren",t3:"s = √(36 : 6)",steps:["Quadrate: 4 + 1 + 16 + 9 + 1 + 1 + 4 = 36","s² = 36 : (7 − 1) = 6","s = √6 ≈ 2,45"],probe:"TI-30X: Sx = 2,449… ✓",check:a=>Math.abs(a-2.27)<.02?"Das ist σ (durch n). Für die Stichprobe durch n − 1 teilen (Sx).":Math.abs(a-6)<.01?"6 ist die Varianz s² – noch die Wurzel ziehen.":"Rechne die Quadrate der Abweichungen nach.",err:"Sx = Stichprobe (n − 1), σx = Grundgesamtheit (n)."}]}
+];
+const HOW={
+ raetsel:{t:"Zahlenrätsel und Alter – ganz einfach",b:`<p>Eine Textaufgabe ist ein Rätsel in Worten. Du übersetzt die Worte in Mathe – wie ein Übersetzer.</p>
+  <ol class="steps"><li><b>Was wird gesucht?</b> Das nennst du <b>x</b>. Schreib es auf: «x = Alter der Tochter».</li><li><b>Übersetzen:</b> «das Doppelte» = 2 · x, «um 5 mehr» = + 5, «ergibt» = «=».</li><li><b>Gleichung lösen</b> wie immer: alles mit x auf eine Seite.</li><li><b>Probe:</b> deine Zahl in den Text einsetzen – stimmt die Geschichte?</li></ol>
+  <p class="book">Beispiel: «Eine Zahl plus 7 ergibt 20.» → x + 7 = 20 → x = 13. Probe: 13 + 7 = 20 ✓<br>Alter: Wenn Zeit vergeht, werden <b>alle</b> älter. Eine Tabelle hilft: Spalte «heute» und «in x Jahren».</p>`},
+ misch:{t:"Mischungsrechnen – ganz einfach",b:`<p>Stell dir einen Sirup vor: Du giesst Wasser dazu. Der Sirup wird <b>dünner</b>, aber <b>die Menge Sirup bleibt gleich</b>. Genau das rechnest du.</p>
+  <ol class="steps"><li>x = die Menge, die gesucht ist.</li><li>Tabelle: Menge · Anteil (oder Preis) für jede Sorte und für die Mischung.</li><li>Regel: <b>Sorte 1 + Sorte 2 = Mischung</b> → <span class="eq">m₁·c₁ + m₂·c₂ = (m₁ + m₂)·c</span></li><li>Wasser hat 0 %, reines Metall 100 %.</li></ol>
+  <p class="book">Beispiel: 10 L Sirup mit 20 % Zucker + x L Wasser = 10 % Zucker.<br>10 · 0,20 + x · 0 = (10 + x) · 0,10 → 2 = 1 + 0,1x → x = 10 L Wasser.<br>Faustregel: Liegt der Mischpreis nahe bei einer Sorte, braucht es von dieser Sorte mehr.</p>`},
+ arbeit:{t:"Arbeit und Leistung – ganz einfach",b:`<p>Wer ein Zimmer allein in <b>6 Stunden</b> streicht, schafft in <b>1 Stunde einen Sechstel</b> (1/6) des Zimmers.</p>
+  <ol class="steps"><li>x = die gesuchte Zeit.</li><li>Jede Person schafft in x Stunden: <b>x geteilt durch ihre Zeit allein</b>.</li><li>Alle Teile zusammen = <b>1</b> (das ganze Zimmer).</li><li>Wer gegen dich arbeitet (z. B. ein Abfluss), wird <b>abgezogen</b>.</li></ol>
+  <p class="book">Beispiel: Anna 6 h, Ben 3 h. Zusammen: x/6 + x/3 = 1 → mal 6: x + 2x = 6 → x = 2 h.<br>Check: Zu zweit muss es schneller gehen als der Schnellere allein (3 h) ✓</p>`},
+ zwei:{t:"Zwei Unbekannte – ganz einfach",b:`<p>Wenn zwei Dinge gesucht sind, brauchst du <b>zwei Gleichungen</b> – eine pro Information im Text.</p>
+  <ol class="steps"><li>x und y festlegen (z. B. x = Erwachsene, y = Kinder).</li><li>Jede Information wird eine Gleichung.</li><li>Eine Gleichung nach y umstellen und in die andere einsetzen.</li><li>Jetzt ist nur noch x drin → lösen → dann y ausrechnen.</li></ol>
+  <p class="book">Beispiel: x + y = 10 und x − y = 4 → zusammenzählen: 2x = 14 → x = 7, y = 3.</p>`},
+ quad:{t:"Quadratische Gleichungen – ganz einfach",b:`<p>Hier kommt <b>x²</b> vor. Fast immer gibt es <b>zwei Lösungen</b>.</p>
+  <ol class="steps"><li><b>Nur x² und eine Zahl?</b> → x² allein, dann Wurzel: x = ± …</li><li><b>Keine Zahl ohne x?</b> → x ausklammern: x · ( … ) = 0</li><li><b>Sonst</b> → alles auf eine Seite (… = 0) und abc-Formel.</li></ol>
+  <p class="book">abc-Formel: <span class="eq">x = (−b ± √(b² − 4ac)) / 2a</span><br>Unter der Wurzel negativ → keine Lösung. Genau 0 → eine Lösung.</p>`},
+ quadtext:{t:"Quadratische Textaufgaben – ganz einfach",b:`<p>Wie normale Textaufgaben – nur entsteht am Schluss ein <b>x²</b>. Dann löst du mit Faktorzerlegung oder abc-Formel.</p>
+  <ol class="steps"><li>x festlegen, Gleichung aufstellen.</li><li>Alles auf eine Seite: … = 0.</li><li>Lösen → oft 2 Lösungen.</li><li><b>Realitäts-Check:</b> Eine Länge, Zeit oder Geschwindigkeit kann nicht negativ sein → streichen.</li></ol>`},
+ daten:{t:"Datenanalyse – ganz einfach",b:`<p>Du bekommst eine Liste von Zahlen und beschreibst sie mit wenigen Werten.</p>
+  <ol class="steps"><li><b>Mittelwert x̄:</b> alles zusammenzählen, durch die Anzahl teilen.</li><li><b>Median:</b> der Grösse nach ordnen, die Mitte nehmen.</li><li><b>Spannweite:</b> grösster − kleinster Wert.</li><li><b>Q1, Q3:</b> die Mitte der unteren bzw. oberen Hälfte. IQR = Q3 − Q1.</li><li><b>Standardabweichung s:</b> wie stark die Werte im Schnitt vom Mittelwert abweichen. Am Taschenrechner: Sx.</li></ol>`}};
+const WARM=[["das Doppelte einer Zahl","2x",["x²","x + 2","x/2"]],["eine Zahl, um 5 vermindert","x − 5",["5 − x","5x","x/5"]],["5 weniger als das Dreifache einer Zahl","3x − 5",["5 − 3x","3(x − 5)","3x + 5"]],["ein Viertel einer Zahl","x/4",["4x","x − 4","x⁴"]],["die Summe aus einer Zahl und ihrem Quadrat","x + x²",["(x + x)²","2x²","x · x²"]],["das Quadrat der Summe von x und y","(x + y)²","x² + y²".split("|").concat(["2(x + y)","x + y²"])],["x ist um 3 grösser als y","x = y + 3",["y = x + 3","x + y = 3","3x = y"]],["Wer allein 8 Stunden braucht, schafft pro Stunde …","1/8 der Arbeit",["8 der Arbeit","1/16 der Arbeit","8/1 der Arbeit"]],["Wasser in einer Alkohol-Mischung hat einen Alkoholanteil von …","0 %",["100 %","50 %","gleich viel wie die Mischung"]],["In x Jahren ist eine heute 12-jährige Person …","12 + x",["12x","12 − x","x − 12"]]];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const num=s=>{s=String(s).trim().replace(/\s/g,"").replace(/[’']/g,"").replace(",",".");if(!/^-?\d+(\.\d+)?$/.test(s))return NaN;return +s};
+const fmtN=n=>String(n).replace(".",",");
+
+/* ---------- Ansicht ---------- */
+let cur=null,ti=0,stage=0,tries=0,streak=0,solved=LS.get("mathe-solved",{}),clean=LS.get("mathe-clean",{});
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+(window.BUCH||[]).forEach(b=>T.push(Object.assign(b,{tasks:b.tasks.map(t=>Object.assign({q:`📘 Lies im Buch S. ${t.p}, Aufgabe ${t.n}. Gib hier ein: ${t.ask}.`,unit:t.unit||"",check:v=>t.alt&&t.alt[v]?t.alt[v]:"Prüf mit dem Text im Buch: Setz deine Zahl ein – stimmt die Geschichte?"},t))})));
+const GRP=[["alle","Ganzer Stoff"],["quad","📐 Quadratische Gleichungen"],["text","📝 Textaufgaben"],["daten","📊 Datenanalyse"]];
+let grp=(location.hash.slice(1)||LS.get("mathe-grp","alle"));if(!GRP.some(g=>g[0]===grp))grp="alle";
+function rNav(){$("grps").innerHTML=GRP.map(g=>`<button data-grp="${g[0]}" ${g[0]===grp?'aria-current="true"':""}>${g[1]}</button>`).join("");
+  const show=GRP.slice(1).filter(g=>grp==="alle"||g[0]===grp);
+  $("topics").innerHTML=show.map(g=>`<h3>${g[1]}</h3>`+T.filter(t=>t.grp===g[0]).map(t=>`<button data-topic="${t.id}">${esc(t.name)}<small>Kap. ${esc(t.kap)} · ${t.tasks.length} Aufgaben</small></button>`).join("")).join("")}
+rNav();
+document.querySelector("nav").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.grp){grp=b.dataset.grp;LS.set("mathe-grp",grp);history.replaceState(null,"","#"+grp);rNav();home();return}
+  document.querySelectorAll("nav button").forEach(x=>x.removeAttribute("aria-current"));b.setAttribute("aria-current","true");
+  if(b.dataset.topic){cur=T.find(t=>t.id===b.dataset.topic);ti=0;intro()}else view(b.dataset.view);window.scrollTo(0,0)});
+
+function home(){const GT=GRP.find(g=>g[0]===grp)[1];$("main").innerHTML=`<section class="card"><h2>${grp==="alle"?"So funktioniert der Mathe-Coach":esc(GT)}</h2>${grp!=="alle"?`<p class="meta">Du lernst nur diesen Teil. Oben links kannst du wechseln.</p>`:""}
+  <ol class="steps"><li>Thema links wählen.</li><li>Bei Textaufgaben kurz aufwärmen: 5 Fragen «Text → Mathe».</li><li>Aufgabe lesen und selbst lösen. Wenn du nicht weiterkommst: <b>Tipp 1 → 2 → 3</b> einzeln aufdecken.</li><li>Antwort eingeben. Bei falsch gibt es einen <b>Realitäts-Check</b> statt der Lösung. Die Lösung ist immer erreichbar, wenn du sie brauchst.</li><li>Bei richtig: <b>Probe</b> anschauen – genau so machst du sie an der Prüfung.</li></ol>
+  <p class="book">Prüfung 3 · Mi 9.12. · Das sind eigene Übungsaufgaben im Stil des Lehrmittels. Die Aufgaben aus dem Buch übst du im Buch – die Seiten stehen bei jedem Thema.</p></section>
+  <section class="card"><h3>Dein Stand</h3>${T.filter(t=>grp==="alle"||t.grp===grp).map(t=>{const d=t.tasks.filter((_,i)=>solved[t.id+i]).length;const c=t.tasks.filter((_,i)=>clean[t.id+i]).length;return `<p style="margin:2px 0">${esc(t.name)}: <b>${d} / ${t.tasks.length}</b> gelöst${c?` · ${c} ohne Hilfe`:""}</p>`}).join("")}</section>`}
+
+function intro(){const h=HOW[cur.how||cur.id];if(!h){warm();return}
+  $("main").innerHTML=`<section class="card"><p class="meta">${esc(cur.name)}</p><h2>${esc(h.t)}</h2>${h.b}<div class="row" style="margin-top:8px"><button class="btn go" id="go">Los geht's</button><button class="btn" id="skipI">Kenne ich schon – direkt zu den Aufgaben</button></div></section>`;
+  $("go").onclick=warm;$("skipI").onclick=()=>{ti=0;task()}}
+function warm(){if(cur.grp!=="text"||cur.id.startsWith("b")){task();return}const qs=shuffle(WARM).slice(0,5);let i=0,ok=0;
+  const r=()=>{if(i>=qs.length){task();return}const w=qs[i],opts=shuffle([w[1],...w[2]]);
+    $("main").innerHTML=`<section class="card mc"><p class="meta">${esc(cur.name)} · Aufwärmen ${i+1} / 5 · ${ok} richtig</p><h2>Text → Mathe</h2><div class="task">«${esc(w[0])}»</div><div class="opts">${opts.map(o=>`<button>${esc(o)}</button>`).join("")}</div><div id="wfb"></div><div class="row"><button class="btn" id="skip">Aufwärmen überspringen</button></div></section>`;
+    $("skip").onclick=task;
+    document.querySelectorAll(".opts button").forEach(b=>b.onclick=()=>{const right=b.textContent===w[1];document.querySelectorAll(".opts button").forEach(x=>{x.disabled=true;if(x.textContent===w[1])x.classList.add("ok")});if(right)ok++;else b.classList.add("bad");
+      $("wfb").innerHTML=`<div class="fb ${right?"ok":"bad"}">${right?"Richtig.":"Richtig ist: <b>"+esc(w[1])+"</b>"}</div><button class="btn go" id="nx">Weiter</button>`;$("nx").focus();$("nx").onclick=()=>{i++;r()}})};r()}
+
+function task(){const t=cur.tasks[ti];stage=0;tries=0;
+  $("main").innerHTML=`<section class="card"><div class="progress">${cur.tasks.map((_,i)=>`<span class="${i===ti?"cur":solved[cur.id+i]?"done":""}"></span>`).join("")}</div>
+    <p class="meta">${esc(cur.name)} · Aufgabe ${ti+1} von ${cur.tasks.length}</p>
+    <div class="task">${esc(t.q)}</div>
+    <div class="row ans"><label for="ans">Deine Antwort:</label><input id="ans" inputmode="decimal" autocomplete="off"> ${esc(t.unit||"")}<button class="btn go" id="chk">Prüfen</button><button class="btn" id="tipB" title="Nur wenn du nicht weiterkommst">Tipp 1</button></div><p class="meta" style="margin:4px 0 0">Zuerst selbst probieren – Tipps gibt es jederzeit, wenn du sie brauchst.</p>
+    <div id="tips"></div><div id="fb"></div>
+    <div class="row" style="margin-top:8px"><button class="btn" id="prev" ${ti?"":"disabled"}>◀ Vorherige</button><button class="btn" id="next">${ti<cur.tasks.length-1?"Nächste Aufgabe ▶":"Thema fertig ▶"}</button></div>
+    <p class="book">Im Buch üben: ${esc(cur.book)} · Lösungen stehen unten auf den Buchseiten.</p></section>`;
+  $("ans").focus();
+  $("ans").addEventListener("keydown",e=>{if(e.key==="Enter")check()});$("chk").onclick=check;
+  $("tipB").onclick=tip;$("prev").onclick=()=>{ti--;task()};$("next").onclick=()=>{if(ti<cur.tasks.length-1){ti++;task()}else done()}}
+function tip(){const t=cur.tasks[ti];stage++;const box=$("tips");
+  if(stage===1)box.insertAdjacentHTML("beforeend",`<div class="tip"><b>Tipp 1 · Was ist x?</b><br>${esc(t.t1)}</div>`);
+  if(stage===2)box.insertAdjacentHTML("beforeend",`<div class="tip"><b>Tipp 2 · Aufschreiben</b><br>${t.t2.startsWith("<table")?t.t2+'<small>Felder mit «?» zuerst selbst auf Papier ausfüllen, dann anklicken zum Vergleichen. «Tabelle → mal quer → plus runter».</small>':esc(t.t2)}</div>`);
+  if(stage===3)box.insertAdjacentHTML("beforeend",`<div class="tip"><b>Tipp 3 · Die Gleichung</b><br><span class="eq">${esc(t.t3)}</span><br><small>Lösen musst du selbst.</small></div>`);
+  if(stage===4)box.insertAdjacentHTML("beforeend",`<div class="tip"><b>Lösungsweg</b><ol class="steps">${t.steps.map(s=>`<li><span class="eq">${esc(s)}</span></li>`).join("")}</ol></div>`);
+  $("tipB").textContent=stage<3?"Tipp "+(stage+1):stage===3?"Lösungsweg zeigen":"–";if(stage>=4)$("tipB").disabled=true}
+function check(){const t=cur.tasks[ti],v=num($("ans").value);
+  if(isNaN(v)){$("fb").innerHTML=`<div class="fb bad">Bitte nur eine Zahl eingeben (z. B. 2,5).</div>`;return}
+  const ok=Math.abs(v-t.a)<=(t.tol||Math.max(.001,Math.abs(t.a)*1e-6));
+  if(ok){solved[cur.id+ti]=1;LS.set("mathe-solved",solved);streak++;if(stage===0&&tries===0){clean[cur.id+ti]=1;LS.set("mathe-clean",clean)}
+    const lob=stage===0&&tries===0?pick(["Stark – ganz ohne Hilfe gelöst.","Sauber gelöst, ohne Tipp. Genau so an der Prüfung.","Ohne Tipp richtig – das sitzt."]):stage===0?pick(["Richtig – und selbst korrigiert. Das ist echtes Lernen.","Geschafft. Den Fehler hast du selbst gefunden."]):stage<3?pick(["Gut gemacht – mit wenig Hilfe.","Richtig. Beim nächsten Mal klappt's vielleicht schon ohne Tipp."]):pick(["Geschafft. Probier die nächste Aufgabe mit einem Tipp weniger.","Richtig. Schau dir den Lösungsweg nochmals an – dann sitzt er."]);
+    const st=streak>=3?` · ${streak} richtig in Folge`:"";
+    $("fb").innerHTML=`<div class="fb ok"><b>${esc(lob)}</b>${st}<br><b>Richtig: ${fmtN(t.a)} ${esc(t.unit||"")}</b><br>Probe mit dem Text: <span class="eq">${esc(t.probe)}</span><br><small>Antwortsatz nicht vergessen.</small></div>`;
+    document.querySelectorAll(".progress span")[ti].className="done";$("next").classList.add("go");$("next").focus()}
+  else{tries++;streak=0;const c=typeof t.check==="function"?t.check(v):"";
+    const mut=tries===1?"Noch nicht – kein Problem, hier lernst du am meisten.":tries===2?"Fast dran? Vielleicht hilft jetzt Tipp "+Math.min(3,stage+1)+".":"Dranbleiben. Ein Tipp oder der Lösungsweg ist völlig okay.";
+    $("fb").innerHTML=`<div class="fb bad"><b>${esc(mut)}</b><br>${esc(c)}<br><small>Häufiger Fehler: ${esc(t.err)}</small></div>`}
+  try{goatcounter.count&&goatcounter.count({path:"mathe/"+cur.id+"/"+(ok?"richtig":"falsch"),title:"Mathe-Coach",event:true})}catch(e){}}
+function done(){const d=cur.tasks.filter((_,i)=>solved[cur.id+i]).length,c=cur.tasks.filter((_,i)=>clean[cur.id+i]).length;
+  $("main").innerHTML=`<section class="card"><h2>${esc(cur.name)}: ${d} von ${cur.tasks.length} gelöst</h2>${c?`<p style="margin:0"><b>${c}× ganz ohne Hilfe.</b> ${c===cur.tasks.length?"Bereit für die Prüfung in diesem Thema.":"Du wirst sicherer."}</p>`:""}<p>${d===cur.tasks.length?"Sauber. Jetzt die Aufgaben im Buch lösen – dort ist die Prüfungsform.":"Die offenen Aufgaben lohnen sich: nochmals mit Tipp 1 starten, nicht gleich mit dem Lösungsweg."}</p><p class="book">Im Buch üben: ${esc(cur.book)}</p><div class="row"><button class="btn go" id="again">Nochmals von vorne</button></div></section>`;
+  $("again").onclick=()=>{ti=0;task()}}
+
+function view(v){
+  if(v==="tools")$("main").innerHTML=`<section class="card"><h2>Werkzeuge</h2></section><div class="tools">
+    <section class="card"><h3>Tabellen-Methode</h3><p class="meta">Für Alter, Mischung, Leistung. «Tabelle → mal quer → plus runter».</p>
+      ${tbl(["","heute","in x Jahren"],[["Person A","…","…"],["Person B","…","…"]])}${tbl(["","Menge","% / Preis"],[["Sorte 1","m₁","c₁"],["Sorte 2","m₂","c₂"],["Mischung","m₁ + m₂","c"]])}</section>
+    <section class="card"><h3>Formeln</h3><ul>
+      <li>Mischung: <span class="eq">m₁·c₁ + m₂·c₂ = (m₁ + m₂)·c</span> · Wasser = 0 %, reines Metall = 100 %</li>
+      <li>Leistung: Wer allein t braucht, schafft pro Zeit <span class="eq">1/t</span>. Zusammen: Leistungen addieren, ganze Arbeit = 1.</li>
+      <li>abc-Formel (Normalform ax² + bx + c = 0): <span class="eq">x = (−b ± √(b² − 4ac)) / 2a</span></li>
+      <li>Statistik: x̄ = Summe : n · Median = Mitte der geordneten Liste · s = Stichprobe (n − 1) · σ = Grundgesamtheit (n) · v = s : x̄ · IQR = Q3 − Q1 · R = max − min</li></ul></section>
+    <section class="card"><h3>Eselsbrücken</h3><ul>
+      <li>Ein Term wechselt die Seite mit umgekehrtem Vorzeichen.</li>
+      <li>Salz/Alkohol bleibt gleich – nur Wasser kommt dazu oder geht weg.</li>
+      <li>Je näher der Mischpreis an einer Sorte, desto mehr braucht es davon.</li>
+      <li>Wenn vor x eine 60 steht, teilst du durch genau diese 60.</li>
+      <li>Am Schluss zurückschauen: Was habe ich als x definiert?</li>
+      <li>Altersaufgaben: beim Zeitpunkt anfangen, den man genau kennt.</li>
+      <li>«Sx = Stichprobe» beim Taschenrechner.</li></ul></section>
+    <section class="card"><h3>Ablauf jeder Textaufgabe</h3><ol class="steps"><li>x festlegen (was ist gesucht?)</li><li>Tabelle oder Skizze</li><li>Gleichung aufstellen</li><li>Lösen</li><li>Probe mit dem Text</li><li>Antwortsatz</li></ol></section></div>`;
+  if(v==="ti")$("main").innerHTML=`<section class="card"><h2>TI-30X Plus MathPrint · Statistik</h2><p class="meta">Kapitel 16: Kenngrössen in einer Minute.</p>
+    <ol class="steps"><li><b>data</b> drücken → Werte in <b>L1</b> eintippen (jeder Wert mit ⏎)</li><li><b>2nd</b> + <b>data</b> (STAT-REG) → <b>1-Var Stats</b></li><li>DATA: <b>L1</b> · FRQ: <b>ONE</b></li><li><b>CALC</b> wählen → ⏎</li><li>Ablesen: <b>x̄</b>, <b>Sx</b> (Stichprobe), <b>σx</b> (Grundgesamtheit), <b>Med</b>, <b>Q1</b>, <b>Q3</b>, <b>minX</b>, <b>maxX</b></li><li>Selbst rechnen: R = max − min · IQR = Q3 − Q1 · s² = Sx² · v = Sx : x̄</li></ol>
+    <p class="book">Mit Häufigkeiten (z. B. «3 Personen mit 5 min»): Werte in L1, Häufigkeiten in L2, dann FRQ: <b>L2</b>.</p></section>`;
+  if(v==="fehler")$("main").innerHTML=`<section class="card"><h2>Typische Fehler</h2><p class="meta">Vor der Prüfung einmal durchlesen.</p><ul>
+    <li>x zum ganzen Bruch addiert statt zu Zähler <b>und</b> Nenner.</li>
+    <li>Beim Multiplizieren der Gleichung nicht <b>jedes</b> Glied mal genommen.</li>
+    <li>Klammer um die Gesamtmenge vergessen: <span class="eq">(250 + 200) · x</span></li>
+    <li>«12 + x» statt eines neuen Prozentsatzes x geschrieben.</li>
+    <li>Prozente von der falschen Grösse gerechnet – immer fragen: «30 % wovon?»</li>
+    <li>Vorzeichenfehler beim Auflösen (−13 statt +13).</li>
+    <li>Altersaufgaben: vergessen, dass <b>beide</b> Personen älter werden.</li>
+    <li>Einen Lagerbestand als Teil der Mischung gerechnet.</li>
+    <li>Negative Lösungen bei Längen, Zeiten oder Geschwindigkeiten nicht weggestrichen.</li>
+    <li>Sx und σx verwechselt (Stichprobe = n − 1).</li></ul></section>`}
+document.addEventListener("click",e=>{const c=e.target.closest("td.fill");if(c)c.classList.add("show")});
+document.addEventListener("keydown",e=>{const c=e.target.closest&&e.target.closest("td.fill");if(c&&(e.key==="Enter"||e.key===" ")){e.preventDefault();c.classList.add("show")}});
+home();
+</script>
+</body>
+</html>
