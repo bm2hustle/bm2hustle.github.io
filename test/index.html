@@ -204,6 +204,16 @@ body.zoom .zoombox.on .zbar{position:sticky;top:-12px;z-index:2;background:var(-
 .tpop button.go{background:#1d1b18;color:#fff}
 .tpop input{width:4.2em;font-family:var(--hand);font-size:1rem;border:2px solid #1d1b18;border-radius:7px;padding:2px 6px}
 @media (prefers-reduced-motion:reduce){.clock button.ring{animation:none}}
+.rank{background:linear-gradient(135deg,#fff3b0,#ffd86b);border:3px solid #1d1b18;border-radius:10px;padding:12px 16px;margin:0 0 14px;color:#1d1b18;box-shadow:0 10px 18px -8px rgba(0,0,0,.4)}
+.rank h3{font-family:var(--comic);font-weight:400;letter-spacing:1px;font-size:1.6rem;margin:0}
+.rank .champ{font-size:1.15rem;margin:4px 0 8px}
+.rank .games{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.rank .g{background:#fff;border:2px solid #1d1b18;border-radius:8px;padding:6px 10px}
+.rank .g b{display:block;margin-bottom:2px}
+.rank ol{list-style:none;margin:0;padding:0}
+.rank li{display:flex;justify-content:space-between;gap:8px}
+.rank li.me{background:rgba(255,224,102,.7);border-radius:4px}
+.rank .more{all:unset;cursor:pointer;text-decoration:underline;font-size:.95rem}
 .tour{position:fixed;inset:0;z-index:60}
 .namebg{position:fixed;inset:0;z-index:70;background:rgba(20,18,15,.62);display:flex;align-items:center;justify-content:center;padding:16px}
 .namebg[hidden]{display:none}
@@ -243,6 +253,7 @@ tr.me,li.me{background:rgba(255,224,102,.55)}
 
   <section class="view" id="v-start" hidden>
     <div class="calm">
+      <div id="ranks"></div>
       <div id="nextBox"></div>
       <div class="note flat" style="--c:#fffdf6"><h3>📌 Diese Woche</h3><div id="week" class="list"></div><p style="margin:0"><a href="#kalender" style="color:inherit">→ Alle Termine im Kalender</a></p></div>
       <div class="pills" role="group" aria-label="Mehr">
@@ -764,7 +775,8 @@ const TOUR=[
  {id:"t1-meld",view:"start",sel:'.nav a[data-v="melden"]',t:"📣 Melden",x:"Fehlt eine Prüfung oder stimmt etwas nicht? Hier meldest du es."},
  {id:"t1-info",view:"fach",sel:".info",t:"📅 Wann, was, worüber",x:"Alles zur Prüfung auf einen Blick."},
  {id:"t3-games",view:"fach",sel:".tabs",t:"🆕 Spiele mit Rangliste",x:"Unter 🎮 Üben: Blitz 60 s, Überleben, Meteoriten, Zuordnen auf Zeit, Wahr oder falsch. Schlag deinen Rekord!"},
- {id:"t5-timer",view:"start",sel:"#clock",t:"⏱ Neu: Lern-Uhr",x:"Oben siehst du die Uhrzeit, kannst einen Lern-Timer stellen (z. B. 25 Min.) und siehst, wie lange du heute schon gelernt hast. Spiele und Theorie öffnen sich jetzt gross im Fokus – mit Esc wieder zu."},
+ {id:"t6-rang",view:"start",sel:".rank",t:"🏆 Rangverkündigung",x:"Nach jeder Prüfung siehst du hier eine Woche lang die Besten aus den Spielen – mit Podest pro Spiel und Gesamtsieger*in."},
+{id:"t5-timer",view:"start",sel:"#clock",t:"⏱ Neu: Lern-Uhr",x:"Oben siehst du die Uhrzeit, kannst einen Lern-Timer stellen (z. B. 25 Min.) und siehst, wie lange du heute schon gelernt hast. Spiele und Theorie öffnen sich jetzt gross im Fokus – mit Esc wieder zu."},
 {id:"t4-lektuere",view:"fach",sel:"#bookBar",t:"📖 Neu: Buch online lesen",x:"Bei Deutsch kannst du «Kabale und Liebe» direkt auf der Seite lesen – mit Suche, Inhaltsverzeichnis und den gleichen Seitenzahlen wie im Buch. Die Seite merkt sich, wo du warst."},
 {id:"t4-notebook",view:"fach",sel:"#nbJump",t:"🎧 Neu: Podcast & Video",x:"Bei manchen Prüfungen gibt es jetzt einen Podcast, ein Erklärvideo und eine Infografik von NotebookLM – perfekt für unterwegs."},
 {id:"t2-tabs",view:"fach",sel:".tabs",t:"🧭 So lernst du",x:"🆕 Mein Lernplan · 📖 Theorie & 🆕 Videos · 🎮 Üben · 🏁 Probeprüfung · ✍️ eigene Karten · ⬇️ Übungsblätter. Am Handy seitwärts wischen."}];
@@ -784,6 +796,21 @@ function tourNext(){tourMark([tourQ[tourI].id]);tourI++;if(tourI<tourQ.length)to
 function tourEnd(){$("tour").hidden=true;tourQ=[];window.scrollTo(0,0)}
 document.addEventListener("keydown",e=>{if(!$("tour").hidden&&e.key==="Escape"){tourMark(tourQ.map(t=>t.id));tourEnd()}});
 $("tourAgain").onclick=()=>{LS.set("tour-seen",[]);location.hash="start";setTimeout(()=>tourStart("start"),300)};
+
+/* ---------- Rangverkündigung nach der Prüfung ---------- */
+async function rRanks(){const box=$("ranks");if(!box||!LB.ok())return;const now=parse(TODAY);
+  const list=(H.past||[]).filter(p=>{const d=(now-parse(p.date))/864e5;return d>0&&d<=7}).sort((a,b)=>b.date.localeCompare(a.date));
+  if(!list.length){box.innerHTML="";return}
+  const me=LS.get("nick","").trim().toLowerCase();let html="";
+  for(const p of list){let rows=[];try{const r=await fetch(`${LB.url}/rest/v1/scores?select=game,nick,score,created_at&exam=eq.${encodeURIComponent(p.id)}&order=created_at.asc&limit=2000`,{headers:{apikey:LB.key}});if(r.ok)rows=await r.json()}catch(e){}
+    if(!rows.length)continue;const byG={};rows.forEach(x=>{(byG[x.game]=byG[x.game]||[]).push(x)});const pts={};
+    const games=Object.keys(byG).filter(g=>GAMEINFO[g]).map(g=>{const asc=GAMEINFO[g][2]<0;const best={};byG[g].forEach(x=>{const n=x.nick.trim(),k=n.toLowerCase();if(!best[k]||(asc?x.score<best[k].score:x.score>best[k].score))best[k]={nick:best[k]?best[k].nick:n,score:+x.score}});
+      const top=Object.values(best).sort((a,b)=>asc?a.score-b.score:b.score-a.score).slice(0,3);top.forEach((t,i)=>{const k=t.nick.toLowerCase();pts[k]=pts[k]||{nick:t.nick,p:0};pts[k].p+=3-i});return [g,top,Object.keys(best).length]});
+    const champ=Object.values(pts).sort((a,b)=>b.p-a.p)[0];const medal=["🥇","🥈","🥉"];
+    html+=`<div class="rank"><h3>🏆 Rangverkündigung: ${esc(S(p.subj).name)}</h3><p style="margin:0">${esc(p.title)} · Prüfung vom ${fmt(p.date)} · ${new Set(rows.map(x=>x.nick.trim().toLowerCase())).size} Spieler*innen</p>
+      ${champ?`<p class="champ">👑 Gesamtsieger*in: <b>${esc(champ.nick)}</b> <small>(${champ.p} Podest-Punkte: 1. Platz = 3, 2. = 2, 3. = 1)</small></p>`:""}
+      <div class="games">${games.map(([g,top,n])=>`<div class="g"><b>${GAMEINFO[g][0]}</b><ol>${top.map((t,i)=>`<li class="${t.nick.toLowerCase()===me?"me":""}"><span>${medal[i]} ${esc(t.nick)}</span><span>${fmtScore(g,t.score)}</span></li>`).join("")}</ol><small style="opacity:.7">${n} im Spiel</small></div>`).join("")}</div></div>`}
+  box.innerHTML=html}
 
 /* ---------- Fokus-Ansicht ---------- */
 function zoomOn(box){if(!box)return;document.querySelectorAll(".zoombox.on").forEach(b=>b.classList.remove("on"));box.classList.add("on");document.body.classList.add("zoom");box.scrollTop=0}
@@ -835,7 +862,7 @@ function route(){let h=(location.hash||"#start").slice(1);let v=h.startsWith("fa
   document.querySelectorAll(".nav a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.v===v||(v==="fach"&&a.dataset.v==="faecher")));
   document.querySelectorAll(".nav a[aria-current]").forEach(a=>a.setAttribute("aria-current","page"));
   if(v!=="fach")rSubjbar(null);
-  if(v==="start"){rStart();rWeek();rHeute();rFdt();rApp()}else if(v==="kalender"){rCal();rStart()}else if(v==="faecher")rFaecher();else if(v==="suche")rSuche();else if(v==="fach")rFach(h.slice(5));
+  if(v==="start"){rRanks();rStart();rWeek();rHeute();rFdt();rApp()}else if(v==="kalender"){rCal();rStart()}else if(v==="faecher")rFaecher();else if(v==="suche")rSuche();else if(v==="fach")rFach(h.slice(5));
   if(v!=="fach")window.scrollTo(0,0);
   clearTimeout(route.tt);route.tt=setTimeout(()=>tourStart(v),600)}
 window.addEventListener("hashchange",()=>{route();try{goatcounter.count&&goatcounter.count()}catch(e){}});route();

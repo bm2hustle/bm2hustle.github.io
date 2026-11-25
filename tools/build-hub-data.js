@@ -23,7 +23,10 @@ for(const e of exams){const list=(TMAP[e.id]||[]).map(id=>D.readings[id]).filter
 const games={};for(const e of exams){const g={};for(const k of ['quiz','pairs','decks','cloze','order']){if(D[k]&&D[k][e.id])g[k]=D[k][e.id].filter(Boolean)}if(Object.keys(g).length)games[e.id]=g}
 const extra=fs.existsSync(path.join(__dirname,'extra.json'))?JSON.parse(fs.readFileSync(path.join(__dirname,'extra.json'),'utf8')):{};
 const VP=path.join(__dirname,'videos.json');const videos=fs.existsSync(VP)?JSON.parse(fs.readFileSync(VP,'utf8')):{};
-const HUB=Object.assign({updated:TODAY,subjects,exams,games,theory,videos},extra);
+// Prüfungen der letzten 14 Tage (für die Rangverkündigung)
+const PAST_FROM=new Date(new Date(TODAY).getTime()-14*864e5).toISOString().slice(0,10);
+const past=D.exams.filter(e=>e.date<TODAY&&e.date>=PAST_FROM&&!/Hausaufgabe|Termin|Abgabe/.test(e.type)).map(e=>({id:e.id,subj:e.subj,date:e.date,title:e.title.replace(/ ✅.*$/,'')}));
+const HUB=Object.assign({updated:TODAY,subjects,exams,games,theory,videos,past},extra);
 let js='/* BM2 Hustle – Daten (automatisch erzeugt mit tools/build-hub-data.js) */\nwindow.HUB='+JSON.stringify(HUB).replace(/</g,'\\u003c')+';\n';
 // Keine persönlichen Details von Robin auf der Seite (Figuren sind erfunden)
 js=js.replace(/Unihockey-Schuss/g,'Penalty schiessen').replace(/Unihockey/g,'Fussball').replace(/Zimmermann/g,'Elektriker');
