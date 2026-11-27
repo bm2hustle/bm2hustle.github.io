@@ -40,5 +40,57 @@
    "Rechercheauftrag zu Literaturepochen"
   ],
   "unsure": false
+ },
+ {
+  "id": "eng3",
+  "subj": "ENG",
+  "date": "2026-12-04",
+  "time": "11:20",
+  "type": "schriftlich",
+  "title": "English Exam 4 (Units 5+6)",
+  "topics": [
+   "Vocabulary U5: Spending + saving money, Idioms (SB S. 58–59), Phrasal verbs money + shopping (SB S. 61)",
+   "Vocabulary U6: Body, Health + medical care (SB S. 70–71), Idioms health + illness (SB S. 73)",
+   "Grammar U5: Modal verbs of obligation, prohibition, advice – present + past (SB S. 60)",
+   "Grammar U5: Modal verbs of speculation + deduction – past, present, future (SB S. 64)",
+   "Grammar U6: Zero, first, second conditional + unless, as long as, provided/providing, in case (SB S. 72)",
+   "Grammar U6: Third conditional, I wish… / If only… (SB S. 76)",
+   "Reading / Use of English",
+   "Listening (FCE Part 3)"
+  ],
+  "material": [
+   "Learning objectives Exam 4 (Units 5+6)",
+   "Quizlet-Sets Unit 5 + Unit 6",
+   "Student’s Book Unit 5 + 6",
+   "Übung: englishrevealed.co.uk (Money 1–4, Health and sickness 1–5)",
+   "Übung: perfect-english-grammar.com (Modal verbs, Conditionals)",
+   "Listening: examenglish.com FCE Listening Part 3",
+   "Conditionals-Arbeitsblätter (1st/2nd conditional, time clauses)"
+  ],
+  "unsure": false
+ },
+ {
+  "id": "gp3",
+  "subj": "GP",
+  "date": "2026-12-18",
+  "time": "13:50",
+  "type": "schriftlich",
+  "title": "GP Prüfung 3: Imperialismus + Voraussetzungen 1. Weltkrieg",
+  "topics": [
+   "Imperialismus: Begriff, Ursachen, Zusammenhang mit Industrialisierung",
+   "Ideologie: Sozialdarwinismus, «White Man's Burden», mission civilisatrice",
+   "Race to Africa – europäische Konkurrenz",
+   "Vom Imperialismus zum 1. Weltkrieg",
+   "Neue Staaten, Flottenrüstung, Bündnissysteme, Pulverfass Balkan",
+   "Quellen + Karikaturen zum Imperialismus deuten"
+  ],
+  "material": [
+   "Semesterplan Geschichte (Lektionen 20.11.–11.12.)",
+   "Imperialismus SG (Unterlagen)",
+   "Kipling: «The White Man’s Burden» (Text + Karikatur)",
+   "Karikaturen: «Vom Kap bis Kairo», «Frankreich als Heilsbringerin»",
+   "Lernziele kommen evtl. noch in OneNote"
+  ],
+  "unsure": false
  }
 ]

@@ -26,7 +26,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:psy2@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;TZID=Europe/Zurich:20261127T092500
 DTEND;TZID=Europe/Zurich:20261127T105500
 SUMMARY:📝 Psychologie/Philo: Psychologie Prüfung 2 + Philosophie (Herr
@@ -44,7 +44,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:bio2@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;TZID=Europe/Zurich:20261201T135000
 DTEND;TZID=Europe/Zurich:20261201T152000
 SUMMARY:📝 Biologie: Biologie 2. Biotest: Zellteilung\, Genetik\, Mutati
@@ -68,7 +68,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:deu2@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;TZID=Europe/Zurich:20261202T074500
 DTEND;TZID=Europe/Zurich:20261202T091500
 SUMMARY:📝 Deutsch: DEU Prüfung Literaturepochen: Barock\, Aufklärung\
@@ -89,17 +89,20 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:eng3@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;TZID=Europe/Zurich:20261204T112000
 DTEND;TZID=Europe/Zurich:20261204T125000
 SUMMARY:📝 Englisch: English Exam 4 (Units 5+6)
-DESCRIPTION:Prüfung\nStoff:\n- U5 Vocabulary: Money + Phrasal verbs (mone
- y)\n- U5 Grammar: Modal verbs of obligation\, prohibition\, advice (prese
- nt + past)\n- U5 Grammar: Modal verbs of speculation + deduction (present
- /future + past)\n- U6 Vocabulary: Body\, Health + Idioms\n- U6 Grammar: Z
- ero\, first\, second + third conditional\n- FCE Reading & Use of English 
- (Parts 2\, 4\, 6)\n- FCE Listening (Parts 2\, 3\, 4)\n\nLernen: https://b
- m2hustle.github.io/#fach-eng3
+DESCRIPTION:Prüfung\nStoff:\n- Vocabulary U5: Spending + saving money\, I
+ dioms (SB S. 58–59)\, Phrasal verbs money + shopping (SB S. 61)\n- Voca
+ bulary U6: Body\, Health + medical care (SB S. 70–71)\, Idioms health +
+  illness (SB S. 73)\n- Grammar U5: Modal verbs of obligation\, prohibitio
+ n\, advice – present + past (SB S. 60)\n- Grammar U5: Modal verbs of sp
+ eculation + deduction – past\, present\, future (SB S. 64)\n- Grammar U
+ 6: Zero\, first\, second conditional + unless\, as long as\, provided/pro
+ viding\, in case (SB S. 72)\n- Grammar U6: Third conditional\, I wish… 
+ / If only… (SB S. 76)\n- Reading / Use of English\n- Listening (FCE Par
+ t 3)\n\nLernen: https://bm2hustle.github.io/#fach-eng3
 URL:https://bm2hustle.github.io/#fach-eng3
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -109,7 +112,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:fra3@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;TZID=Europe/Zurich:20261207T074500
 DTEND;TZID=Europe/Zurich:20261207T091500
 SUMMARY:📝 Französisch: Französisch: CE + PE
@@ -126,7 +129,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:mat3@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;TZID=Europe/Zurich:20261209T092500
 DTEND;TZID=Europe/Zurich:20261209T105500
 SUMMARY:📝 Mathematik: Mathe Prüfung 3: Quadr. Gleichungen\, Textaufgab
@@ -155,7 +158,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:wr2@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;TZID=Europe/Zurich:20261215T130000
 DTEND;TZID=Europe/Zurich:20261215T143000
 SUMMARY:📝 Wirtschaft & Recht: Wirtschaft & Recht Prüfung 2: Mietrecht 
@@ -172,7 +175,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:idpa2@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;VALUE=DATE:20261218
 DTEND;VALUE=DATE:20261219
 SUMMARY:🏠 IDPA: IDPA Abgabe
@@ -182,7 +185,7 @@ URL:https://bm2hustle.github.io/#fach-idpa2
 END:VEVENT
 BEGIN:VEVENT
 UID:gp3@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;TZID=Europe/Zurich:20261218T135000
 DTEND;TZID=Europe/Zurich:20261218T152000
 SUMMARY:📝 Geschichte & Politik: GP Prüfung 3: Imperialismus + Vorausse
@@ -191,8 +194,8 @@ DESCRIPTION:Prüfung\nStoff:\n- Imperialismus: Begriff\, Ursachen\, Zusamm
  enhang mit Industrialisierung\n- Ideologie: Sozialdarwinismus\, «White M
  an's Burden»\, mission civilisatrice\n- Race to Africa – europäische 
  Konkurrenz\n- Vom Imperialismus zum 1. Weltkrieg\n- Neue Staaten\, Flotte
- nrüstung\, Bündnissysteme\, Pulverfass Balkan\n\nLernen: https://bm2hus
- tle.github.io/#fach-gp3
+ nrüstung\, Bündnissysteme\, Pulverfass Balkan\n- Quellen + Karikaturen 
+ zum Imperialismus deuten\n\nLernen: https://bm2hustle.github.io/#fach-gp3
 URL:https://bm2hustle.github.io/#fach-gp3
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -202,7 +205,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:fra4@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;VALUE=DATE:20270104
 DTEND;VALUE=DATE:20270105
 SUMMARY:📝 Französisch: Test de vocabulaire ch. 7–9
@@ -218,7 +221,7 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:fra5@bm2hustle.github.io
-DTSTAMP:20261127T111739Z
+DTSTAMP:20261127T192251Z
 DTSTART;VALUE=DATE:20270114
 DTEND;VALUE=DATE:20270115
 SUMMARY:📝 Französisch: Französisch: Application
